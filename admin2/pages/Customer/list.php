@@ -154,7 +154,7 @@ array_push($jsStack, '
         </div>
         <div class="col-sm-12 col-md-6">
             <div id="example1_filter" class="dataTables_filter" style="float: right; margin-right: 4%;">
-                Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1">
+                Search:<input type="search" class="form-control form-control-sm" placeholder="">
             </div>
         </div>
     </div>
@@ -194,7 +194,7 @@ array_push($jsStack, '
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-5">
-            <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 6 of 6 entries</div>
+            <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div>
         </div>
         <div class="col-sm-12 col-md-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
