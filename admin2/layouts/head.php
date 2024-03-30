@@ -8,3 +8,6 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
    <!-- Theme style -->
    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  
