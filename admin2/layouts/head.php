@@ -10,23 +10,4 @@
    <link rel="stylesheet" href="dist/css/adminlte.min.css">
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-   <style>
-      #formadd {
-        display: none;
-      }
-
-      #addbutton{
-        width: 89.49px; 
-        height: 47.6px;
-        font-size: 20px;
-        margin: 5px 0 0 1020px;
-      }
-      #searchbutton{
-        width: 89.49px; 
-        height: 47.6px;
-        font-size: 20px;
-        margin: 5px 0 0 10px;
-      }
-
-      
-   </style>
+   

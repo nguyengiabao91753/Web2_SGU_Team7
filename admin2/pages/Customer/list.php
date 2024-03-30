@@ -60,6 +60,19 @@ $(document).ready(function() {
 
 
 </script>
+<style>
+      #formadd {
+        display: none;
+      }
+
+      #addbutton{
+        width: 89.49px; 
+        height: 47.6px;
+        font-size: 20px;
+        margin: 5px 0 0 1100px;
+      }
+      
+   </style>
 
 
 
@@ -67,13 +80,11 @@ $(document).ready(function() {
 
 <div class="card">
     <!--addButton and searchButton-->
-    <div class="addform_n_search">
+    <div class="addform">
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
-        <button id="searchbutton" class="btn btn-tool">
-            <i class="fa fa-search"></i>
-        </button>
+        
         <!--addForm-->
         <form method="post" action="" id="formadd">
             <!-- Default box -->
