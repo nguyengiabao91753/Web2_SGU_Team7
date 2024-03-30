@@ -65,9 +65,9 @@ array_push($jsStack, '
 
       #addbutton{
         width: 89.49px; 
-        height: 47.6px;
+        height: 60px;
         font-size: 20px;
-        margin: 5px 0 0 1100px;
+        margin: 5px 0 0 10px;
       }
       
    </style>
@@ -136,7 +136,7 @@ array_push($jsStack, '
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary" id="createButton">Create</button>
+                    <button type="submit" class="btn btn-primary" id="createButton">Submit</button>
                 </div>
             </div>
 
@@ -146,7 +146,7 @@ array_push($jsStack, '
     </div>
 
     <div class="card-header">
-        <h3 class="card-title">Customer list</h3>
+        <!-- <h3 class="card-title">Customer list</h3> -->
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -154,7 +154,7 @@ array_push($jsStack, '
         </div>
         <div class="col-sm-12 col-md-6">
             <div id="example1_filter" class="dataTables_filter" style="float: right; margin-right: 4%;">
-                <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1"></label>
+                Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example1">
             </div>
         </div>
     </div>
