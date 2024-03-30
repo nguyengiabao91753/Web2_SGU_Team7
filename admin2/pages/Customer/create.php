@@ -2,6 +2,7 @@
 
     <!-- Default box -->
     <div class="card">
+    <a href="index.php?page=pages/Customer/list.php" ><button class="btn btn-primary" style="width: 80px; margin-left: 95%;border-radius: 10px;" id="add">Back</button></a>
         <div class="card-header">
             <h3 class="card-title">Customer create</h3>
 
