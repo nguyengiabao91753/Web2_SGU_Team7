@@ -31,15 +31,17 @@ session_start();
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <?php if (isset($_SESSION['success'])) : ?>
+      <?php if (isset($_SESSION['flash_message'])) : ?>
         <div class="alert alert-success alert-dismissible">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <h5><i class="icon fas fa-check"></i> Alert!</h5>
-          <?php echo $_SESSION['success']; ?>
+          <?php echo $_SESSION['flash_message']; ?>
         </div>
-        <?php unset($_SESSION['success']);
-        ?>
       <?php endif; ?>
+      <?php
+         unset($_SESSION['flash_message']);
+      ?>
+
       <?php if (isset($_SESSION['err'])) : ?>
         <div class="alert alert-danger alert-dismissible">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

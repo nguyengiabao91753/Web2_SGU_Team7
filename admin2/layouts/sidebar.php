@@ -52,13 +52,7 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Create</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="" class="nav-link">
+               <a href="index.php?page=pages/Category/list.php" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
