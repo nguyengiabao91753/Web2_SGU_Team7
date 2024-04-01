@@ -1,82 +1,150 @@
 <?php
+
 require_once '../db.php';
 
-if(isset($_POST['add_category'])) {
+if (isset($_POST['add_category'])) {
     addCategory();
-} elseif(isset($_POST['update_category'])) {
+} elseif (isset($_POST['update_category'])) {
     updateCategory();
-} elseif(isset($_GET['delete_category'])) {
+} elseif (isset($_GET['delete_category'])) {
     deleteCategory($_GET['delete_category']);
 }
+//Xử lý ajax lấy số trang
+if (isset($_GET['rowofPage'])) {
+    $rowofPage = $_GET['rowofPage'];
+    $total = countCate();
+    $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
+    echo $page;
+}
 
-if(isset($_POST['categoryId'])){
+//Xử lý ajax lấy cate bởi id
+if (isset($_POST['categoryId'])) {
     $categoryId = $_POST['categoryId'];
     $rs = getCateByID($categoryId);
     echo $rs;
 }
 
-function getAllCategory() {
+//Xử lý ajax đây là search nhá
+if (isset($_POST['searchText'])) {
+    $searchText = $_POST['searchText'];
+    $query = "SELECT * FROM categories WHERE CategoryName LIKE '%$searchText%'";
+    $result = mysqli_query($conn, $query);
+    echo loadCateData($result);
+}
+
+
+function validateCate($parentID, $CategoryName)
+{
+    global $conn;
+    $query = "SELECT * FROM Categories WHERE parentID = '$parentID' AND CategoryName= '$CategoryName'";
+    $result = mysqli_query($conn, $query);
+
+    return mysqli_num_rows($result);
+}
+
+function getAllCategory()
+{
     global $conn;
     $query = "SELECT * FROM Categories";
     $result = mysqli_query($conn, $query);
     if ($result && mysqli_num_rows($result) > 0) {
         $categories = array();
         while ($row = mysqli_fetch_assoc($result)) {
-            $categories[] = $row; 
+            $categories[] = $row;
         }
-        return $categories; 
+        return $categories;
     } else {
         return array();
     }
-
 }
 
-function getCateByID($ID){
+
+
+function getCateByID($ID)
+{
     global $conn;
     $query = "SELECT * FROM Categories WHERE CategoryID = $ID Limit 1";
     $r = mysqli_query($conn, $query);
-    $Cate= mysqli_fetch_assoc($r);
+    $Cate = mysqli_fetch_assoc($r);
     return $Cate;
 }
 
 
-function addCategory() {
+function addCategory()
+{
     global $conn;
-    if(isset($_POST['CategoryName'])) {
+    if (isset($_POST['CategoryName'])) {
         $name = $_POST['CategoryName'];
         $parentID = $_POST['parentID'];
-        $sql = "INSERT INTO categories (parentID,CategoryName) VALUES ('$parentID','$name')";
-        if($conn->query($sql) === TRUE) {
-            $_SESSION['flash_message'] = "Category added successfully!";
-            header("Location: ../admin2/index.php?page=pages/Category/list.php");
-            exit();
+        if (validateCate($parentID, $name) == 0) {
+            $sql = "INSERT INTO categories (parentID,CategoryName) VALUES ('$parentID','$name')";
+            if ($conn->query($sql) === TRUE) {
+                $_SESSION['success'] = "Category added successfully!";
+                header("Location: ../admin2/index.php?page=pages/Category/list");
+                exit();
+            } else {
+                $_SESSION['err'] = "Category added Failed!";
+                header("Location: ../admin2/index.php?page=pages/Category/list");
+                exit();
+            }
         } else {
-            $_SESSION['err'] = "Category added Failed!";
+            $_SESSION['err'] = "This category already exists!";
+            header("Location: ../admin2/index.php?page=pages/Category/list");
+            exit();
         }
-    }else{
+    } else {
         $_SESSION['err'] = "Category added Failed!";
+        header("Location: ../admin2/index.php?page=pages/Category/list");
+        exit();
     }
 }
 
-function countCate() {
+function countCate()
+{
     global $conn;
 
     $query = "SELECT COUNT(*) FROM categories";
     $Count = mysqli_query($conn, $query);
-
+    $row = mysqli_fetch_row($Count);
+    $Count = (int)$row[0];
     return $Count;
 }
 
-function updateCategory() {
+function updateCategory()
+{
     global $conn;
-    if(isset($_POST['CategoryID']) && isset($_POST['CategoryName'])) {
+    if (isset($_POST['CategoryID']) && isset($_POST['CategoryName'])) {
         $CategoryID = $_POST['CategoryID'];
         $CategoryName = $_POST['CategoryName'];
         $parentID = $_POST['parentID'];
-        $sql = "UPDATE Categories SET CategoryName='$CategoryName', parentID = '$parentID' WHERE CategoryID=$CategoryID";
-        if($conn->query($sql) === TRUE) {
-            $_SESSION['flash_message'] = "Category updated successfully!";
-            header("Location: ../admin2/index.php?page=pages/Category/list.php");
+        if (validateCate($parentID, $CategoryName) == 0) {
+
+
+            $sql = "UPDATE Categories SET CategoryName='$CategoryName', parentID = '$parentID' WHERE CategoryID=$CategoryID";
+            if ($conn->query($sql) === TRUE) {
+                $_SESSION['flash_message'] = "Category updated successfully!";
+                header("Location: ../admin2/index.php?page=pages/Category/list");
+                exit();
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+        } else {
+            $_SESSION['err'] = "This category already exists!";
+            header("Location: ../admin2/index.php?page=pages/Category/list");
+            exit();
+        }
+    }
+}
+
+function deleteCategory($CategoryID)
+{
+    global $conn;
+    if (isset($CategoryID)) {
+
+        $sql = "DELETE FROM categories WHERE CategoryID=$CategoryID";
+        if ($conn->query($sql) === TRUE) {
+            $_SESSION['flash_message'] = "Category deleted successfully!";
+            header("Location: ../admin2/index.php?page=pages/Category/list");
             exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
@@ -84,18 +152,35 @@ function updateCategory() {
     }
 }
 
-function deleteCategory( $CategoryID) {
-    global $conn;
-    if(isset($CategoryID)) {
-    
-        $sql = "DELETE FROM categories WHERE CategoryID=$CategoryID";
-        if($conn->query($sql) === TRUE) {
-            $_SESSION['flash_message'] = "Category deleted successfully!";
-            header("Location: ../admin2/index.php?page=pages/Category/list.php");
-            exit();
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+function loadCateData($result)
+{
+    $html = '';
+
+    while ($category = mysqli_fetch_assoc($result)) {
+
+
+        $Name = ($category['parentID'] != 0) ? getCateByID($category['parentID'])['CategoryName'] : "";
+
+        $html .= '<tr>';
+        $html .= '  <td class="categoryID">' . $category['CategoryID'] . '</td>';
+        $html .= '  <td>' . $Name . '</td>';
+        $html .= '  <td>' . $category['CategoryName'] . '</td>';
+        $html .= '  <td>';
+        //$html .= '    <a href="index.php?page=pages/Category/list.php&id=' . $category['CategoryID'] . '">';
+        $html .= '      <button type="button" onclick="update(this)" id="updateCate-' . $category['CategoryID'] . '" class="updateCategory btn btn-success">';
+        $html .= '        <i class="far fa-edit"></i>';
+        $html .= '      </button>';
+        //$html .= '    </a>';
+        $html .= '  </td>';
+        $html .= '  <td>';
+        $html .= '    <a onclick="return confirmDelete()" href="../controller/CategoryController.php?delete_category=' . $category['CategoryID'] . '">';
+        $html .= '      <button class="btn btn-danger">';
+        $html .= '        <i class="far fa-trash-alt"></i>';
+        $html .= '      </button>';
+        $html .= '    </a>';
+        $html .= '  </td>';
+        $html .= '</tr>';
     }
+
+    return $html;
 }
-?>

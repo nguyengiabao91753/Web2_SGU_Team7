@@ -9,8 +9,8 @@ session_start();
   <?php
   $cssStack = [];
   $jsStack = [];
-  $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'index';
-  $contentPath = "$selectedContent";
+  $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'pages/Statistical';
+  $contentPath = "$selectedContent.php";
 
   include("layouts/head.php");
   ?>
@@ -31,16 +31,17 @@ session_start();
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <?php if (isset($_SESSION['flash_message'])) : ?>
+      <?php if (isset($_SESSION['success'])) : ?>
         <div class="alert alert-success alert-dismissible">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <h5><i class="icon fas fa-check"></i> Alert!</h5>
-          <?php echo $_SESSION['flash_message']; ?>
+          <?php echo $_SESSION['success']; ?>
         </div>
+        <?php
+         unset($_SESSION['success']);
+        ?>
       <?php endif; ?>
-      <?php
-         unset($_SESSION['flash_message']);
-      ?>
+      
 
       <?php if (isset($_SESSION['err'])) : ?>
         <div class="alert alert-danger alert-dismissible">
@@ -53,11 +54,9 @@ session_start();
       <?php endif; ?>
 
       <?php
-      if (file_exists($contentPath)) {
-        include($contentPath);
-      } else {
-        include("pages/Statistical.php");
-      }
+      
+      include($contentPath);
+     
       ?>
       <!-- /.content -->
     </div>

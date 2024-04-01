@@ -47,29 +47,184 @@ $CountCate =  countCate();
 
 ?>
 <script>
+    //phân trang đê
+
+
+    //load dữ liệu
+    function loadData(pageNumber) {
+        var rowofPage = $(".custom-select").val();
+        $("tbody").empty();
+        $.ajax({
+            url: '../chucnang/phantrang.php',
+            type: 'get',
+            data: {
+                tableName: "categories",
+                rowofPage: rowofPage,
+                pageNumber: pageNumber,
+                ID: "CategoryID"
+            },
+            // dataType: 'json',
+            success: function(response) {
+                $("tbody").html(response);
+
+                $(".pagination .page-item").removeClass("active");
+
+                $(".pagination .page-item:contains(" + pageNumber + ")").addClass("active");
+            }
+
+        });
+    }
+
+
+
+    //xử lý khi nhấn nút trang
+    function clickload(element) {
+        //alert("vô");
+        var pageNumber = element;
+        //alert(pageNumber);
+        if (pageNumber == 111) {
+            var currentPage = $(".page-item.active").text();
+
+            if (currentPage > 1) {
+                loadData(currentPage - 1);
+            } else {
+                alert("This is first page");
+            }
+        } else if (pageNumber == 222) {
+            var currentPage = parseInt($(".page-item.active").text());
+            var lastPage = parseInt($(".pagination .page-item").last().prev().text());
+            if (currentPage < lastPage) {
+                loadData(currentPage + 1);
+            } else {
+                alert("This is last page");
+            }
+        } else {
+            loadData(pageNumber);
+        }
+    }
+
+    //tính số trang
+    function countPage() {
+        var rowofPage = $(".custom-select").val();
+        $.ajax({
+            url: '../controller/CategoryController.php',
+            type: 'get',
+            data: {
+                rowofPage: rowofPage
+            },
+            success: function(response) {
+                //alert(response);
+                $(".pagination").empty();
+                var previous = 111;
+                var next = 222;
+                $(".pagination").append('<li class="paginate_button page-item" id="example1"><a href="#" class="page-link" onclick="clickload(' + previous + ')">Previous</a></li>');
+                for (var i = 1; i <= response; i++) {
+                    $(".pagination").append('<li class="paginate_button page-item"><a href="#" aria-controls="example1" data-dt-idx="' + i + '" tabindex="0" class="page-link" onclick="clickload(' + i + ')">' + i + '</a></li>');
+                }
+                $(".pagination").append('<li class="paginate_button page-item" id="example1"><button type="button" class="page-link" onclick="clickload(' + next + ')" >Next</button></li>');
+            }
+        });
+    }
+
+    $(document).ready(function() {
+
+
+        countPage();
+
+        loadData(1);
+
+        $(".custom-select").change(function() {
+            countPage();
+
+            loadData(1);
+        });
+
+
+        //đây là search
+        $("#filter").change(function() {
+            var searchText = $(this).val();
+            if (searchText == "") return loadData(1);
+
+            $.ajax({
+                url: '../controller/CategoryController.php',
+                type: 'post',
+                data: {
+                    searchText: searchText
+                },
+                //dataType: 'json',
+                success: function(response) {
+                    $('tbody').html(response);
+                }
+            });
+        })
+    });
+
+
+
+    //update
+    function update(element) {
+        $("#formadd").slideDown();
+        //element.preventDefault();
+
+        // Extract category ID from button ID or data attribute (adjust selector)
+        var categoryId = $(element).attr('id').split('-')[1];
+        $.ajax({
+            url: '../chucnang/update.php',
+            type: 'post',
+            data: {
+                tableName: 'categories',
+                Id: parseInt(categoryId)
+            },
+            dataType: 'json',
+            success: function(response) {
+
+                if (response.error) {
+                    // Handle error message
+                    alert('wrong');
+                } else {
+
+                    var addForm = $("#formadd");
+                    addForm.find('input[id="inpCategoryID"]').val(response['data'].CategoryID);
+                    addForm.find('input[name="CategoryName"]').val(response['data'].CategoryName);
+                    addForm.find('input[value="Submit"]').attr('name', 'update_category');
+                    addForm.find('select[name="parentID"]').val(response['data'].parentID).find('option[value="' + response['data'].parentID + '"]').prop('selected', true);
+
+
+                }
+            },
+            error: function(error) {
+                alert('errrr');
+
+            }
+        });
+
+    }
     // Nút thêm(addButton)
     $(document).ready(function() {
         var addButton = $("#addbutton");
-        var updateform = $(".updateCate");
         var addForm = $("#formadd");
 
         addButton.click(function() {
             addForm.slideDown();
+            addForm.find('input[value="Submit"]').attr('name', 'add_category');
             addForm.find('input[name="CategoryName"]').val('');
             addForm.find('select[name="parentID"]').val('0').find('option[value="0"]').prop('selected', true);
 
         });
 
 
+        //update
+
+
         <?php
         if (isset($_GET['id'])) {
             $id =  $_GET['id'];
             $cate = getCateByID($id);
+            unset($_GET['id']);
         ?>
             addForm.slideDown();
         <?php
         }
-
         ?>
 
     });
@@ -80,61 +235,18 @@ $CountCate =  countCate();
 
         removeButton.click(function() {
             addForm.slideToggle();
+
         });
+
+
     });
+    //tính số trang
+    $(document).ready(function() {
+        <?php
+        // $totalPage  = $CountCate / 
+        ?>
 
-    //phân trang đê
-    // $(document).ready(function() {
-    //     var rowofPage = $(".custom-select").val();
-    //     var tableName = "Categories";
-    //     var ID = "CategoryID";
-    //     $.ajax({
-    //             url: '../chucnang/phantrang.php',
-    //             type: 'get',
-    //             data: {
-    //                 tableName: tableName,
-    //                 rowofPage: rowofPage,
-    //                 pageNumber: 1,
-    //                 ID: ID
-    //             },
-    //             dataType: 'json',
-    //             success: function(response) {
-    //                 var categories = response;
-
-    //                 // Build the tbody content using a loop
-    //                 var tbodyContent = "";
-    //                 for (var i = 0; i < categories.length; i++) {
-    //                     var category = categories[i];
-
-    //                     var parentName = (category.parentID != 0) ? category.parentName : "";
-
-    //                     tbodyContent += "<tr>";
-    //                     tbodyContent += "  <td>" + category.CategoryID + "</td>";
-    //                     tbodyContent += "  <td>" + parentName + "</td>";
-    //                     tbodyContent += "  <td>" + category.CategoryName + "</td>";
-    //                     tbodyContent += "  <td>";
-    //                     tbodyContent += "    <a href=\"index.php?page=pages/Category/list.php&id=" + category.CategoryID + "\">";
-    //                     tbodyContent += "      <button type=\"button\" class=\"updateCate btn btn-success\">";
-    //                     tbodyContent += "        <i class=\"far fa-edit\"></i>";
-    //                     tbodyContent += "      </button>";
-    //                     tbodyContent += "    </a>";
-    //                     tbodyContent += "  </td>";
-    //                     tbodyContent += "  <td>";
-    //                     tbodyContent += "    <a onclick=\"return confirmDelete()\" href=\"../controller/CategoryController.php?delete_category=" + category.CategoryID + "\">";
-    //                     tbodyContent += "      <button class=\"btn btn-danger\">";
-    //                     tbodyContent += "        <i class=\"far fa-trash-alt\"></i>";
-    //                     tbodyContent += "      </button>";
-    //                     tbodyContent += "    </a>";
-    //                     tbodyContent += "  </td>";
-    //                     tbodyContent += "</tr>";
-    //                 }
-
-                    
-    //                 $("tbody").html(tbodyContent);
-    //             }
-            
-    //     });
-    // });
+    });
 </script>
 <style>
     #formadd {
@@ -165,7 +277,7 @@ $CountCate =  countCate();
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Category create</h3>
-                    <input type="text" value="<?php echo (isset($cate)) ? $cate['CategoryID'] : '' ?>" name="CategoryID" hidden>
+                    <input type="text" value="" id="inpCategoryID" name="CategoryID" hidden>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -179,22 +291,22 @@ $CountCate =  countCate();
                 <div class="card-body">
                     <div class="form-group">
                         <label>Parent ID:</label>
-                        <select name="parentID" id="">
+                        <select name="parentID" class="selectParent" id="">
                             <option value="0">-----------Root-----------</option>
                             <?php
-                            recursiveCategory($categories, (isset($cate)) ? $cate['parentID'] : 0);
+                            recursiveCategory($categories, 0);
                             ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" class="form-control" placeholder="CategoryName" name="CategoryName" value="<?php echo (isset($cate)) ? $cate['CategoryName'] : '' ?>">
+                        <input type="text" id="inpCategoryName" class="form-control" placeholder="CategoryName" name="CategoryName" value="" require>
                     </div>
 
                 </div>
 
                 <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" name="<?php echo (!empty($cate)) ? 'update_category' : 'add_category'; ?>" id="" value="Submit">
+                    <input type="submit" class="btn btn-primary" name="add_category" id="" value="Submit">
                 </div>
             </div>
 
@@ -206,12 +318,13 @@ $CountCate =  countCate();
     <div class="card-header">
         <!-- <h3>List</h3> -->
     </div>
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="dataTables_length" id="example2_length" style="float: left; margin-left: 4%;">
                 <label>Show
                     <select name="example2_length" aria-controls="example2" class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value="5" selected>5</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -221,13 +334,13 @@ $CountCate =  countCate();
         </div>
         <div class="col-sm-12 col-md-6">
             <div id="example1_filter" class="dataTables_filter" style="float: right; margin-right: 4%;">
-                Search:<input type="search" class="form-control form-control-sm" placeholder="">
+                Search:<input type="search" id="filter" class="form-control form-control-sm" placeholder="Enter Category Name">
             </div>
         </div>
-    </div> -->
+    </div>
 
     <div class="card-body">
-        <table id="example1" class="table table-bordered table-striped">
+        <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -238,34 +351,7 @@ $CountCate =  countCate();
                 </tr>
             </thead>
             <tbody>
-            <?php foreach ($categories as $category) : ?>
-                    <?php
-                    $Name = ($category['parentID'] != 0) ? getCateByID($category['parentID'])['CategoryName'] : "";
-                    ?>
-                    <tr>
-                        <td>
-                            <?php echo $category['CategoryID'] ?>
-                        </td>
-                        <td>
-                            <?php echo $Name ?>
-                        </td>
-                        <td>
-                            <?php echo $category['CategoryName'] ?>
-                        </td>
-                        <td>
-                            <a href="index.php?page=pages/Category/list.php&id=<?php echo $category['CategoryID']; ?>"><button type="button" class="updateCate btn btn-success">
-                                    <i class="far fa-edit">
-                                    </i>
-                                </button></a>
 
-                        </td>
-                        <td>
-                            <a onclick="return confirmDelete()" href="../controller/CategoryController.php?delete_category=<?php echo $category['CategoryID']; ?>"><button class="btn btn-danger">
-                                    <i class="far fa-trash-alt"></i>
-                                </button></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
             </tbody>
             <tfoot>
                 <tr>
@@ -278,18 +364,18 @@ $CountCate =  countCate();
             </tfoot>
         </table>
     </div>
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-sm-12 col-md-5">
             <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div>
         </div>
         <div class="col-sm-12 col-md-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                 <ul class="pagination" style="float: right; margin-right: 4%;">
-                    <li class="paginate_button page-item previous" id="example1_previous"><a href="#" class="page-link">Previous</a></li>
+                    <!-- <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" class="page-link">Previous</a></li>
                     <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                    <li class="paginate_button page-item next " id="example1_next"><a href="#" class="page-link">Next</a></li>
+                    <li class="paginate_button page-item next disabled" id="example1_next"><a href="#" class="page-link">Next</a></li> -->
                 </ul>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>

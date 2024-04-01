@@ -1,27 +1,28 @@
 <?php
 require_once '../db.php';
+require_once '../controller/CategoryController.php';
 global $conn;
 
-$tableName = $_POST['tableName'];
-$pageNumber = isset($_POST['pageNumber']) ? $_POST['pageNumber'] : 1;
-$rowofPage = isset($_POST['rowofPage']) ? $_POST['rowofPage'] : 10;
-$ID = $_POST['ID'];
+$tableName = $_GET['tableName'];
+$pageNumber = isset($_GET['pageNumber']) ? (int)$_GET['pageNumber'] : 1;
+$rowofPage = isset($_GET['rowofPage']) ? (int)$_GET['rowofPage'] : 10;
+$rowStart = (int)(($pageNumber - 1) * $rowofPage);
+$ID = $_GET['ID'];
 
 
 $query = "SELECT * FROM $tableName
-          ORDER BY $ID
-          LIMIT ($pageNumber - 1) * $rowofPage, $rowofPage;";
-
+        ORDER BY $ID
+        Limit $rowStart, $rowofPage;";
 $result = mysqli_query($conn, $query);
-if ($result && mysqli_num_rows($result) > 0) {
-    $data = array();
-  while ($row = mysqli_fetch_assoc($result)) {
-    $data[] = $row;
-  }
 
-  echo $data; 
+
+if (mysqli_num_rows($result) > 0) {
+    if ($tableName == 'categories') {
+        $html = '';
+        $html = loadCateData($result);
+    }
+
+    echo $html;
 } else {
     echo "Failed";
 }
-
-?>
