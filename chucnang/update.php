@@ -13,10 +13,10 @@ if($_POST['tableName'] == 'categories'){
             'parentID' => $cate['parentID']
         );
 
-        // Output as JSON for JavaScript processing
+        
         echo json_encode($response);
     } else {
-        // Handle the case where category data is not found
+       
         echo json_encode(array('error' => 'Category not found'));
     }
 }

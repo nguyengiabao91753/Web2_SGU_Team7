@@ -213,20 +213,6 @@ $CountCate =  countCate();
         });
 
 
-        //update
-
-
-        <?php
-        if (isset($_GET['id'])) {
-            $id =  $_GET['id'];
-            $cate = getCateByID($id);
-            unset($_GET['id']);
-        ?>
-            addForm.slideDown();
-        <?php
-        }
-        ?>
-
     });
     // Nút đóng(removeButton)
     $(document).ready(function() {
