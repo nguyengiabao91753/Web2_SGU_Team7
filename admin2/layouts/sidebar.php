@@ -168,6 +168,23 @@
          </li>
          <li class="nav-item">
            <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-sitemap"></i>
+             <p>
+               Supplier
+               <i class="right fas fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="index.php?page=pages/Supplier/list" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>List</p>
+               </a>
+             </li>
+           </ul>
+         </li>
+         <li class="nav-item">
+           <a href="#" class="nav-link">
              <i class="nav-icon fas fa-users"></i>
              <p>
                Feature
