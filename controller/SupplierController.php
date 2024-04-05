@@ -5,8 +5,8 @@ if(isset($_POST['add_supplier'])){
     addSupplier();
 }else if(isset($_POST['update_supplier'])){
     updateSupplier();
-}else if(isset($_POST['delete_supplier'])){
-    deleteSupplier($_POST['delete_supplier']);
+}else if(isset($_GET['delete_supplier'])){
+    deleteSupplier($_GET['delete_supplier']);
 }
 //Xử lý ajax lấy số trang
 if (isset($_GET['rowofPage'])) {
