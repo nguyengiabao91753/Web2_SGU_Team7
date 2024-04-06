@@ -60,7 +60,7 @@ function addSupplier()
     } else {
         $_SESSION['err'] = "Supplier added failed!";
     }
-    header("Location: ../admin2/index.php?page=pages/Supplier/list");
+    header("Location: ../admin2/index.php?page=Supplier/list");
     exit();
 }
 
@@ -93,7 +93,7 @@ function updateSupplier()
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
-    header("Location: ../admin2/index.php?page=pages/Supplier/list");
+    header("Location: ../admin2/index.php?page=Supplier/list");
     exit();
 }
 
@@ -108,7 +108,7 @@ function deleteSupplier($SupplierID)
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
-    header("Location: ../admin2/index.php?page=pages/Supplier/list");
+    header("Location: ../admin2/index.php?page=Supplier/list");
     exit();
 }
 

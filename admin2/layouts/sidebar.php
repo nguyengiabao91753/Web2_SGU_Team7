@@ -52,7 +52,7 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Category/list" class="nav-link">
+               <a href="index.php?page=Category/list" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
@@ -124,13 +124,13 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Customer/create.php" class="nav-link">
+               <a href="index.php?page=Customer/create.php" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Create</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=pages/Customer/list.php" class="nav-link">
+               <a href="index.php?page=Customer/list.php" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
@@ -176,7 +176,7 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Supplier/list" class="nav-link">
+               <a href="index.php?page=Supplier/list" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
@@ -193,7 +193,7 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Feature/modify" class="nav-link">
+               <a href="index.php?page=Feature/modify" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Modify</p>
                </a>
