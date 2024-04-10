@@ -1,7 +1,7 @@
 <?php
-$servername = "localhost:3308";
+$servername = "localhost:3306";
 $username = "root";
-$password = "123456";
+$password = "";
 $dbname = "web2";
 
 // Create connection
