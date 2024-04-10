@@ -1,6 +1,7 @@
 <?php
 require_once '../db.php';
 require_once '../controller/CategoryController.php';
+require_once '../controller/SupplierController.php';
 global $conn;
 
 $tableName = $_GET['tableName'];
@@ -20,6 +21,9 @@ if (mysqli_num_rows($result) > 0) {
     if ($tableName == 'categories') {
         $html = '';
         $html = loadCateData($result);
+    }else if($tableName == 'suppliers'){
+        $html='';
+        $html = loadSupplierData($result);
     }
 
     echo $html;

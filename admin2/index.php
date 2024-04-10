@@ -1,16 +1,14 @@
-<?php
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <?php
+  session_start();
+  //  $_SESSION['success'] = "Category updated successfully!";  
   $cssStack = [];
   $jsStack = [];
-  $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'pages/Statistical';
-  $contentPath = "$selectedContent.php";
+  $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'Statistical';
+  $contentPath = "pages/$selectedContent.php";
 
   include("layouts/head.php");
   ?>
@@ -28,6 +26,29 @@ session_start();
 
     <!-- /.sidebar -->
 
+    <script>
+      $(document).ready(function() {
+        <?php if (isset($_GET['add'])) : ?>
+          alert("Add successfully!");
+          var currentURL = window.location.href;
+
+          // Loại bỏ tham số &a=true khỏi URL
+          var updatedURL = currentURL.replace(/&add=true/g, '');
+
+          // Nếu tham số a=true ở cuối URL, cần loại bỏ dấu & còn thừa
+          updatedURL = updatedURL.replace(/\?$/, ''); // Loại bỏ dấu ? nếu không còn tham số nào sau khi loại bỏ &a=true
+
+          // Sử dụng pushState để cập nhật URL hiện tại mà không làm tải lại trang
+          window.history.pushState({path: updatedURL}, '', updatedURL);
+
+        <?php endif; ?>
+
+      });
+    </script>
+
+
+
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -38,10 +59,10 @@ session_start();
           <?php echo $_SESSION['success']; ?>
         </div>
         <?php
-         unset($_SESSION['success']);
+        unset($_SESSION['success']);
         ?>
       <?php endif; ?>
-      
+
 
       <?php if (isset($_SESSION['err'])) : ?>
         <div class="alert alert-danger alert-dismissible">
@@ -54,9 +75,9 @@ session_start();
       <?php endif; ?>
 
       <?php
-      
+
       include($contentPath);
-     
+
       ?>
       <!-- /.content -->
     </div>

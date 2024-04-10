@@ -1,5 +1,7 @@
 <?php
 
+//  session_start();
+
 require_once '../db.php';
 
 if (isset($_POST['add_category'])) {
@@ -80,21 +82,21 @@ function addCategory()
             $sql = "INSERT INTO categories (parentID,CategoryName) VALUES ('$parentID','$name')";
             if ($conn->query($sql) === TRUE) {
                 $_SESSION['success'] = "Category added successfully!";
-                header("Location: ../admin2/index.php?page=pages/Category/list");
+                header("Location: ../admin2/index.php?page=Category/list&add=true");
                 exit();
             } else {
                 $_SESSION['err'] = "Category added Failed!";
-                header("Location: ../admin2/index.php?page=pages/Category/list");
+                header("Location: ../admin2/index.php?page=Category/list");
                 exit();
             }
         } else {
             $_SESSION['err'] = "This category already exists!";
-            header("Location: ../admin2/index.php?page=pages/Category/list");
+            header("Location: ../admin2/index.php?page=Category/list");
             exit();
         }
     } else {
         $_SESSION['err'] = "Category added Failed!";
-        header("Location: ../admin2/index.php?page=pages/Category/list");
+        header("Location: ../admin2/index.php?page=Category/list");
         exit();
     }
 }
@@ -122,15 +124,15 @@ function updateCategory()
 
             $sql = "UPDATE Categories SET CategoryName='$CategoryName', parentID = '$parentID' WHERE CategoryID=$CategoryID";
             if ($conn->query($sql) === TRUE) {
-                $_SESSION['flash_message'] = "Category updated successfully!";
-                header("Location: ../admin2/index.php?page=pages/Category/list");
+                $_SESSION['success'] = "Category updated successfully!";
+                header("Location: ../admin2/index.php?page=Category/list");
                 exit();
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
         } else {
             $_SESSION['err'] = "This category already exists!";
-            header("Location: ../admin2/index.php?page=pages/Category/list");
+            header("Location: ../admin2/index.php?page=Category/list");
             exit();
         }
     }
@@ -144,7 +146,7 @@ function deleteCategory($CategoryID)
         $sql = "DELETE FROM categories WHERE CategoryID=$CategoryID";
         if ($conn->query($sql) === TRUE) {
             $_SESSION['flash_message'] = "Category deleted successfully!";
-            header("Location: ../admin2/index.php?page=pages/Category/list");
+            header("Location: ../admin2/index.php?page=Category/list");
             exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
@@ -166,7 +168,7 @@ function loadCateData($result)
         $html .= '  <td>' . $Name . '</td>';
         $html .= '  <td>' . $category['CategoryName'] . '</td>';
         $html .= '  <td>';
-        //$html .= '    <a href="index.php?page=pages/Category/list.php&id=' . $category['CategoryID'] . '">';
+        //$html .= '    <a href="index.php?page=Category/list.php&id=' . $category['CategoryID'] . '">';
         $html .= '      <button type="button" onclick="update(this)" id="updateCate-' . $category['CategoryID'] . '" class="updateCategory btn btn-success">';
         $html .= '        <i class="far fa-edit"></i>';
         $html .= '      </button>';

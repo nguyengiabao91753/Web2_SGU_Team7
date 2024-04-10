@@ -37,10 +37,8 @@ array_push($jsStack, '
 
 ?>
 <?php
-require_once("../chucnang/recursiveCate.php");
-require_once('../controller/CategoryController.php');
-$categories = getAllCategory();
-$CountCate =  countCate();
+
+require_once('../controller/SupplierController.php');
 
 
 
@@ -58,10 +56,10 @@ $CountCate =  countCate();
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "categories",
+                tableName: "suppliers",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "CategoryID"
+                ID: "SuppliId"
             },
             // dataType: 'json',
             success: function(response) {
@@ -106,8 +104,9 @@ $CountCate =  countCate();
     //tính số trang
     function countPage() {
         var rowofPage = $(".custom-select").val();
+        
         $.ajax({
-            url: '../controller/CategoryController.php',
+            url: '../controller/SupplierController.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -146,7 +145,7 @@ $CountCate =  countCate();
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../controller/CategoryController.php',
+                url: '../controller/SupplierController.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -164,29 +163,32 @@ $CountCate =  countCate();
     //update
     function update(element) {
         $("#formadd").slideDown();
-  
-        var categoryId = $(element).attr('id').split('-')[1];
+        //element.preventDefault();
+
        
+        var suppId = $(element).attr('id').split('-')[1];
+        // alert(suppId);
         $.ajax({
             url: '../chucnang/update.php',
             type: 'post',
             data: {
-                tableName: 'categories',
-                Id: parseInt(categoryId)
+                tableName: 'suppliers',
+                Id: parseInt(suppId)
             },
             dataType: 'json',
             success: function(response) {
 
                 if (response.error) {
-
+                
                     alert('wrong');
                 } else {
 
                     var addForm = $("#formadd");
-                    addForm.find('input[id="inpCategoryID"]').val(response['data'].CategoryID);
-                    addForm.find('input[name="CategoryName"]').val(response['data'].CategoryName);
-                    addForm.find('input[value="Submit"]').attr('name', 'update_category');
-                    addForm.find('select[name="parentID"]').val(response['data'].parentID).find('option[value="' + response['data'].parentID + '"]').prop('selected', true);
+                    addForm.find('input[id="inpSupID"]').val(response['data'].SuppliId);
+                    addForm.find('input[id="name"]').val(response['data'].Name);
+                    addForm.find('input[id="address"]').val(response['data'].Address);
+                    addForm.find('input[id="email"]').val(response['data'].Email);
+                    addForm.find('input[value="Submit"]').attr('name', 'update_supplier');
 
 
                 }
@@ -205,13 +207,14 @@ $CountCate =  countCate();
 
         addButton.click(function() {
             addForm.slideDown();
-            addForm.find('input[value="Submit"]').attr('name', 'add_category');
-            addForm.find('input[name="CategoryName"]').val('');
-            addForm.find('select[name="parentID"]').val('0').find('option[value="0"]').prop('selected', true);
+            addForm.find('input[value="Submit"]').attr('name', 'add_supplier');
+            addForm.find('input[name="name"]').val('');
+            addForm.find('input[name="email"]').val('');
+            addForm.find('input[name="address"]').val('');
 
         });
 
-
+1
     });
     // Nút đóng(removeButton)
     $(document).ready(function() {
@@ -257,12 +260,12 @@ $CountCate =  countCate();
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../controller/CategoryController.php" id="formadd">
+        <form method="post" action="../controller/SupplierController.php" id="formadd">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Category create</h3>
-                    <input type="text" value="" id="inpCategoryID" name="CategoryID" hidden>
+                    <h3 class="card-title">Supplier create</h3>
+                    <input type="text" value="" id="inpSupID" name="SuppliId" hidden>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -275,23 +278,21 @@ $CountCate =  countCate();
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Parent ID:</label>
-                        <select name="parentID" class="selectParent" id="">
-                            <option value="0">-----------Root-----------</option>
-                            <?php
-                            recursiveCategory($categories, 0);
-                            ?>
-                        </select>
+                        <label for="">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter Supplier Name" required>
                     </div>
                     <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" id="inpCategoryName" class="form-control" placeholder="CategoryName" name="CategoryName" value="" required>
+                        <label>Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email"  required>
                     </div>
-
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="address" class="form-control" placeholder="Enter Address" name="address" required>
+                    </div>
                 </div>
 
                 <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" name="add_category" id="" value="Submit">
+                    <input type="submit" class="btn btn-primary" name="add_supplier" id="" value="Submit">
                 </div>
             </div>
 
@@ -329,8 +330,9 @@ $CountCate =  countCate();
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>ParentID</th>
                     <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
@@ -341,8 +343,9 @@ $CountCate =  countCate();
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>ParentID</th>
                     <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
@@ -351,7 +354,7 @@ $CountCate =  countCate();
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-5">
-            <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div>
+            <!-- <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div> -->
         </div>
         <div class="col-sm-12 col-md-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
