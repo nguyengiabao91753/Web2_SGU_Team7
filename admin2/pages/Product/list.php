@@ -40,6 +40,7 @@ require_once("../chucnang/recursiveCate.php");
 require_once('../controller/CategoryController.php');
 $categories = getAllCategory();
 require_once("../controller/Product.php");
+
 ?>
 
 <script>
@@ -68,21 +69,139 @@ require_once("../controller/Product.php");
         });
 
     });
-    
+    //Hiển thị ảnh sau khi chọn file từ máy
     $(document).ready(function() {
-    $('#uploadimg').change(function() {
-        var input = this;
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#preview').attr('src', e.target.result);
-                $('#preview').show(); // Hiển thị hình ảnh khi đã được tải lên
+        $('#uploadimg').change(function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                    $('#preview').show(); // Hiển thị hình ảnh khi đã được tải lên
+                }
+                reader.readAsDataURL(input.files[0]);
             }
-            reader.readAsDataURL(input.files[0]);
-        }
+        });
     });
-});
 
+    //phân trang đê
+
+
+    //load dữ liệu
+    function loadData(pageNumber) {
+        var rowofPage = $(".custom-select").val();
+        $("tbody").empty();
+        $.ajax({
+            url: '../chucnang/phantrang.php',
+            type: 'get',
+            data: {
+                tableName: "products",
+                rowofPage: rowofPage,
+                pageNumber: pageNumber,
+                ID: "ProductID"
+            },
+            // dataType: 'json',
+            success: function(response) {
+                $("tbody").html(response);
+
+                $(".pagination .page-item").removeClass("active");
+
+                $(".pagination .page-item:contains(" + pageNumber + ")").addClass("active");
+            }
+
+        });
+    }
+
+
+
+    //xử lý khi nhấn nút trang
+    function clickload(element) {
+        //alert("vô");
+        var pageNumber = element;
+        //alert(pageNumber);
+        if (pageNumber == 111) {
+            var currentPage = $(".page-item.active").text();
+
+            if (currentPage > 1) {
+                loadData(currentPage - 1);
+            } else {
+                alert("This is first page");
+            }
+        } else if (pageNumber == 222) {
+            var currentPage = parseInt($(".page-item.active").text());
+            var lastPage = parseInt($(".pagination .page-item").last().prev().text());
+            if (currentPage < lastPage) {
+                loadData(currentPage + 1);
+            } else {
+                alert("This is last page");
+            }
+        } else {
+            loadData(pageNumber);   
+        }
+    }
+
+    //tính số trang
+    function countPage() {
+        var rowofPage = $(".custom-select").val();
+        $.ajax({
+            url: '../controller/Product.php',
+            type: 'get',
+            data: {
+                rowofPage: rowofPage
+            },
+            success: function(response) {
+                //alert(response);
+                $(".pagination").empty();
+                var previous = 111;
+                var next = 222;
+                $(".pagination").append('<li class="paginate_button page-item" id="example1"><a href="#" class="page-link" onclick="clickload(' + previous + ')">Previous</a></li>');
+                for (var i = 1; i <= response; i++) {
+                    $(".pagination").append('<li class="paginate_button page-item"><a href="#" aria-controls="example1" data-dt-idx="' + i + '" tabindex="0" class="page-link" onclick="clickload(' + i + ')">' + i + '</a></li>');
+                }
+                $(".pagination").append('<li class="paginate_button page-item" id="example1"><button type="button" class="page-link" onclick="clickload(' + next + ')" >Next</button></li>');
+            }
+        });
+    }
+
+    $(document).ready(function() {
+
+
+        countPage();
+
+        loadData(1);
+
+        $(".custom-select").change(function() {
+            countPage();
+
+            loadData(1);
+        });
+
+
+        //đây là search
+        $("#filter").change(function() {
+            var searchText = $(this).val();
+            if (searchText == "") return loadData(1);
+
+            $.ajax({
+                url: '../controller/Product.php',
+                type: 'post',
+                data: {
+                    searchText: searchText
+                },
+                //dataType: 'json',
+                success: function(response) {
+                    $('tbody').html(response);
+                }
+            });
+        })
+    });
+
+    //tính số trang
+    $(document).ready(function() {
+            <?php
+            // $totalPage  = $CountCate / 
+            ?>
+     });
 </script>
 <style>
       #formadd {
@@ -120,6 +239,7 @@ require_once("../controller/Product.php");
 
 
 <div class="card">
+
     <!--addButton and searchButton-->
     <div class="addform">
         <button id="addbutton" class="btn btn-tool">
@@ -133,9 +253,6 @@ require_once("../controller/Product.php");
                     <h3 class="card-title">Add Product</h3>
 
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
                         <button type="button" class="btn btn-tool" id="remove">
                             <i class="fas fa-times"></i>
                         </button>
@@ -279,20 +396,30 @@ require_once("../controller/Product.php");
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">
-           
+            <div class="dataTables_length" id="example2_length" style="float: left; margin-left: 4%;">
+                <label>Show
+                    <select name="example2_length" aria-controls="example2" class="custom-select custom-select-sm form-control form-control-sm">
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </label>
+            </div>
         </div>
         <div class="col-sm-12 col-md-6">
             <div id="example1_filter" class="dataTables_filter" style="float: right; margin-right: 4%;">
-                Search:<input type="search" class="form-control form-control-sm" placeholder="">
+                Search:<input type="search" id="filter" class="form-control form-control-sm" placeholder="Enter Category Name">
             </div>
         </div>
     </div>
-
     <div class="card-body">
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ProductID</th>
+                    <th>Category</th>
                     <th>Series</th>
                     <th>Product name</th>
                     <th>Image</th>
@@ -311,24 +438,25 @@ require_once("../controller/Product.php");
                     
                         foreach ($kq as $sp) {
                         echo '  <tr>
-                                    <th>'.$sp['ProductID'].'</th>
-                                    <th>'.$sp['Series'].'</th>
-                                    <th>'.$sp['ProductName'].'</th>
-                                    <th><img src="'.$sp['Image'].'" width="100px" height="50px"></th>
-                                    <th>'.$sp['Feature'].' At</th>
-                                    <th>'.$sp['Color'].'</th> 
-                                    <th>'.$sp['Price'].'</th>
-                                    <th>'.$sp['TotalQuantity'].'</th>
-                                    <th><a href="" style="text-decoration: underline;">View more</a></th>
-                                    <th><a href="" style="color: #0066ff;"><i class="fas fa-edit"></i> Update</a></th>
-                                    <th><a href="" style="color: red;"><i class="far fa-trash-alt"></i> Delete</a></th>
+                                    <td>'.$sp['ProductID'].'</td>
+                                    <td>'.$sp['Series'].'</td>
+                                    <td>'.$sp['ProductName'].'</td>
+                                    <td><img src="'.$sp['Image'].'" width="100px" height="50px"></td>
+                                    <td>'.$sp['Feature'].' At</td>
+                                    <td>'.$sp['Color'].'</td> 
+                                    <td>'.$sp['Price'].'</td>
+                                    <td>'.$sp['TotalQuantity'].'</td>
+                                    <td><a href="" style="text-decoration: underline;">View more</a></td>
+                                    <td><a href="" style="color: #0066ff;"><i class="fas fa-edit"></i> Update</a></td>
+                                    <td><a href="" style="color: red;"><i class="far fa-trash-alt"></i> Delete</a></td>
                                 </tr>';
                         }
                     ?>
             </tbody>
             <tfoot>
                 <tr>
-                <th>ProductID</th>
+                    <th>ProductID</th>
+                    <th>Category</th>
                     <th>Series</th>
                     <th>Product name</th>
                     <th>Image</th>
@@ -339,7 +467,6 @@ require_once("../controller/Product.php");
                     <th>See details</th>
                     <th>Update</th>
                     <th>Delete</th>
-                    
                 </tr>
             </tfoot>
         </table>
@@ -351,9 +478,9 @@ require_once("../controller/Product.php");
         <div class="col-sm-12 col-md-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                 <ul class="pagination" style="float: right; margin-right: 4%;">
-                    <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" class="page-link">Previous</a></li>
+                    <!-- <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" class="page-link">Previous</a></li>
                     <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                    <li class="paginate_button page-item next disabled" id="example1_next"><a href="#" class="page-link">Next</a></li>
+                    <li class="paginate_button page-item next disabled" id="example1_next"><a href="#" class="page-link">Next</a></li> -->
                 </ul>
             </div>
         </div>

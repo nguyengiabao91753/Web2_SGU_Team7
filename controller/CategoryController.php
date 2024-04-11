@@ -13,7 +13,7 @@ if (isset($_POST['add_category'])) {
 }
 //Xử lý ajax lấy số trang
 if (isset($_GET['rowofPage'])) {
-    $rowofPage = $_GET['rowofPage'];
+    $rowofPage =(int) $_GET['rowofPage'];
     $total = countCate();
     $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
     echo $page;

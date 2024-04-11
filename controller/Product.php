@@ -4,25 +4,26 @@ require_once("../db.php");
 if (isset($_POST['createButton'])&&$_POST['createButton']){
     addProduct();
 }
-function getAll_Product(){
-    global $conn;
-    $sql = "SELECT * FROM products";
-    $result = $conn->query($sql);
+//Lấy tất cả sản phẩm
+    function getAll_Product(){
+        global $conn;
+        $sql = "SELECT * FROM products";
+        $result = $conn->query($sql);
 
-    // Kiểm tra truy vấn
-    if (!$result) {
-        die("Truy vấn không thành công: " . $conn->error);
+        // Kiểm tra truy vấn
+        if (!$result) {
+            die("Truy vấn không thành công: " . $conn->error);
+        }
+        $kq = [];
+
+        // Lấy từng dòng một từ kết quả
+        while ($row = $result->fetch_assoc()) {
+            $kq[] = $row;
+        }
+
+        return $kq;
     }
-    $kq = [];
-
-    // Lấy từng dòng một từ kết quả
-    while ($row = $result->fetch_assoc()) {
-        $kq[] = $row;
-    }
-
-    return $kq;
-}
-
+//Thêm sản phẩm
     function addProduct(){
         global $conn;
         $series =$_POST['series'] ;
@@ -54,7 +55,16 @@ function getAll_Product(){
         // Đóng kết nối
         mysqli_close($conn);
     }
-
+//Đếm số lượng sản phẩm
+    function countProduct(){
+        global $conn;
+        $query = "SELECT COUNT(*) FROM products";
+        $Count = mysqli_query($conn, $query);
+        $row = mysqli_fetch_row($Count);
+        $Count = (int)$row[0];
+        return $Count;
+    }
+//Tải hình ảnh lên db
     function UploadIMG ()
     {
         $target_dir = "../admin2/img/";
@@ -77,4 +87,44 @@ function getAll_Product(){
         }
     }
 
+//Xử lý ajax lấy số trang
+    if (isset($_GET['rowofPage'])) {
+        $rowofPage = $_GET['rowofPage'];
+        $total = countProduct();
+        $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
+        echo $page;
+    }
+
+//Xử lý ajax đây là search nhá
+    if (isset($_POST['searchText'])) {
+        $searchText = $_POST['searchText'];
+        $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
+        $result = mysqli_query($conn, $query);
+        echo loadProductData();
+    }
+//Hiển thị sản phẩm
+    function loadProductData() {
+        $html = '';
+                    $kq = getAll_Product();
+                    
+                        foreach ($kq as $sp) {
+                            $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
+                            
+                            $html .='<tr>';
+                            $html .= '<td>'.$sp['ProductID'].'</td>';
+                            $html .= '<td>'.$Name.'</td>';
+                            $html .= ' <td>'.$sp['Series'].'</td>';
+                            $html .= '<td>'.$sp['ProductName'].'</td>';
+                            $html .= '<td><img src="'.$sp['Image'].'" width="100px" height="50px"></td>';
+                            $html .= '<td>'.$sp['Feature'].' At</td>';
+                            $html .= '<td>'.$sp['Color'].'</td> ';
+                            $html .= '<td>'.$sp['Price'].'</td>';
+                            $html .= '<td>'.$sp['TotalQuantity'].'</td>';
+                            $html .= '<td><a href="" style="text-decoration: underline;">View more</a></td>';
+                            $html .= '<td><a href="" style="color: #0066ff;"><i class="fas fa-edit"></i> Update</a></td>';
+                            $html .= '<td><a href="" style="color: red;"><i class="far fa-trash-alt"></i> Delete</a></td>';
+                            $html .= '</tr>';
+                        }
+                        return $html;
+    }
 ?>

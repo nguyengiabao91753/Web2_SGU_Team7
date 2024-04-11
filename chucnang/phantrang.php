@@ -2,6 +2,7 @@
 require_once '../db.php';
 require_once '../controller/CategoryController.php';
 require_once '../controller/SupplierController.php';
+require_once '../controller/Product.php';
 global $conn;
 
 $tableName = $_GET['tableName'];
@@ -24,6 +25,9 @@ if (mysqli_num_rows($result) > 0) {
     }else if($tableName == 'suppliers'){
         $html='';
         $html = loadSupplierData($result);
+    } else if ($tableName == 'products') {
+        $html = '';
+        $html =loadProductData();
     }
 
     echo $html;
