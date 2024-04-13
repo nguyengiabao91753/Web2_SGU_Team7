@@ -2,7 +2,7 @@
 	<!-- Header desktop -->
 	<div class="container-menu-desktop">
 		<!-- Topbar -->
-		<div class="top-bar">
+		<!-- <div class="top-bar">
 			<div class="content-topbar flex-sb-m h-full container">
 				<div class="left-top-bar">
 					Free shipping for standard order over $100
@@ -26,7 +26,7 @@
 					</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="wrap-menu-desktop">
 			<nav class="limiter-menu-desktop container">
@@ -81,9 +81,9 @@
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</div>
 
-					<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-						data-notify="0">
-						<i class="zmdi zmdi-favorite-outline"></i>
+				
+					<a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+						<i class="zmdi zmdi-account"></i>
 					</a>
 				</div>
 			</nav>

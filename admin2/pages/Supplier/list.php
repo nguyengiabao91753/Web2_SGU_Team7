@@ -38,7 +38,7 @@ array_push($jsStack, '
 ?>
 <?php
 
-require_once('../controller/SupplierController.php');
+require_once('../backend/Supplier.php');
 
 
 
@@ -106,7 +106,7 @@ require_once('../controller/SupplierController.php');
         var rowofPage = $(".custom-select").val();
         
         $.ajax({
-            url: '../controller/SupplierController.php',
+            url: '../backend/SupplierController.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -145,7 +145,7 @@ require_once('../controller/SupplierController.php');
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../controller/SupplierController.php',
+                url: '../backend/SupplierController.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -260,7 +260,7 @@ require_once('../controller/SupplierController.php');
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../controller/SupplierController.php" id="formadd">
+        <form method="post" action="../backend/SupplierController.php" id="formadd">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">

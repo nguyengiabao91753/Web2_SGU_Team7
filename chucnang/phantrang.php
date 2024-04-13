@@ -1,7 +1,7 @@
 <?php
 require_once '../db.php';
-require_once '../controller/CategoryController.php';
-require_once '../controller/SupplierController.php';
+require_once '../backend/Category.php';
+require_once '../backend/Supplier.php';
 global $conn;
 
 $tableName = $_GET['tableName'];
