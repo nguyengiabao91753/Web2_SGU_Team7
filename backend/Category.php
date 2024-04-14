@@ -7,6 +7,8 @@ $db = new DbConnect();
 //global $conn;
 $conn=$db->getConnect();
 
+
+
 if (isset($_POST['add_category'])) {
     addCategory();
 } elseif (isset($_POST['update_category'])) {

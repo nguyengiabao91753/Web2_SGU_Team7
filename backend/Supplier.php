@@ -1,5 +1,9 @@
 <?php
 require_once '../db.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
+
 
 if(isset($_POST['add_supplier'])){
     addSupplier();

@@ -1,5 +1,9 @@
 <?php
 require_once '../db.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
+
 require_once '../backend/Category.php';
 require_once '../backend/Supplier.php';
 
