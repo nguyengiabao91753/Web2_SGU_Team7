@@ -3,11 +3,13 @@
 require_once("../db.php");
 if (isset($_POST['createButton'])&&$_POST['createButton']){
     addProduct();
+} else if (isset($_GET['delete_product'])) {
+    deleteProduct($_GET['delete_product']);
 }
 //Lấy tất cả sản phẩm
     function getAll_Product(){
         global $conn;
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT * FROM products WHERE Status = 1";
         $result = $conn->query($sql);
 
         // Kiểm tra truy vấn
@@ -47,7 +49,7 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
         // Thực hiện truy vấn
         if (mysqli_query($conn, $sql)) {
         //echo "Dữ liệu đã được thêm vào cơ sở dữ liệu thành công!";
-        header("Location: ../admin2/index.php?page=pages/Product/list");
+        header("Location: ../admin2/index.php?page=Product/list");
         } else {
         echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
         }
@@ -55,6 +57,53 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
         // Đóng kết nối
         mysqli_close($conn);
     }
+//Cập nhật sản phẩm 
+    function updateProduct()
+    {
+        global $conn;
+        if (isset($_POST['ProductID']) && isset($_POST['ProductID'])) {
+            $series =$_POST['series'] ;
+            $CategoryID = $_POST['CategoryID'];
+            $productName = $_POST['productname'];
+            $uploadIMG = UploadIMG();
+            $description = $_POST['description'];
+            $feature= $_POST['feature'];
+            $price = $_POST['price'];
+            $color = $_POST['color'];
+            $size = $_POST['size'];
+            $totalQuan = $_POST['totalquan'];
+            $Quantity = $_POST['quantity'];
+            $saleQuan = $_POST['salequan'];
+    
+            
+                $sql = "UPDATE products SET ProductName='$productName', Series = '$series' ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName'WHERE CategoryID=$CategoryID";
+                if ($conn->query($sql) === TRUE) {
+                    $_SESSION['success'] = "Category updated successfully!";
+                    header("Location: ../admin2/index.php?page=Category/list");
+                    exit();
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+        }
+    }
+
+//Xóa sản phẩm
+    function deleteProduct($ProductID)
+{
+    global $conn;
+    if (isset($ProductID)) {
+        
+        $sql = "UPDATE products SET Status = 0 WHERE ProductID=$ProductID";
+        
+        if ($conn->query($sql) === TRUE) {
+            $_SESSION['flash_message'] = "Product deleted successfully!";
+            header("Location: ../admin2/index.php?page=Product/list");
+            exit();
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+}
 //Đếm số lượng sản phẩm
     function countProduct(){
         global $conn;
@@ -116,13 +165,27 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
                             $html .= ' <td>'.$sp['Series'].'</td>';
                             $html .= '<td>'.$sp['ProductName'].'</td>';
                             $html .= '<td><img src="'.$sp['Image'].'" width="100px" height="50px"></td>';
-                            $html .= '<td>'.$sp['Feature'].' At</td>';
+                            $html .= '<td>'.$sp['Feature'].'</td>';
                             $html .= '<td>'.$sp['Color'].'</td> ';
-                            $html .= '<td>'.$sp['Price'].'</td>';
+                            $html .= '<td>'.$sp['Price'].' $</td>';
                             $html .= '<td>'.$sp['TotalQuantity'].'</td>';
-                            $html .= '<td><a href="" style="text-decoration: underline;">View more</a></td>';
-                            $html .= '<td><a href="" style="color: #0066ff;"><i class="fas fa-edit"></i> Update</a></td>';
-                            $html .= '<td><a href="" style="color: red;"><i class="far fa-trash-alt"></i> Delete</a></td>';
+                            $html .= '<td>
+                                        <button type="button" onclick="update(this)" id="updateCate-' . $sp['ProductID'] . '" class="updateCategory btn btn-success">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                    </td>';
+                            $html .= '<td>
+                                        <button type="button" onclick="update(this)" id="updateProduct-' . $sp['ProductID'] . '" class="updateProduct btn btn-success">
+                                            <i class="far fa-edit"></i>
+                                        </button>
+                                    </td>';
+                            $html .= '<td>
+                                        <a onclick="return confirmDelete()" href="../backend/Product.php?delete_product='.$sp['ProductID'].'">';
+                                        $html .= '      <button class="btn btn-danger">';
+                                        $html .= '        <i class="far fa-trash-alt"></i>';
+                                        $html .= '      </button>';
+                                        $html .= '    </a>';
+                                        $html .= '  </td>';
                             $html .= '</tr>';
                         }
                         return $html;

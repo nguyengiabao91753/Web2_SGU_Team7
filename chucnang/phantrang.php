@@ -1,8 +1,8 @@
 <?php
 require_once '../db.php';
-require_once '../controller/CategoryController.php';
-require_once '../controller/SupplierController.php';
-require_once '../controller/Product.php';
+require_once '../backend/CategoryController.php';
+require_once '../backend/SupplierController.php';
+require_once '../backend/Product.php';
 global $conn;
 
 $tableName = $_GET['tableName'];
@@ -28,6 +28,8 @@ if (mysqli_num_rows($result) > 0) {
     } else if ($tableName == 'products') {
         $html = '';
         $html =loadProductData();
+    } else if($tableName=='goodsreceipt_items'){
+        
     }
 
     echo $html;

@@ -175,7 +175,7 @@ function loadCateData($result)
         //$html .= '    </a>';
         $html .= '  </td>';
         $html .= '  <td>';
-        $html .= '    <a onclick="return confirmDelete()" href="../controller/CategoryController.php?delete_category=' . $category['CategoryID'] . '">';
+        $html .= '    <a onclick="return confirmDelete()" href="../backend/CategoryController.php?delete_category=' . $category['CategoryID'] . '">';
         $html .= '      <button class="btn btn-danger">';
         $html .= '        <i class="far fa-trash-alt"></i>';
         $html .= '      </button>';

@@ -37,9 +37,9 @@ array_push($jsStack, '
 
 
 require_once("../chucnang/recursiveCate.php");
-require_once('../controller/CategoryController.php');
+require_once('../backend/CategoryController.php');
 $categories = getAllCategory();
-require_once("../controller/Product.php");
+require_once("../backend/Product.php");
 
 ?>
 
@@ -144,7 +144,7 @@ require_once("../controller/Product.php");
     function countPage() {
         var rowofPage = $(".custom-select").val();
         $.ajax({
-            url: '../controller/Product.php',
+            url: '../backend/Product.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -183,7 +183,7 @@ require_once("../controller/Product.php");
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../controller/Product.php',
+                url: '../backend/Product.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -246,7 +246,7 @@ require_once("../controller/Product.php");
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../controller/Product.php" id="formadd" enctype="multipart/form-data">
+        <form method="post" action="../backend/Product.php" id="formadd" enctype="multipart/form-data">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
@@ -312,8 +312,8 @@ require_once("../controller/Product.php");
                                 <label>Feature</label>
                                 <br>
                                 <select name="feature" id="feature">
-                                    <option value="" class="form-control">Feature</option>
-                                    <option value="" class="form-control">None</option>
+                                    <option class="form-control">Feature</option>
+                                    <option  class="form-control">None</option>
                                 </select>
                                 </div>
                         </div>
@@ -433,25 +433,7 @@ require_once("../controller/Product.php");
                 </tr>
             </thead>
             <tbody>
-                    <?php
-                    $kq = getAll_Product();
                     
-                        foreach ($kq as $sp) {
-                        echo '  <tr>
-                                    <td>'.$sp['ProductID'].'</td>
-                                    <td>'.$sp['Series'].'</td>
-                                    <td>'.$sp['ProductName'].'</td>
-                                    <td><img src="'.$sp['Image'].'" width="100px" height="50px"></td>
-                                    <td>'.$sp['Feature'].' At</td>
-                                    <td>'.$sp['Color'].'</td> 
-                                    <td>'.$sp['Price'].'</td>
-                                    <td>'.$sp['TotalQuantity'].'</td>
-                                    <td><a href="" style="text-decoration: underline;">View more</a></td>
-                                    <td><a href="" style="color: #0066ff;"><i class="fas fa-edit"></i> Update</a></td>
-                                    <td><a href="" style="color: red;"><i class="far fa-trash-alt"></i> Delete</a></td>
-                                </tr>';
-                        }
-                    ?>
             </tbody>
             <tfoot>
                 <tr>

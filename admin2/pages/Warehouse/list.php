@@ -23,8 +23,9 @@ array_push($jsStack, '
             $(function() {
                 $("#example1, #example2").DataTable({
                     "responsive": true,
-                    "lengthChange": true,
-                    "autoWidth": true
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
             });
 
@@ -35,18 +36,55 @@ array_push($jsStack, '
     ');
 
 
-?>
-<?php
 require_once("../chucnang/recursiveCate.php");
 require_once('../backend/CategoryController.php');
+require_once('../backend/Warehouse.php');
 $categories = getAllCategory();
-$CountCate =  countCate();
-
-
 
 
 ?>
+
 <script>
+    // Nút thêm(addButton)
+    $(document).ready(function() {
+        var addButton = $("#addbutton");
+        var addForm = $("#formadd");
+
+        addButton.click(function() {
+            addForm.slideDown(); // Sử dụng .show() của jQuery để hiển thị form
+        });
+    });
+    // Nút đóng(removeButton)
+    $(document).ready(function() {
+        var removeButton = $("#remove");
+        var addForm = $("#formadd");
+
+        removeButton.click(function() {
+            addForm.slideToggle();
+        });
+
+        $("#color").change(function () {
+        var selectedColor = $(this).val(); // Lấy giá trị màu đã chọn
+        $("#showcolor").css("background-color", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+        $("#showcolor").css("border", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+        });
+
+    });
+    //Hiển thị ảnh sau khi chọn file từ máy
+    $(document).ready(function() {
+        $('#uploadimg').change(function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                    $('#preview').show(); // Hiển thị hình ảnh khi đã được tải lên
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+
     //phân trang đê
 
 
@@ -58,10 +96,10 @@ $CountCate =  countCate();
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "categories",
+                tableName: "products",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "CategoryID"
+                ID: "ProductID"
             },
             // dataType: 'json',
             success: function(response) {
@@ -99,7 +137,7 @@ $CountCate =  countCate();
                 alert("This is last page");
             }
         } else {
-            loadData(pageNumber);
+            loadData(pageNumber);   
         }
     }
 
@@ -107,7 +145,7 @@ $CountCate =  countCate();
     function countPage() {
         var rowofPage = $(".custom-select").val();
         $.ajax({
-            url: '../backend/CategoryController.php',
+            url: '../backend/Product.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -146,7 +184,7 @@ $CountCate =  countCate();
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/CategoryController.php',
+                url: '../backend/Product.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -159,114 +197,63 @@ $CountCate =  countCate();
         })
     });
 
-
-
-    //update
-    function update(element) {
-        $("#formadd").slideDown();
-  
-        var categoryId = $(element).attr('id').split('-')[1];
-       
-        $.ajax({
-            url: '../chucnang/update.php',
-            type: 'post',
-            data: {
-                tableName: 'categories',
-                Id: parseInt(categoryId)
-            },
-            dataType: 'json',
-            success: function(response) {
-
-                if (response.error) {
-
-                    alert('wrong');
-                } else {
-
-                    var addForm = $("#formadd");
-                    addForm.find('input[id="inpCategoryID"]').val(response['data'].CategoryID);
-                    addForm.find('input[name="CategoryName"]').val(response['data'].CategoryName);
-                    addForm.find('input[value="Submit"]').attr('name', 'update_category');
-                    addForm.find('select[name="parentID"]').val(response['data'].parentID).find('option[value="' + response['data'].parentID + '"]').prop('selected', true);
-
-
-                }
-            },
-            error: function(error) {
-                alert('errrr');
-
-            }
-        });
-
-    }
-    // Nút thêm(addButton)
-    $(document).ready(function() {
-        var addButton = $("#addbutton");
-        var addForm = $("#formadd");
-
-        addButton.click(function() {
-            addForm.slideDown();
-            addForm.find('input[value="Submit"]').attr('name', 'add_category');
-            addForm.find('input[name="CategoryName"]').val('');
-            addForm.find('select[name="parentID"]').val('0').find('option[value="0"]').prop('selected', true);
-
-        });
-
-
-    });
-    // Nút đóng(removeButton)
-    $(document).ready(function() {
-        var removeButton = $("#remove");
-        var addForm = $("#formadd");
-
-        removeButton.click(function() {
-            addForm.slideToggle();
-
-        });
-
-
-    });
     //tính số trang
     $(document).ready(function() {
-        <?php
-        // $totalPage  = $CountCate / 
-        ?>
-
-    });
+            <?php
+            // $totalPage  = $CountCate / 
+            ?>
+     });
 </script>
 <style>
-    #formadd {
+      #formadd {
         display: none;
-    }
+      }
 
-    #addbutton {
-        width: 89.49px;
+      #addbutton{
+        width: 89.49px; 
         height: 60px;
         font-size: 20px;
         margin: 5px 0 0 10px;
-    }
-</style>
+      }
+      #feature{
+        height: 38px;
+        width: 284.45px;
+      }
+      #color{
+        height: 38px;
+        width: 184.63px;
+     }
+     #showcolor{
+        width: 38px;
+        height: 38px;
+        margin-top: 31.5px;
+     }
+     #preview{
+        width: auto;
+        height: 116.6px;
+        margin-top: 3px;
+     }
+   </style>
 
 
 
 
 
 <div class="card">
+
     <!--addButton and searchButton-->
     <div class="addform">
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../backend/CategoryController.php" id="formadd">
+        <form method="post" action="../backend/Warehouse.php" id="formadd" enctype="multipart/form-data">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Category create</h3>
-                    <input type="text" value="" id="inpCategoryID" name="CategoryID" hidden>
+                    <h3 class="card-title">Add Product</h3>
+
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
                         <button type="button" class="btn btn-tool" id="remove">
                             <i class="fas fa-times"></i>
                         </button>
@@ -274,34 +261,112 @@ $CountCate =  countCate();
                 </div>
 
                 <div class="card-body">
-                    <div class="form-group">
-                        <label>Parent ID:</label>
-                        <select name="parentID" class="selectParent" id="">
-                            <option value="0">-----------Root-----------</option>
-                            <?php
-                            recursiveCategory($categories, 0);
-                            ?>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Series</label>
+                                <input type="number" min="0" class="form-control" name="series" id="series" placeholder="Enter Series">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>CategoryID:</label>
+                                <select name="CategoryID" class="selectParent form-control" id="">
+                                    <option value="0">-----------Root-----------</option>
+                                    <?php
+                                    recursiveCategory($categories, 0);
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Product name</label>
+                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" id="inpCategoryName" class="form-control" placeholder="CategoryName" name="CategoryName" value="" required>
+                   <div class="row">
+                   <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="number" name="price" id="price" min="0" placeholder="Enter Price" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Color</label>
+                                <br>
+                                <select name="color" id="color">
+                                    <option value="White">White</option>
+                                    <option value="Black">Black</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Yellow">Yellow</option>
+                                    <option value="Green">Green</option>
+                                    <option value="Brown">Brown</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Grey">Grey</option>
+                                    <option value="Violet">Violet</option>
+                                    <option value="Navy">Navy</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div>
+                                <input type="text" disabled id="showcolor">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Size</label>
+                                <input type="number" name="size" id="size" placeholder="Enter size" min="0" class="form-control">
+                            </div>
+                        </div>
                     </div>
 
-                </div>
+                   </div>
 
-                <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" name="add_category" id="" value="Submit">
+                        
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Total quantity</label>
+                                <input type="number" name="totalquan" id="totalquan" placeholder="Enter total Quantity" min="0" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" min="0" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Sale Quantity</label>
+                                <input type="number" name="salequan" id="salequan" placeholder="Enter Sale quantity" min="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary" name="createButton" id="createButton" value="submit">Submit</button>
+                    </div>
                 </div>
             </div>
-
             <!-- /.card -->
         </form>
 
     </div>
 
     <div class="card-header">
-        <!-- <h3>List</h3> -->
+        <!-- <h3 class="card-title">Customer list</h3> -->
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -323,15 +388,18 @@ $CountCate =  countCate();
             </div>
         </div>
     </div>
-
     <div class="card-body">
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>ParentID</th>
-                    <th>Name</th>
-                    <th>Update</th>
+                    <th>ProductID</th>
+                    <th>Category</th>
+                    <th>Series</th>
+                    <th>Product name</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -340,10 +408,14 @@ $CountCate =  countCate();
             </tbody>
             <tfoot>
                 <tr>
-                    <th>ID</th>
-                    <th>ParentID</th>
-                    <th>Name</th>
-                    <th>Update</th>
+                    <th>ProductID</th>
+                    <th>Category</th>
+                    <th>Series</th>
+                    <th>Product name</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                     <th>Delete</th>
                 </tr>
             </tfoot>
