@@ -1,5 +1,9 @@
 <?php
 require_once '../db.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
+
 
 if(isset($_POST['add_supplier'])){
     addSupplier();
@@ -53,12 +57,15 @@ function addSupplier()
 
         $sql = "INSERT INTO suppliers (Name, Address, Email) VALUES ('$name', '$address', '$email')";
         if ($conn->query($sql) === TRUE) {
-            $_SESSION['success'] = "Supplier added successfully!";
+            //$_SESSION['success'] = "Supplier added successfully!";
+            setcookie("success","Supplier added successfully!",time() + (86400 * 30), "/");
         } else {
-            $_SESSION['err'] = "Supplier added failed!";
+            
+            setcookie("err","Supplier added failed!",time() + (86400 * 30), "/");
         }
     } else {
-        $_SESSION['err'] = "Supplier added failed!";
+        setcookie("err","Supplier added failed!",time() + (86400 * 30), "/");
+
     }
     header("Location: ../admin2/index.php?page=Supplier/list");
     exit();
@@ -88,7 +95,7 @@ function updateSupplier()
 
         $sql = "UPDATE Suppliers SET Name='$name', Address='$address', Email='$email' WHERE SuppliId=$supplierID";
         if ($conn->query($sql) === TRUE) {
-            $_SESSION['flash_message'] = "Supplier updated successfully!";
+            setcookie("success","Supplier updated successfully!",time() + (86400 * 30), "/");
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -103,7 +110,7 @@ function deleteSupplier($SupplierID)
     if (isset($SupplierID)) {
         $sql = "DELETE FROM Suppliers WHERE SuppliId=$SupplierID";
         if ($conn->query($sql) === TRUE) {
-            $_SESSION['flash_message'] = "Supplier deleted successfully!";
+            setcookie("success","Supplier deleted successfully!",time() + (86400 * 30), "/");
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }

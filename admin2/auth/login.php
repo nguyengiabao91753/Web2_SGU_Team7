@@ -14,8 +14,12 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
-<?php require_once '../../controller/LoginController.php' ?>
 <body class="hold-transition login-page" style="height: 85vh;">
+        <?php if (isset($_COOKIE['err'])) : ?>
+          <script>alert(<?php echo $_COOKIE['err']  ?>)</script>
+          <?php  setcookie("err","", time() -11,"/");
+          ?>
+        <?php endif; ?>
 <div class="login-box">
   <div class="login-logo">
     Login Page
@@ -25,9 +29,9 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="../../controller/LoginController.php" method="post">
+      <form action="../../backend/Login.php" method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" name="email" placeholder="Email">
+          <input type="email" class="form-control" name="email" placeholder="Email" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -35,7 +39,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

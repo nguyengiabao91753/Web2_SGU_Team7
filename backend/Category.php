@@ -3,6 +3,11 @@
 //  session_start();
 
 require_once '../db.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
+
+
 
 if (isset($_POST['add_category'])) {
     addCategory();
@@ -81,21 +86,27 @@ function addCategory()
         if (validateCate($parentID, $name) == 0) {
             $sql = "INSERT INTO categories (parentID,CategoryName) VALUES ('$parentID','$name')";
             if ($conn->query($sql) === TRUE) {
-                $_SESSION['success'] = "Category added successfully!";
-                header("Location: ../admin2/index.php?page=Category/list&add=true");
+                //setcookie("success","Category added successfully!");
+                setcookie("success","Category added successfully!",time() + (86400 * 30), "/");
+                //$_SESSION['success'] = "Category updated successfully!";  
+                header("Location: ../admin2/index.php?page=Category/list");
+                
                 exit();
             } else {
-                $_SESSION['err'] = "Category added Failed!";
+                setcookie("err","Category add failed!",time() + (86400 * 30), "/");
+
                 header("Location: ../admin2/index.php?page=Category/list");
                 exit();
             }
         } else {
-            $_SESSION['err'] = "This category already exists!";
+            setcookie("err","This Category already exits!",time() + (86400 * 30), "/");
+
             header("Location: ../admin2/index.php?page=Category/list");
             exit();
         }
     } else {
-        $_SESSION['err'] = "Category added Failed!";
+        setcookie("err","Category add failed!",time() + (86400 * 30), "/");
+
         header("Location: ../admin2/index.php?page=Category/list");
         exit();
     }
@@ -124,14 +135,15 @@ function updateCategory()
 
             $sql = "UPDATE Categories SET CategoryName='$CategoryName', parentID = '$parentID' WHERE CategoryID=$CategoryID";
             if ($conn->query($sql) === TRUE) {
-                $_SESSION['success'] = "Category updated successfully!";
+                
                 header("Location: ../admin2/index.php?page=Category/list");
+                setcookie("success","Category updated successfully!",time() + (86400 * 30), "/");
                 exit();
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
         } else {
-            $_SESSION['err'] = "This category already exists!";
+            setcookie("err","This Category already exits!",time() + (86400 * 30), "/");
             header("Location: ../admin2/index.php?page=Category/list");
             exit();
         }
@@ -142,10 +154,17 @@ function deleteCategory($CategoryID)
 {
     global $conn;
     if (isset($CategoryID)) {
+        $validate = "SELECT * FROM categories WHERE parentID = $CategoryID";
+        $rs = mysqli_query($conn,$validate);
+        if(mysqli_num_rows($rs) >0 ){
+            setcookie("err","Delete this category's child first",time() + (86400 * 30), "/");
+            header("Location: ../admin2/index.php?page=Category/list");
+            exit();
+        }
 
         $sql = "DELETE FROM categories WHERE CategoryID=$CategoryID";
         if ($conn->query($sql) === TRUE) {
-            $_SESSION['flash_message'] = "Category deleted successfully!";
+            setcookie("success","Category deleted successfully!",time() + (86400 * 30), "/");
             header("Location: ../admin2/index.php?page=Category/list");
             exit();
         } else {
@@ -175,7 +194,7 @@ function loadCateData($result)
         //$html .= '    </a>';
         $html .= '  </td>';
         $html .= '  <td>';
-        $html .= '    <a onclick="return confirmDelete()" href="../backend/CategoryController.php?delete_category=' . $category['CategoryID'] . '">';
+        $html .= '    <a onclick="return confirmDelete()" href="../backend/Category.php?delete_category=' . $category['CategoryID'] . '">';
         $html .= '      <button class="btn btn-danger">';
         $html .= '        <i class="far fa-trash-alt"></i>';
         $html .= '      </button>';

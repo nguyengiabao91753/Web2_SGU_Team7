@@ -28,9 +28,7 @@ array_push($jsStack, '
                 }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
             });
 
-            function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
-            }
+           
         </script>
     ');
 
@@ -38,7 +36,8 @@ array_push($jsStack, '
 ?>
 <?php
 require_once("../chucnang/recursiveCate.php");
-require_once('../backend/CategoryController.php');
+require_once('../backend/Category.php');
+require_once('../backend/Userfunction.php');
 $categories = getAllCategory();
 $CountCate =  countCate();
 
@@ -47,6 +46,13 @@ $CountCate =  countCate();
 
 ?>
 <script>
+     function confirmDelete() {
+                <?php if(!getFeaturebyAction('Category','Delete')): ?>
+                    alert("There are no permissions for this function");
+                    return false;
+                <?php endif; ?>
+                return confirm('Are you sure you want to delete this?');
+            }
     //phân trang đê
 
 
@@ -107,7 +113,7 @@ $CountCate =  countCate();
     function countPage() {
         var rowofPage = $(".custom-select").val();
         $.ajax({
-            url: '../backend/CategoryController.php',
+            url: '../backend/Category.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -146,7 +152,7 @@ $CountCate =  countCate();
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/CategoryController.php',
+                url: '../backend/Category.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -163,6 +169,9 @@ $CountCate =  countCate();
 
     //update
     function update(element) {
+        <?php if(!getFeaturebyAction('Category','Update')): ?>
+            return alert("There are no permissions for this function");
+        <?php endif; ?>
         $("#formadd").slideDown();
   
         var categoryId = $(element).attr('id').split('-')[1];
@@ -253,11 +262,17 @@ $CountCate =  countCate();
 <div class="card">
     <!--addButton and searchButton-->
     <div class="addform">
+        <?php if(getFeaturebyAction('Category','Create')): ?>
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
+        <?php endif; ?>
         <!--addForm-->
+<<<<<<< HEAD
         <form method="post" action="../backend/CategoryController.php" id="formadd">
+=======
+        <form method="post" action="../backend/Category.php" id="formadd">
+>>>>>>> 0b3d07d53faba4ab01aa2fe1bae3cc50eefe90ce
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
