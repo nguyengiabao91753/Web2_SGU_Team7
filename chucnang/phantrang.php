@@ -1,9 +1,11 @@
 <?php
 require_once '../db.php';
-require_once '../controller/CategoryController.php';
-require_once '../controller/SupplierController.php';
-require_once '../controller/Product.php';
-global $conn;
+// require_once '../controller/CategoryController.php';
+// require_once '../controller/SupplierController.php';
+// require_once '../controller/Product.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
 
 $tableName = $_GET['tableName'];
 $pageNumber = isset($_GET['pageNumber']) ? (int)$_GET['pageNumber'] : 1;

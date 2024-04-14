@@ -3,6 +3,9 @@
 //  session_start();
 
 require_once '../db.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
 
 if (isset($_POST['add_category'])) {
     addCategory();
@@ -175,7 +178,7 @@ function loadCateData($result)
         //$html .= '    </a>';
         $html .= '  </td>';
         $html .= '  <td>';
-        $html .= '    <a onclick="return confirmDelete()" href="../controller/CategoryController.php?delete_category=' . $category['CategoryID'] . '">';
+        $html .= '    <a onclick="return confirmDelete()" href="../backend/Category.php?delete_category=' . $category['CategoryID'] . '">';
         $html .= '      <button class="btn btn-danger">';
         $html .= '        <i class="far fa-trash-alt"></i>';
         $html .= '      </button>';
