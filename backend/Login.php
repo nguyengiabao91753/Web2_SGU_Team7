@@ -14,12 +14,18 @@ function login(){
     global $conn;
     $email = $_POST['email'];
     $pass = $_POST['password'];
-    $query = "SELECT * FROM users WHERE Email = '$email' AND Password = '$pass' LIMIT 1";
+    $query = "SELECT * FROM Accounts WHERE Username = '$email' AND Password = '$pass' LIMIT 1";
     $rs = mysqli_query($conn,$query);
     
     if(mysqli_num_rows($rs)>0){
-        $user = mysqli_fetch_assoc($rs);
+        $account = mysqli_fetch_assoc($rs);
+        //lấy user từ id account
+        $accId = $account['AccountID'];
+        $query2 = "SELECT * FROM Users WHERE UserID = $accId LIMIT 1";
+        $rsuser = mysqli_query($conn,$query2);
+        $user = mysqli_fetch_assoc($rsuser);
         //check level người đăng nhập
+        
         $levelId = $user['Level'];
         $valilevel = "SELECT * FROM levels WHERE LevelId = $levelId";
         $rs2 = mysqli_query($conn,$valilevel);
