@@ -3,14 +3,15 @@
 //  session_start();
 
 require_once '../db.php';
-require_once 'Userfunction.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
+
 if (isset($_POST['add_category'])) {
-    
     addCategory();
 } elseif (isset($_POST['update_category'])) {
     updateCategory();
 } elseif (isset($_GET['delete_category'])) {
-    
     deleteCategory($_GET['delete_category']);
 }
 //Xử lý ajax lấy số trang
