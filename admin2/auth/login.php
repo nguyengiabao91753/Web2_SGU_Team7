@@ -15,6 +15,11 @@
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition login-page" style="height: 85vh;">
+        <?php if (isset($_COOKIE['err'])) : ?>
+          <script>alert(<?php echo $_COOKIE['err']  ?>)</script>
+          <?php  setcookie("err","", time() -11,"/");
+          ?>
+        <?php endif; ?>
 <div class="login-box">
   <div class="login-logo">
     Login Page
