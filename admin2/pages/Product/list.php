@@ -37,9 +37,9 @@ array_push($jsStack, '
 
 
 require_once("../chucnang/recursiveCate.php");
-require_once('../controller/CategoryController.php');
+require_once('../backend/CategoryController.php');
 $categories = getAllCategory();
-require_once("../controller/Product.php");
+require_once("../backend/Product.php");
 
 ?>
 
@@ -144,7 +144,7 @@ require_once("../controller/Product.php");
     function countPage() {
         var rowofPage = $(".custom-select").val();
         $.ajax({
-            url: '../controller/Product.php',
+            url: '../backend/Product.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -183,7 +183,7 @@ require_once("../controller/Product.php");
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../controller/Product.php',
+                url: '../backend/Product.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -246,7 +246,7 @@ require_once("../controller/Product.php");
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../controller/Product.php" id="formadd" enctype="multipart/form-data">
+        <form method="post" action="../backend/Product.php" id="formadd" enctype="multipart/form-data">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
