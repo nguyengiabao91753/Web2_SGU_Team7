@@ -268,11 +268,7 @@ $CountCate =  countCate();
         </button>
         <?php endif; ?>
         <!--addForm-->
-<<<<<<< HEAD
-        <form method="post" action="../backend/CategoryController.php" id="formadd">
-=======
         <form method="post" action="../backend/Category.php" id="formadd">
->>>>>>> 0b3d07d53faba4ab01aa2fe1bae3cc50eefe90ce
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">

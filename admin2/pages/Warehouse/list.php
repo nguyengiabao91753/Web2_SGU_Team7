@@ -37,7 +37,7 @@ array_push($jsStack, '
 
 
 require_once("../chucnang/recursiveCate.php");
-require_once('../backend/CategoryController.php');
+require_once('../backend/Category.php');
 require_once('../backend/Warehouse.php');
 $categories = getAllCategory();
 

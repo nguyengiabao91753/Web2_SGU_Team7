@@ -19,31 +19,37 @@ array_push($jsStack, '<script src="plugins/datatables-buttons/js/buttons.colVis.
 
 
 array_push($jsStack, '
-        <script>
-            $(function() {
-                $("#example1, #example2").DataTable({
-                    "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
-            });
+    <script>
+        $(function() {
+            $("#example1, #example2").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": true
+            }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
+        });
 
-            function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
-            }
-        </script>
+
+    </script>
     ');
 
 
 require_once("../chucnang/recursiveCate.php");
-require_once('../backend/CategoryController.php');
+require_once('../backend/Category.php');
 $categories = getAllCategory();
 require_once("../backend/Product.php");
+require_once('../backend/Userfunction.php');
 
 ?>
 
 <script>
+    function confirmDelete() {
+                    <?php if(!getFeaturebyAction('Category','Delete')): ?>
+                        alert("There are no permissions for this function");
+                        return false;
+                    <?php endif; ?>
+                    return confirm('Are you sure you want to delete this?');
+                }
+
     // Nút thêm(addButton)
     $(document).ready(function() {
         var addButton = $("#addbutton");
@@ -60,6 +66,7 @@ require_once("../backend/Product.php");
 
         removeButton.click(function() {
             addForm.slideToggle();
+            addForm.find('input[value="Submit"]').attr('name', 'add_product');
         });
 
         $("#color").change(function () {
@@ -202,6 +209,52 @@ require_once("../backend/Product.php");
             // $totalPage  = $CountCate / 
             ?>
      });
+
+    //Cập nhật
+    function update(element) {
+        <?php if(!getFeaturebyAction('Product','Update')): ?>
+            return alert("There are no permissions for this function");
+        <?php endif; ?>
+        $("#formadd").slideDown();
+        var ProductID = $(element).attr('id').split('-')[1];
+       
+        $.ajax({
+            url: '../chucnang/update.php',
+            type: 'post',
+            data: {
+                tableName: "products",
+                Id: parseInt(ProductID)
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.error) {
+                    alert('wrong');
+                } else {
+                    var addForm = $("#formadd");
+                    addForm.find('input[id="inpproductID"]').val(response['data'].ProductID);
+                    addForm.find('select[name="CategoryID"]').val(response['data'].products).find('option[value="' + response['data'].CategoryID + '"]').prop('selected', true);
+                    addForm.find('input[id="productname"]').val(response['data'].ProductName);
+                    addForm.find('input[id="series"]').val(response['data'].Series);
+                    addForm.find('input[id="uploadimg"]').val(response['data'].Image);
+                    addForm.find('input[id="description"]').val(response['data'].Description);
+                    addForm.find('input[id="feature"]').val(response['data'].Feature);
+                    addForm.find('input[id="price"]').val(response['data'].Price);
+                    addForm.find('input[id="color"]').val(response['data'].Color);
+                    addForm.find('input[id="size"]').val(response['data'].Size);
+                    addForm.find('input[id="totalquan"]').val(response['data'].TotalQuantity);
+                    addForm.find('input[id="salequan"]').val(response['data'].Sale_Quantity);
+                    addForm.find('input[id="quantity"]').val(response['data'].Quantity);
+                    addForm.find('input[value="Submit"]').attr('name', 'update_product');
+
+                }
+            },
+            error: function(error) {
+                alert('errrr');
+
+            }
+        });
+
+    }
 </script>
 <style>
       #formadd {
@@ -232,6 +285,15 @@ require_once("../backend/Product.php");
         height: 116.6px;
         margin-top: 3px;
      }
+     #details{
+        color: #20b2aa;
+        text-decoration: underline;
+        font-size: 16px;
+        text-align: center;
+     }
+     .proddetails{
+        margin: 5px 0 0 16px;
+     }
    </style>
 
 
@@ -251,7 +313,7 @@ require_once("../backend/Product.php");
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Add Product</h3>
-
+                    <input type="text" value="" id="inpproductID" name="ProductID" hidden>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" id="remove">
                             <i class="fas fa-times"></i>
@@ -271,7 +333,7 @@ require_once("../backend/Product.php");
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>CategoryID:</label>
-                                <select name="CategoryID" class="selectParent form-control" id="">
+                                <select name="CategoryID" class="selectParent form-control" id="CategoryID">
                                     <option value="0">-----------Root-----------</option>
                                     <?php
                                     recursiveCategory($categories, 0);
@@ -283,7 +345,7 @@ require_once("../backend/Product.php");
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Product name</label>
-                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="">
+                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="" id="productname">
                             </div>
                         </div>
                     </div>
@@ -382,7 +444,7 @@ require_once("../backend/Product.php");
                     </div>
                 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" name="createButton" id="createButton" value="submit">Submit</button>
+                        <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
                     </div>
                 </div>
             </div>
@@ -410,7 +472,7 @@ require_once("../backend/Product.php");
         </div>
         <div class="col-sm-12 col-md-6">
             <div id="example1_filter" class="dataTables_filter" style="float: right; margin-right: 4%;">
-                Search:<input type="search" id="filter" class="form-control form-control-sm" placeholder="Enter Category Name">
+                Search:<input type="search" id="filter" class="form-control form-control-sm" placeholder="Enter Product Name">
             </div>
         </div>
     </div>

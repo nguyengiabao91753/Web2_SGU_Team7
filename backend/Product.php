@@ -1,10 +1,18 @@
 <?php
 //Code lấy dữ liệu từ db
-require_once("../db.php");
-if (isset($_POST['createButton'])&&$_POST['createButton']){
+//  session_start();
+
+require_once '../db.php';
+$db = new DbConnect();
+//global $conn;
+$conn=$db->getConnect();
+
+if (isset($_POST['add_product'])){
     addProduct();
 } else if (isset($_GET['delete_product'])) {
     deleteProduct($_GET['delete_product']);
+} else if (isset($_POST['update_product'])) {
+    updateProduct();
 }
 //Lấy tất cả sản phẩm
     function getAll_Product(){
@@ -24,6 +32,14 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
         }
 
         return $kq;
+    }
+//Lấy theo ID
+    function getProByID($ID){
+        global $conn;
+        $query = "SELECT * FROM products WHERE ProductID = $ID Limit 1";
+        $r = mysqli_query($conn, $query);
+        $Pro = mysqli_fetch_assoc($r);
+        return $Pro;
     }
 //Thêm sản phẩm
     function addProduct(){
@@ -50,6 +66,9 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
         if (mysqli_query($conn, $sql)) {
         //echo "Dữ liệu đã được thêm vào cơ sở dữ liệu thành công!";
         header("Location: ../admin2/index.php?page=Product/list");
+        header("Location: ../admin2/index.php?page=Product/list");
+        setcookie("success","Product added successfully!",time() + (86400 * 30), "/");
+        exit();
         } else {
         echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
         }
@@ -61,11 +80,13 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
     function updateProduct()
     {
         global $conn;
-        if (isset($_POST['ProductID']) && isset($_POST['ProductID'])) {
+        if (isset($_POST['ProductID'])) {
+            echo'<script>alert('.$_POST['ProductID'].')</script>';
             $series =$_POST['series'] ;
+            $ProductID = $_POST['ProductID'];
             $CategoryID = $_POST['CategoryID'];
             $productName = $_POST['productname'];
-            $uploadIMG = UploadIMG();
+            $newIMG = updateProductImage($ProductID);
             $description = $_POST['description'];
             $feature= $_POST['feature'];
             $price = $_POST['price'];
@@ -74,16 +95,17 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
             $totalQuan = $_POST['totalquan'];
             $Quantity = $_POST['quantity'];
             $saleQuan = $_POST['salequan'];
-    
-            
-                $sql = "UPDATE products SET ProductName='$productName', Series = '$series' ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName',ProductName='$productName'WHERE CategoryID=$CategoryID";
-                if ($conn->query($sql) === TRUE) {
-                    $_SESSION['success'] = "Category updated successfully!";
-                    header("Location: ../admin2/index.php?page=Category/list");
-                    exit();
-                } else {
-                    echo "Error: " . $sql . "<br>" . $conn->error;
-                }
+                
+            $sql = "UPDATE products SET Series='$series', ProductName='$productName', Image='$newIMG', Description = '$description', Feature='$feature', Price = '$price', Color='$color', Size ='$size',  CategoryID= $CategoryID, TotalQuantity='$totalQuan', Quantity='$Quantity', Sale_Quantity = '$saleQuan', Status = 1
+            WHERE ProductID = $ProductID            ";
+            if ($conn->query($sql) === TRUE) {
+                $_SESSION['success'] = "Product updated successfully!";
+                header("Location: ../admin2/index.php?page=Product/list");
+                setcookie("success","Product updated successfully!",time() + (86400 * 30), "/");
+                exit();
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
         }
     }
 
@@ -98,6 +120,8 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
         if ($conn->query($sql) === TRUE) {
             $_SESSION['flash_message'] = "Product deleted successfully!";
             header("Location: ../admin2/index.php?page=Product/list");
+            header("Location: ../admin2/index.php?page=Product/list");
+            setcookie("success","Product deleted successfully!",time() + (86400 * 30), "/");
             exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
@@ -107,7 +131,7 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
 //Đếm số lượng sản phẩm
     function countProduct(){
         global $conn;
-        $query = "SELECT COUNT(*) FROM products";
+        $query = "SELECT COUNT(*) FROM products WHERE Status = 1";
         $Count = mysqli_query($conn, $query);
         $row = mysqli_fetch_row($Count);
         $Count = (int)$row[0];
@@ -135,6 +159,46 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
             return $target_file;
         }
     }
+
+//đổi hình ảnh
+    function updateProductImage($productId) {
+        global $conn;
+
+        $newImageName = UploadIMG();
+        // Lấy đường dẫn hoặc tên tệp hình ảnh hiện tại của sản phẩm từ cơ sở dữ liệu
+        $sql = "SELECT Image FROM products WHERE ProductID = $productId";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $currentImageName = $row["Image"];
+
+            // Xóa hình ảnh hiện tại từ thư mục lưu trữ
+            $imagePath = "../img/" . $currentImageName;
+            if (file_exists($imagePath)) {
+                unlink($imagePath); // Xóa tệp hình ảnh
+            }
+
+            // Cập nhật thông tin hình ảnh mới của sản phẩm trong cơ sở dữ liệu
+            $sql = "UPDATE products SET Image = '$newImageName' WHERE ProductID = $productId";
+            if ($conn->query($sql) === TRUE) {
+                // Cập nhật thành công
+                return $newImageName;
+            } else {
+                // Xảy ra lỗi khi cập nhật cơ sở dữ liệu
+                return false;
+            }
+        } else {
+            // Không tìm thấy sản phẩm trong cơ sở dữ liệu
+            return false;
+        }
+    }
+
+//Xử lý ajax lấy cate bởi id
+if (isset($_POST['ProductID'])) {
+    $productId = $_POST['ProductID'];
+    $rs = getProByID($productId);
+    echo $rs;
+}
 
 //Xử lý ajax lấy số trang
     if (isset($_GET['rowofPage'])) {
@@ -170,9 +234,9 @@ if (isset($_POST['createButton'])&&$_POST['createButton']){
                             $html .= '<td>'.$sp['Price'].' $</td>';
                             $html .= '<td>'.$sp['TotalQuantity'].'</td>';
                             $html .= '<td>
-                                        <button type="button" onclick="update(this)" id="updateCate-' . $sp['ProductID'] . '" class="updateCategory btn btn-success">
-                                            <i class="far fa-edit"></i>
-                                        </button>
+                                        <div class="proddetails">
+                                            <a href="index.php?page=Product/details" id="details" name="details">Details</a>
+                                        </div>
                                     </td>';
                             $html .= '<td>
                                         <button type="button" onclick="update(this)" id="updateProduct-' . $sp['ProductID'] . '" class="updateProduct btn btn-success">

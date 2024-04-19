@@ -50,156 +50,6 @@
              </p>
            </a>
          </li>
-<<<<<<< HEAD
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-sitemap"></i>
-             <p>
-               Category
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="index.php?page=Category/list" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>List</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-box"></i>
-             <p>
-               Product
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             
-             <li class="nav-item">
-               <a href="index.php?page=Product/list" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>List</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-users"></i>
-             <p>
-               Order
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Pending</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Delivering</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Delivered</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-users"></i>
-             <p>
-               Customer
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="index.php?page=Customer/create.php" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Create</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="index.php?page=Customer/list.php" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>List</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Account</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-users"></i>
-             <p>
-               Warehouse
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             
-             <li class="nav-item">
-               <a href="index.php?page=Warehouse/list" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>List</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-sitemap"></i>
-             <p>
-               Supplier
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="index.php?page=Supplier/list" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>List</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-users"></i>
-             <p>
-               Feature
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="index.php?page=Feature/modify" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Modify</p>
-               </a>
-             </li>
-           </ul>
-         </li>
-=======
          <?php if (getFeaturebyName('Category')) :  ?>
            <li class="nav-item">
              <a href="#" class="nav-link">
@@ -230,13 +80,7 @@
              </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a href="" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Create</p>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a href="" class="nav-link">
+                 <a href="index.php?page=Product/list" class="nav-link">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
@@ -369,7 +213,6 @@
              </ul>
            </li>
          <?php endif; ?>
->>>>>>> 0b3d07d53faba4ab01aa2fe1bae3cc50eefe90ce
        </ul>
      </nav>
      <!-- /.sidebar-menu -->
