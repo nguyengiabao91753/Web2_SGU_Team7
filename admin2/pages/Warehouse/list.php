@@ -56,7 +56,7 @@ array_push($jsStack, '
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "suppliers",
+                tableName: "goodsreceipt",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
                 ID: "SuppliId"
