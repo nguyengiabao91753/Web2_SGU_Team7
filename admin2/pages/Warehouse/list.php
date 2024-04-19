@@ -23,9 +23,8 @@ array_push($jsStack, '
             $(function() {
                 $("#example1, #example2").DataTable({
                     "responsive": true,
-                    "lengthChange": false,
-                    "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                    "lengthChange": true,
+                    "autoWidth": true
                 }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
             });
 
@@ -36,55 +35,16 @@ array_push($jsStack, '
     ');
 
 
-require_once("../chucnang/recursiveCate.php");
-require_once('../backend/Category.php');
-require_once('../backend/Warehouse.php');
-$categories = getAllCategory();
+?>
+<?php
+
+//require_once('../backend/Supplier.php');
+
+
 
 
 ?>
-
 <script>
-    // Nút thêm(addButton)
-    $(document).ready(function() {
-        var addButton = $("#addbutton");
-        var addForm = $("#formadd");
-
-        addButton.click(function() {
-            addForm.slideDown(); // Sử dụng .show() của jQuery để hiển thị form
-        });
-    });
-    // Nút đóng(removeButton)
-    $(document).ready(function() {
-        var removeButton = $("#remove");
-        var addForm = $("#formadd");
-
-        removeButton.click(function() {
-            addForm.slideToggle();
-        });
-
-        $("#color").change(function () {
-        var selectedColor = $(this).val(); // Lấy giá trị màu đã chọn
-        $("#showcolor").css("background-color", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
-        $("#showcolor").css("border", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
-        });
-
-    });
-    //Hiển thị ảnh sau khi chọn file từ máy
-    $(document).ready(function() {
-        $('#uploadimg').change(function() {
-            var input = this;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#preview').attr('src', e.target.result);
-                    $('#preview').show(); // Hiển thị hình ảnh khi đã được tải lên
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        });
-    });
-
     //phân trang đê
 
 
@@ -96,10 +56,10 @@ $categories = getAllCategory();
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "products",
+                tableName: "suppliers",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "ProductID"
+                ID: "SuppliId"
             },
             // dataType: 'json',
             success: function(response) {
@@ -137,15 +97,16 @@ $categories = getAllCategory();
                 alert("This is last page");
             }
         } else {
-            loadData(pageNumber);   
+            loadData(pageNumber);
         }
     }
 
     //tính số trang
     function countPage() {
         var rowofPage = $(".custom-select").val();
+        
         $.ajax({
-            url: '../backend/Product.php',
+            url: '../backend/SupplierController.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -184,7 +145,7 @@ $categories = getAllCategory();
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/Product.php',
+                url: '../backend/SupplierController.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -197,63 +158,118 @@ $categories = getAllCategory();
         })
     });
 
+
+
+    //update
+    function update(element) {
+        $("#formadd").slideDown();
+        //element.preventDefault();
+
+       
+        var suppId = $(element).attr('id').split('-')[1];
+        // alert(suppId);
+        $.ajax({
+            url: '../chucnang/update.php',
+            type: 'post',
+            data: {
+                tableName: 'suppliers',
+                Id: parseInt(suppId)
+            },
+            dataType: 'json',
+            success: function(response) {
+
+                if (response.error) {
+                
+                    alert('wrong');
+                } else {
+
+                    var addForm = $("#formadd");
+                    addForm.find('input[id="inpSupID"]').val(response['data'].SuppliId);
+                    addForm.find('input[id="name"]').val(response['data'].Name);
+                    addForm.find('input[id="address"]').val(response['data'].Address);
+                    addForm.find('input[id="email"]').val(response['data'].Email);
+                    addForm.find('input[value="Submit"]').attr('name', 'update_supplier');
+
+
+                }
+            },
+            error: function(error) {
+                alert('errrr');
+
+            }
+        });
+
+    }
+    // Nút thêm(addButton)
+    $(document).ready(function() {
+        var addButton = $("#addbutton");
+        var addForm = $("#formadd");
+
+        addButton.click(function() {
+            addForm.slideDown();
+            addForm.find('input[value="Submit"]').attr('name', 'add_supplier');
+            addForm.find('input[name="name"]').val('');
+            addForm.find('input[name="email"]').val('');
+            addForm.find('input[name="address"]').val('');
+
+        });
+
+1
+    });
+    // Nút đóng(removeButton)
+    $(document).ready(function() {
+        var removeButton = $("#remove");
+        var addForm = $("#formadd");
+
+        removeButton.click(function() {
+            addForm.slideToggle();
+
+        });
+
+
+    });
     //tính số trang
     $(document).ready(function() {
-            <?php
-            // $totalPage  = $CountCate / 
-            ?>
-     });
+        <?php
+        // $totalPage  = $CountCate / 
+        ?>
+
+    });
 </script>
 <style>
-      #formadd {
+    #formadd {
         display: none;
-      }
+    }
 
-      #addbutton{
-        width: 89.49px; 
+    #addbutton {
+        width: 89.49px;
         height: 60px;
         font-size: 20px;
         margin: 5px 0 0 10px;
-      }
-      #feature{
-        height: 38px;
-        width: 284.45px;
-      }
-      #color{
-        height: 38px;
-        width: 184.63px;
-     }
-     #showcolor{
-        width: 38px;
-        height: 38px;
-        margin-top: 31.5px;
-     }
-     #preview{
-        width: auto;
-        height: 116.6px;
-        margin-top: 3px;
-     }
-   </style>
+    }
+</style>
 
 
 
 
 
 <div class="card">
-
     <!--addButton and searchButton-->
     <div class="addform">
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../backend/Warehouse.php" id="formadd" enctype="multipart/form-data">
+        <form method="post" action="../backend/SupplierController.php" id="formadd">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Add Product</h3>
-
+                    <h3 class="card-title">Supplier create</h3>
+                    <input type="text" value="" id="inpSupID" name="SuppliId" hidden>
                     <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
                         <button type="button" class="btn btn-tool" id="remove">
                             <i class="fas fa-times"></i>
                         </button>
@@ -261,112 +277,32 @@ $categories = getAllCategory();
                 </div>
 
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Series</label>
-                                <input type="number" min="0" class="form-control" name="series" id="series" placeholder="Enter Series">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>CategoryID:</label>
-                                <select name="CategoryID" class="selectParent form-control" id="">
-                                    <option value="0">-----------Root-----------</option>
-                                    <?php
-                                    recursiveCategory($categories, 0);
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Product name</label>
-                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="">
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter Supplier Name" required>
                     </div>
-                   <div class="row">
-                   <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Price</label>
-                                <input type="number" name="price" id="price" min="0" placeholder="Enter Price" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Color</label>
-                                <br>
-                                <select name="color" id="color">
-                                    <option value="White">White</option>
-                                    <option value="Black">Black</option>
-                                    <option value="Red">Red</option>
-                                    <option value="Yellow">Yellow</option>
-                                    <option value="Green">Green</option>
-                                    <option value="Brown">Brown</option>
-                                    <option value="Blue">Blue</option>
-                                    <option value="Grey">Grey</option>
-                                    <option value="Violet">Violet</option>
-                                    <option value="Navy">Navy</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-1">
-                            <div>
-                                <input type="text" disabled id="showcolor">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Size</label>
-                                <input type="number" name="size" id="size" placeholder="Enter size" min="0" class="form-control">
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email"  required>
                     </div>
-
-                   </div>
-
-                        
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Total quantity</label>
-                                <input type="number" name="totalquan" id="totalquan" placeholder="Enter total Quantity" min="0" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" min="0" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Sale Quantity</label>
-                                <input type="number" name="salequan" id="salequan" placeholder="Enter Sale quantity" min="0" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" name="createButton" id="createButton" value="submit">Submit</button>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="address" class="form-control" placeholder="Enter Address" name="address" required>
                     </div>
                 </div>
+
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-primary" name="add_supplier" id="" value="Submit">
+                </div>
             </div>
+
             <!-- /.card -->
         </form>
 
     </div>
 
     <div class="card-header">
-        <!-- <h3 class="card-title">Customer list</h3> -->
+        <!-- <h3>List</h3> -->
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -392,14 +328,11 @@ $categories = getAllCategory();
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>ProductID</th>
-                    <th>Category</th>
-                    <th>Series</th>
-                    <th>Product name</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Update</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -408,14 +341,11 @@ $categories = getAllCategory();
             </tbody>
             <tfoot>
                 <tr>
-                    <th>ProductID</th>
-                    <th>Category</th>
-                    <th>Series</th>
-                    <th>Product name</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Update</th>
                     <th>Delete</th>
                 </tr>
             </tfoot>
@@ -423,7 +353,7 @@ $categories = getAllCategory();
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-5">
-            <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div>
+            <!-- <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div> -->
         </div>
         <div class="col-sm-12 col-md-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">

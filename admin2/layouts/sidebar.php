@@ -136,7 +136,7 @@
                  </a>
                </li>
                <li class="nav-item">
-                 <a href="index.php?page=Customer/list.php" class="nav-link">
+                 <a href="index.php?page=Custpomer/list.php" class="nav-link">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
@@ -161,13 +161,7 @@
              </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a href="" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Import</p>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a href="" class="nav-link">
+                 <a href="index.php?page=Warehouse/list" class="nav-link">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
