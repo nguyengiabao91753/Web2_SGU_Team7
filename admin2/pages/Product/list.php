@@ -442,11 +442,12 @@ require_once('../backend/Userfunction.php');
                             </div>
                         </div>
                     </div>
-                
-                    <div class="card-footer">
-                        <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
-                    </div>
                 </div>
+                
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
+                </div>
+                
             </div>
             <!-- /.card -->
         </form>
