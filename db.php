@@ -1,8 +1,8 @@
 <?php
 Class DbConnect{
-    private $servername= "localhost:3308";
+    private $servername= "localhost:3306";
     private $username= "root";
-    private $password= "123456";
+    private $password= "";
     private $dbname= "web2";
     public $conn;
     public function __construct() {

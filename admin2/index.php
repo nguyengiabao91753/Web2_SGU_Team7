@@ -2,7 +2,7 @@
 session_start();
 ob_start();
 ?>
-<?php if (isset($_COOKIE['user_id'])) : ?>
+<?php if (isset($_COOKIE['user_id'])) : ?> <!-- hãy thêm thêm chấm thang '!' nếu chưa có tài khoản -->
   <!DOCTYPE html>
   <html lang="en">
 

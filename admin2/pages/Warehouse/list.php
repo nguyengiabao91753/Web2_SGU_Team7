@@ -255,6 +255,96 @@ require_once('../backend/Userfunction.php');
         });
 
     }
+
+    $(document).ready(function() {
+            var addbtn = document.getElementById('addp');
+            var productFormContainer = document.getElementById('productFormContainer');
+            var formCount = 0;
+
+            addbtn =addEventListener('dblclick', function(){
+                    formCount++;
+
+                    var newForm= document.createElement('form');
+                    newForm.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Series</label>
+                                <input type="number" min="0" class="form-control" name="series" id="series" placeholder="Enter Series">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>CategoryID:</label>
+                                <select name="CategoryID" class="selectParent form-control" id="CategoryID">
+                                    <option value="0">-----------Root-----------</option>
+                                    <?php
+                                    recursiveCategory($categories, 0);
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Product name</label>
+                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="" id="productname">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Color</label>
+                                <br>
+                                <select name="color" id="color">
+                                    <option value="White">White</option>
+                                    <option value="Black">Black</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Yellow">Yellow</option>
+                                    <option value="Green">Green</option>
+                                    <option value="Brown">Brown</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Grey">Grey</option>
+                                    <option value="Violet">Violet</option>
+                                    <option value="Navy">Navy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div>
+                                <input type="text" disabled id="showcolor">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" min="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                                        `;
+
+    // Thêm form mới vào container
+    productFormContainer.appendChild(newForm);
+
+    // Bắt sự kiện submit của form
+    newForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn chặn form submit mặc định
+        // Xử lý lưu thông tin sản phẩm ở đây
+
+        // Ví dụ: Lấy thông tin sản phẩm từ các trường input
+        var productName = document.getElementById('productName' + formCount).value;
+        var productPrice = document.getElementById('productPrice' + formCount).value;
+
+        // In ra thông tin sản phẩm
+        console.log('Tên sản phẩm:', productName);
+        console.log('Giá sản phẩm:', productPrice);
+            });
+        });
+     });
 </script>
 <style>
       #formadd {
@@ -312,7 +402,7 @@ require_once('../backend/Userfunction.php');
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Add Product</h3>
+                    <h3 class="card-title">Add Receipt</h3>
                     <input type="text" value="" id="inpproductID" name="ProductID" hidden>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" id="remove">
@@ -323,131 +413,38 @@ require_once('../backend/Userfunction.php');
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label>Series</label>
-                                <input type="number" min="0" class="form-control" name="series" id="series" placeholder="Enter Series">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>CategoryID:</label>
-                                <select name="CategoryID" class="selectParent form-control" id="CategoryID">
-                                    <option value="0">-----------Root-----------</option>
-                                    <?php
-                                    recursiveCategory($categories, 0);
-                                    ?>
-                                </select>
+                                <label>UserID</label>
+                                <input type="number" min="0" class="form-control" name="userid" id="userid" placeholder="Enter UserID">
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Product name</label>
-                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="" id="productname">
+                                <label>SupplierID:</label>
+                                <select name="SupplierID" class="selectParent form-control" id="SupplierID">
+                                    <option value="0"></option>
+                                    <?php
+                                    ?>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label>Images</label>
-                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*"  onchange="previewImage(event)">
-                                <img src="" alt="Preview Image" id="preview" style="display:none;">
-                            </div>
-                        </div>
 
-                        <div class="col-md-7">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea name="description" id="description" cols="30" rows="6" class="form-control"></textarea>
-                            </div>
-                        </div>
+                    <div>
+                       <button class="btn btn-secondary" name="addp" id="addp" type="button">More Products</button>
+                       <i class="" style="color: #adb5bd; padding: 5px
+                       ;">Please Double click button for create new Products</i>
+                       <div class="form-group" id="productFormContainer">
+                       </div>
                     </div>
 
                     
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Feature</label>
-                                <br>
-                                <select name="feature" id="feature">
-                                    <option class="form-control">Feature</option>
-                                    <option  class="form-control">None</option>
-                                </select>
-                                </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Price</label>
-                                <input type="number" name="price" id="price" min="0" placeholder="Enter Price" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Color</label>
-                                <br>
-                                <select name="color" id="color">
-                                    <option value="White">White</option>
-                                    <option value="Black">Black</option>
-                                    <option value="Red">Red</option>
-                                    <option value="Yellow">Yellow</option>
-                                    <option value="Green">Green</option>
-                                    <option value="Brown">Brown</option>
-                                    <option value="Blue">Blue</option>
-                                    <option value="Grey">Grey</option>
-                                    <option value="Violet">Violet</option>
-                                    <option value="Navy">Navy</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-1">
-                            <div>
-                                <input type="text" disabled id="showcolor">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Size</label>
-                                <input type="number" name="size" id="size" placeholder="Enter size" min="0" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Total quantity</label>
-                                <input type="number" name="totalquan" id="totalquan" placeholder="Enter total Quantity" min="0" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" min="0" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Sale Quantity</label>
-                                <input type="number" name="salequan" id="salequan" placeholder="Enter Sale quantity" min="0" class="form-control">
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                
                 <div class="card-footer">
                     <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
                 </div>
-                
             </div>
             <!-- /.card -->
         </form>
@@ -481,16 +478,14 @@ require_once('../backend/Userfunction.php');
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>ReceiptID</th>
+                    <th>UserID</th>
+                    <th>SupplierID</th>
                     <th>ProductID</th>
-                    <th>Category</th>
-                    <th>Series</th>
-                    <th>Product name</th>
-                    <th>Image</th>
-                    <th>Feature</th>
-                    <th>Color</th>
                     <th>Price</th>
-                    <th>Total Quantity</th>
-                    <th>See details</th>
+                    <th>Quantity</th>
+                    <th>Create At</th>
+                    <th>Total</th>
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
@@ -500,16 +495,14 @@ require_once('../backend/Userfunction.php');
             </tbody>
             <tfoot>
                 <tr>
+                <th>ReceiptID</th>
+                    <th>UserID</th>
+                    <th>SupplierID</th>
                     <th>ProductID</th>
-                    <th>Category</th>
-                    <th>Series</th>
-                    <th>Product name</th>
-                    <th>Image</th>
-                    <th>Feature</th>
-                    <th>Color</th>
                     <th>Price</th>
-                    <th>Total Quantity</th>
-                    <th>See details</th>
+                    <th>Quantity</th>
+                    <th>Create At</th>
+                    <th>Total</th>
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
