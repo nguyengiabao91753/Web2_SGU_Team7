@@ -35,6 +35,20 @@ if (isset($_POST['searchText'])) {
     echo loadSupplierData($result);
 }
 
+function getAllSupplier(){
+    global $conn;
+    $query = "SELECT * FROM suppliers";
+    $result = mysqli_query($conn, $query);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $supplier = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $supplier[] = $row;
+        }
+        return $supplier;
+    } else {
+        return array();
+    }
+}
 
 function getSupplierByID($ID)
 {

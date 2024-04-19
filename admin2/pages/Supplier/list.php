@@ -106,7 +106,7 @@ require_once('../backend/Supplier.php');
         var rowofPage = $(".custom-select").val();
         
         $.ajax({
-            url: '../backend/SupplierController.php',
+            url: '../backend/Supplier.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -145,7 +145,7 @@ require_once('../backend/Supplier.php');
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/SupplierController.php',
+                url: '../backend/Supplier.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -227,6 +227,9 @@ require_once('../backend/Supplier.php');
         });
 
 
+       
+
+
     });
     //tính số trang
     $(document).ready(function() {
@@ -260,7 +263,7 @@ require_once('../backend/Supplier.php');
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../backend/SupplierController.php" id="formadd">
+        <form method="post" action="../backend/Supplier.php" id="formadd">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">

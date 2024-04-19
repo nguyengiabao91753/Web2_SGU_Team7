@@ -9,6 +9,8 @@
 include("layouts/header.php"); 
 
 ?>
+<?php require_once '../backend/Category.php' ?>
+<?php require_once '../backend/Product.php' ?>
 </head>
 <body class="animsition">
 	

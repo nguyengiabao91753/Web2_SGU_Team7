@@ -19,32 +19,78 @@ array_push($jsStack, '<script src="plugins/datatables-buttons/js/buttons.colVis.
 
 
 array_push($jsStack, '
-        <script>
-            $(function() {
-                $("#example1, #example2").DataTable({
-                    "responsive": true,
-                    "lengthChange": true,
-                    "autoWidth": true
-                }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
-            });
+    <script>
+        $(function() {
+            $("#example1, #example2").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": true
+            }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
+        });
 
-            function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
-            }
-        </script>
+
+    </script>
     ');
 
 
-?>
-<?php
-
-//require_once('../backend/Supplier.php');
-
-
-
+require_once("../chucnang/recursiveCate.php");
+require_once('../backend/Category.php');
+$categories = getAllCategory();
+require_once("../backend/Product.php");
+require_once('../backend/Userfunction.php');
 
 ?>
+
 <script>
+    function confirmDelete() {
+                    <?php if(!getFeaturebyAction('Category','Delete')): ?>
+                        alert("There are no permissions for this function");
+                        return false;
+                    <?php endif; ?>
+                    return confirm('Are you sure you want to delete this?');
+                }
+
+    // Nút thêm(addButton)
+    $(document).ready(function() {
+        var addButton = $("#addbutton");
+        var addForm = $("#formadd");
+
+        addButton.click(function() {
+            addForm.slideDown(); // Sử dụng .show() của jQuery để hiển thị form
+        });
+    });
+    // Nút đóng(removeButton)
+    $(document).ready(function() {
+        var removeButton = $("#remove");
+        var addForm = $("#formadd");
+
+        removeButton.click(function() {
+            addForm.slideToggle();
+            addForm.find('input[value="Submit"]').attr('name', 'add_product');
+        });
+
+        $("#color").change(function () {
+        var selectedColor = $(this).val(); // Lấy giá trị màu đã chọn
+        $("#showcolor").css("background-color", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+        $("#showcolor").css("border", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+        });
+
+    });
+    //Hiển thị ảnh sau khi chọn file từ máy
+    $(document).ready(function() {
+        $('#uploadimg').change(function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result);
+                    $('#preview').show(); // Hiển thị hình ảnh khi đã được tải lên
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    });
+
     //phân trang đê
 
 
@@ -56,10 +102,14 @@ array_push($jsStack, '
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
+<<<<<<< HEAD
                 tableName: "goodsreceipt",
+=======
+                tableName: "products",
+>>>>>>> 76686f195879ea6c4c706c8014151f306a1c29d4
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "SuppliId"
+                ID: "ProductID"
             },
             // dataType: 'json',
             success: function(response) {
@@ -97,16 +147,15 @@ array_push($jsStack, '
                 alert("This is last page");
             }
         } else {
-            loadData(pageNumber);
+            loadData(pageNumber);   
         }
     }
 
     //tính số trang
     function countPage() {
         var rowofPage = $(".custom-select").val();
-        
         $.ajax({
-            url: '../backend/SupplierController.php',
+            url: '../backend/Product.php',
             type: 'get',
             data: {
                 rowofPage: rowofPage
@@ -145,7 +194,7 @@ array_push($jsStack, '
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/SupplierController.php',
+                url: '../backend/Product.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -158,38 +207,48 @@ array_push($jsStack, '
         })
     });
 
+    //tính số trang
+    $(document).ready(function() {
+            <?php
+            // $totalPage  = $CountCate / 
+            ?>
+     });
 
-
-    //update
+    //Cập nhật
     function update(element) {
+        <?php if(!getFeaturebyAction('Product','Update')): ?>
+            return alert("There are no permissions for this function");
+        <?php endif; ?>
         $("#formadd").slideDown();
-        //element.preventDefault();
-
+        var ProductID = $(element).attr('id').split('-')[1];
        
-        var suppId = $(element).attr('id').split('-')[1];
-        // alert(suppId);
         $.ajax({
             url: '../chucnang/update.php',
             type: 'post',
             data: {
-                tableName: 'suppliers',
-                Id: parseInt(suppId)
+                tableName: "products",
+                Id: parseInt(ProductID)
             },
             dataType: 'json',
             success: function(response) {
-
                 if (response.error) {
-                
                     alert('wrong');
                 } else {
-
                     var addForm = $("#formadd");
-                    addForm.find('input[id="inpSupID"]').val(response['data'].SuppliId);
-                    addForm.find('input[id="name"]').val(response['data'].Name);
-                    addForm.find('input[id="address"]').val(response['data'].Address);
-                    addForm.find('input[id="email"]').val(response['data'].Email);
-                    addForm.find('input[value="Submit"]').attr('name', 'update_supplier');
-
+                    addForm.find('input[id="inpproductID"]').val(response['data'].ProductID);
+                    addForm.find('select[name="CategoryID"]').val(response['data'].products).find('option[value="' + response['data'].CategoryID + '"]').prop('selected', true);
+                    addForm.find('input[id="productname"]').val(response['data'].ProductName);
+                    addForm.find('input[id="series"]').val(response['data'].Series);
+                    addForm.find('input[id="uploadimg"]').val(response['data'].Image);
+                    addForm.find('input[id="description"]').val(response['data'].Description);
+                    addForm.find('input[id="feature"]').val(response['data'].Feature);
+                    addForm.find('input[id="price"]').val(response['data'].Price);
+                    addForm.find('input[id="color"]').val(response['data'].Color);
+                    addForm.find('input[id="size"]').val(response['data'].Size);
+                    addForm.find('input[id="totalquan"]').val(response['data'].TotalQuantity);
+                    addForm.find('input[id="salequan"]').val(response['data'].Sale_Quantity);
+                    addForm.find('input[id="quantity"]').val(response['data'].Quantity);
+                    addForm.find('input[value="Submit"]').attr('name', 'update_product');
 
                 }
             },
@@ -200,76 +259,156 @@ array_push($jsStack, '
         });
 
     }
-    // Nút thêm(addButton)
+
     $(document).ready(function() {
-        var addButton = $("#addbutton");
-        var addForm = $("#formadd");
+            var addbtn = document.getElementById('addp');
+            var productFormContainer = document.getElementById('productFormContainer');
+            var formCount = 0;
 
-        addButton.click(function() {
-            addForm.slideDown();
-            addForm.find('input[value="Submit"]').attr('name', 'add_supplier');
-            addForm.find('input[name="name"]').val('');
-            addForm.find('input[name="email"]').val('');
-            addForm.find('input[name="address"]').val('');
+            addbtn =addEventListener('dblclick', function(){
+                    formCount++;
 
+                    var newForm= document.createElement('form');
+                    newForm.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Series</label>
+                                <input type="number" min="0" class="form-control" name="series" id="series" placeholder="Enter Series">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>CategoryID:</label>
+                                <select name="CategoryID" class="selectParent form-control" id="CategoryID">
+                                    <option value="0">-----------Root-----------</option>
+                                    <?php
+                                    recursiveCategory($categories, 0);
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Product name</label>
+                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname" value="" id="productname">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Color</label>
+                                <br>
+                                <select name="color" id="color">
+                                    <option value="White">White</option>
+                                    <option value="Black">Black</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Yellow">Yellow</option>
+                                    <option value="Green">Green</option>
+                                    <option value="Brown">Brown</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Grey">Grey</option>
+                                    <option value="Violet">Violet</option>
+                                    <option value="Navy">Navy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div>
+                                <input type="text" disabled id="showcolor">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" name="quantity" id="quantity" placeholder="Enter quantity" min="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                                        `;
+
+    // Thêm form mới vào container
+    productFormContainer.appendChild(newForm);
+
+    // Bắt sự kiện submit của form
+    newForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn chặn form submit mặc định
+        // Xử lý lưu thông tin sản phẩm ở đây
+
+        // Ví dụ: Lấy thông tin sản phẩm từ các trường input
+        var productName = document.getElementById('productName' + formCount).value;
+        var productPrice = document.getElementById('productPrice' + formCount).value;
+
+        // In ra thông tin sản phẩm
+        console.log('Tên sản phẩm:', productName);
+        console.log('Giá sản phẩm:', productPrice);
+            });
         });
-
-1
-    });
-    // Nút đóng(removeButton)
-    $(document).ready(function() {
-        var removeButton = $("#remove");
-        var addForm = $("#formadd");
-
-        removeButton.click(function() {
-            addForm.slideToggle();
-
-        });
-
-
-    });
-    //tính số trang
-    $(document).ready(function() {
-        <?php
-        // $totalPage  = $CountCate / 
-        ?>
-
-    });
+     });
 </script>
 <style>
-    #formadd {
+      #formadd {
         display: none;
-    }
+      }
 
-    #addbutton {
-        width: 89.49px;
+      #addbutton{
+        width: 89.49px; 
         height: 60px;
         font-size: 20px;
         margin: 5px 0 0 10px;
-    }
-</style>
+      }
+      #feature{
+        height: 38px;
+        width: 284.45px;
+      }
+      #color{
+        height: 38px;
+        width: 184.63px;
+     }
+     #showcolor{
+        width: 38px;
+        height: 38px;
+        margin-top: 31.5px;
+     }
+     #preview{
+        width: auto;
+        height: 116.6px;
+        margin-top: 3px;
+     }
+     #details{
+        color: #20b2aa;
+        text-decoration: underline;
+        font-size: 16px;
+        text-align: center;
+     }
+     .proddetails{
+        margin: 5px 0 0 16px;
+     }
+   </style>
 
 
 
 
 
 <div class="card">
+
     <!--addButton and searchButton-->
     <div class="addform">
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
         <!--addForm-->
-        <form method="post" action="../backend/SupplierController.php" id="formadd">
+        <form method="post" action="../backend/Product.php" id="formadd" enctype="multipart/form-data">
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Supplier create</h3>
-                    <input type="text" value="" id="inpSupID" name="SuppliId" hidden>
+                    <h3 class="card-title">Add Receipt</h3>
+                    <input type="text" value="" id="inpproductID" name="ProductID" hidden>
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
                         <button type="button" class="btn btn-tool" id="remove">
                             <i class="fas fa-times"></i>
                         </button>
@@ -277,32 +416,47 @@ array_push($jsStack, '
                 </div>
 
                 <div class="card-body">
-                    <div class="form-group">
-                        <label for="">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter Supplier Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email"  required>
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" id="address" class="form-control" placeholder="Enter Address" name="address" required>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>UserID</label>
+                                <input type="number" min="0" class="form-control" name="userid" id="userid" placeholder="Enter UserID">
+                            </div>
+                        </div>
 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>SupplierID:</label>
+                                <select name="SupplierID" class="selectParent form-control" id="SupplierID">
+                                    <option value="0"></option>
+                                    <?php
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                       <button class="btn btn-secondary" name="addp" id="addp" type="button">More Products</button>
+                       <i class="" style="color: #adb5bd; padding: 5px
+                       ;">Please Double click button for create new Products</i>
+                       <div class="form-group" id="productFormContainer">
+                       </div>
+                    </div>
+
+                    
+                </div>
                 <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" name="add_supplier" id="" value="Submit">
+                    <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
                 </div>
             </div>
-
             <!-- /.card -->
         </form>
 
     </div>
 
     <div class="card-header">
-        <!-- <h3>List</h3> -->
+        <!-- <h3 class="card-title">Customer list</h3> -->
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-6">
@@ -320,32 +474,39 @@ array_push($jsStack, '
         </div>
         <div class="col-sm-12 col-md-6">
             <div id="example1_filter" class="dataTables_filter" style="float: right; margin-right: 4%;">
-                Search:<input type="search" id="filter" class="form-control form-control-sm" placeholder="Enter Category Name">
+                Search:<input type="search" id="filter" class="form-control form-control-sm" placeholder="Enter Product Name">
             </div>
         </div>
     </div>
-
     <div class="card-body">
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Email</th>
+                    <th>ReceiptID</th>
+                    <th>UserID</th>
+                    <th>SupplierID</th>
+                    <th>ProductID</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Create At</th>
+                    <th>Total</th>
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-
+                    
             </tbody>
             <tfoot>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Email</th>
+                <th>ReceiptID</th>
+                    <th>UserID</th>
+                    <th>SupplierID</th>
+                    <th>ProductID</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Create At</th>
+                    <th>Total</th>
                     <th>Update</th>
                     <th>Delete</th>
                 </tr>
@@ -354,7 +515,7 @@ array_push($jsStack, '
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-5">
-            <!-- <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div> -->
+            <div class="dataTables_info" style="float: left; margin-left: 4%;">Showing 1 to 6 of 6 entries</div>
         </div>
         <div class="col-sm-12 col-md-7">
             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">

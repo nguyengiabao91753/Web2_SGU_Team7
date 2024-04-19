@@ -31,6 +31,8 @@ if (mysqli_num_rows($result) > 0) {
     } else if ($tableName == 'products') {
         $html = '';
         $html =loadProductData();
+    } else if($tableName=='goodsreceipt_items'){
+        
     }
 
     echo $html;
