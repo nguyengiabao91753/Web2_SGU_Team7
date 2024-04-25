@@ -13,7 +13,7 @@ $pageNumber = isset($_GET['pageNumber']) ? (int)$_GET['pageNumber'] : 1;
 $rowofPage = isset($_GET['rowofPage']) ? (int)$_GET['rowofPage'] : 10;
 $rowStart = (int)(($pageNumber - 1) * $rowofPage);
 $ID = $_GET['ID'];
-
+$key=$_GET['key'];
 
 $query = "SELECT * FROM $tableName
         ORDER BY $ID
@@ -29,8 +29,13 @@ if (mysqli_num_rows($result) > 0) {
         $html='';
         $html = loadSupplierData($result);
     } else if ($tableName == 'products') {
+        if($key == 'client'){
         $html = '';
-        $html =loadProductData();
+        $html =LoadProductClient($result);
+        }else{
+            $html = '';
+            $html =loadProductData($result);
+        }
     } else if($tableName=='goodsreceipt_items'){
         
     }
