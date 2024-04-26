@@ -43,28 +43,28 @@ if($_POST['tableName'] == 'categories'){
         echo json_encode(array('error' => 'Category not found'));
     }
 }else if ($_POST['tableName'] == 'products') {
-    $pro = getProByID($Id);
-    if(!empty($pro)){
+    $prod = getProByID($Id);
+    
+    if(!empty($prod)){
         $response['data'] = array(
-            'Series' => $pro['Series'],
-            'ProductID'=>$pro['ProductID'],
-            'CaterogyID' => $pro['CategoryID'],
-            'ProductName' => $pro['ProductName'],
-            'Description' => $pro['Description'],
-            'Feature' => $pro['Feature'],
-            'Price' => $pro['Price'],
-            'Color' => $pro['Color'],
-            'Size' => $pro['Size'],
-            'TotalQuantity'=>$pro['TotalQuantity'],
-            'Quantity' => $pro['Quantity'],
-            'Sale_Quantity'=> $pro['Sale_Quantity']
+            'Series' => $prod['Series'],
+            'ProductID'=>$prod['ProductID'],
+            'CategoryID' => $prod['CategoryID'],
+            'ProductName' => $prod['ProductName'],
+            'Description' => $prod['Description'],
+            'Feature' => $prod['Feature'],
+            'Price' => $prod['Price'],
+            'Color' => $prod['Color'],
+            'Size' => $prod['Size'],
+            'TotalQuantity'=>$prod['TotalQuantity'],
+            'Quantity' => $prod['Quantity'],
+            'Sale_Quantity'=> $prod['Sale_Quantity']
         );
 
         
         echo json_encode($response);
     } else {
-       
-        echo json_encode(array('error' => 'Category not found'));
+        echo json_encode(array('error' => 'Product not found'));
     }
 }
 ?>

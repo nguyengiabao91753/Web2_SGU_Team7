@@ -107,7 +107,7 @@ require_once('../backend/Supplier.php');
         
         $.ajax({
             url: '../backend/Supplier.php',
-            type: 'get',
+            type: 'post',
             data: {
                 rowofPage: rowofPage
             },

@@ -62,3 +62,98 @@ $quantity = $_POST['quantity']; // Giả sử bạn nhận được số lượn
 $receiptID = $_POST['ReceiptId']; // Giả sử bạn nhận được ID phiếu nhập từ form
 
 
+// Xử lý khi người dùng nhấn nút "Submit" để tạo phiếu nhập
+if (isset($_POST['add_receipt'])) {
+    // Thu thập thông tin từ form
+    $userID = $_SESSION['userID']; // Giả sử thông tin về người dùng đã được lưu trong session
+    $supplierID = $_POST['SupplierId'];
+    $createdAt = date('Y-m-d H:i:s'); // Thời gian tạo phiếu nhập
+    $total = $_POST['total']; // Tổng số tiền
+
+    // Thực hiện truy vấn để tạo phiếu nhập mới trong bảng "GoodReceipt"
+    $insertReceiptSql = "INSERT INTO GoodReceipt (UserID, SupplierID, CreatedAt, Total) VALUES ($userID, $supplierID, '$createdAt', $total)";
+    if (mysqli_query($conn, $insertReceiptSql)) {
+        // Lấy ID của phiếu nhập mới tạo
+        $receiptID = mysqli_insert_id($conn);
+
+        // Thu thập thông tin về các sản phẩm từ form
+        $productIDs = $_POST['ProductID'];
+        $quantities = $_POST['quantity'];
+        $prices = $_POST['price'];
+
+        // Liên kết các sản phẩm với phiếu nhập
+        for ($i = 0; $i < count($productIDs); $i++) {
+            $productID = $productIDs[$i];
+            $quantity = $quantities[$i];
+            $price = $prices[$i];
+
+            // Kiểm tra xem sản phẩm đã tồn tại trong bảng "Products" hay chưa
+            $checkProductSql = "SELECT * FROM Products WHERE ProductID = $productID";
+            $checkProductResult = mysqli_query($conn, $checkProductSql);
+            if (mysqli_num_rows($checkProductResult) > 0) {
+                // Sản phẩm đã tồn tại, cập nhật số lượng và giá tiền
+                $updateProductSql = "UPDATE Products SET Quantity = Quantity + $quantity, Price = $price WHERE ProductID = $productID";
+                mysqli_query($conn, $updateProductSql);
+            } else {
+                // Sản phẩm chưa tồn tại, thêm mới vào bảng "Products"
+                $insertProductSql = "INSERT INTO Products (ProductID, Quantity, Price) VALUES ($productID, $quantity, $price)";
+                mysqli_query($conn, $insertProductSql);
+            }
+
+            // Liên kết sản phẩm với phiếu nhập trong bảng trung gian "Receipt_Product"
+            $linkProductSql = "INSERT INTO Receipt_Product (ReceiptID, ProductID, Quantity, Price) VALUES ($receiptID, $productID, $quantity, $price)";
+            mysqli_query($conn, $linkProductSql);
+        }
+
+        // Thực hiện xong, có thể thông báo thành công cho người dùng
+        echo "Receipt created successfully.";
+    } else {
+        // Đã xảy ra lỗi khi tạo phiếu nhập
+        echo "Error creating receipt: " . mysqli_error($conn);
+    }
+}
+
+// Kiểm tra xem phiếu nhập đã được tạo thành công hay không
+if (isset($_POST['add_receipt'])) {
+    // Thực hiện truy vấn để tạo phiếu nhập mới trong bảng "GoodReceipt"
+    $insertReceiptSql = "INSERT INTO GoodReceipt (UserID, SupplierID, CreatedAt, Total) VALUES ($userID, $supplierID, '$createdAt', $total)";
+    if (mysqli_query($conn, $insertReceiptSql)) {
+        // Lấy ID của phiếu nhập mới tạo
+        $receiptID = mysqli_insert_id($conn);
+
+        // Lấy danh sách sản phẩm từ bảng goodreceipt_item dựa trên receiptID
+        $query = "SELECT * FROM goodreceipt_item WHERE ReceiptID = $receiptID";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $productID = $row['ProductID'];
+                $quantity = $row['Quantity'];
+
+                // Kiểm tra sản phẩm có trong bảng product hay không
+                $checkProductQuery = "SELECT * FROM product WHERE ProductID = $productID";
+                $productResult = mysqli_query($conn, $checkProductQuery);
+
+                if (mysqli_num_rows($productResult) > 0) {
+                    // Sản phẩm đã tồn tại, thực hiện cập nhật số lượng
+                    $updateQuery = "UPDATE product SET Quantity = Quantity + $quantity WHERE ProductID = $productID";
+                    mysqli_query($conn, $updateQuery);
+                } else {
+                    // Sản phẩm chưa tồn tại, thực hiện thêm mới
+                    $insertQuery = "INSERT INTO product (ProductID, Quantity) VALUES ($productID, $quantity)";
+                    mysqli_query($conn, $insertQuery);
+                }
+            }
+        }
+
+        // Thực hiện xong, có thể thông báo thành công cho người dùng
+        echo "Receipt created successfully.";
+    } else {
+        // Đã xảy ra lỗi khi tạo phiếu nhập
+        echo "Error creating receipt: " . mysqli_error($conn);
+    }
+}
+
+
+
+
