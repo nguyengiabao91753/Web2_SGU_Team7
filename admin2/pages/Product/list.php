@@ -155,7 +155,7 @@ require_once('../backend/Userfunction.php');
         var rowofPage = $(".custom-select").val();
         $.ajax({
             url: '../backend/Product.php',
-            type: 'get',
+            type: 'post',
             data: {
                 rowofPage: rowofPage
             },

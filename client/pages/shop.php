@@ -25,10 +25,6 @@ $cates = getAllCategory();
             },
             // dataType: 'json',
             success: function(response) {
-                //alert('fsgfhsdg');
-                //$(".row.showsp").append('<h1>hello</h1>');
-                // $(".row.showsp").empty();
-                $(".row.showsp").find(":contains('112')").remove();
                 $(".row.showsp").html(response);
                
                 $(".pagination .page-item").removeClass("active");
@@ -72,7 +68,7 @@ $cates = getAllCategory();
         var rowofPage = 4;
         $.ajax({
             url: '../backend/Product.php',
-            type: 'get',
+            type: 'post',
             data: {
                 rowofPage: rowofPage
             },
@@ -369,10 +365,9 @@ $cates = getAllCategory();
 
                 </div>
                 <div class="row">
-        
                     <div class="col-sm-12 col-md-7">
-                        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                            <ul class="pagination" style="float: right; margin-right: 4%;">
+                        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate" style="margin-left: 500px;">
+                            <ul class="pagination">
                                 <!-- <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#" class="page-link">Previous</a></li>
                                 <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
                                 <li class="paginate_button page-item next disabled" id="example1_next"><a href="#" class="page-link">Next</a></li> -->
