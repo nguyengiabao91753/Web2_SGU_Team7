@@ -13,8 +13,9 @@ if (isset($_POST['add_product'])){
     deleteProduct($_GET['delete_product']);
 } else if (isset($_POST['update_product'])) {
     updateProduct();
-} else if (isset($_GET['ProductDetails'])){
-    
+} else if (isset($_GET['cate'])) {
+    $kq = getProByCate($_GET['cate']);
+    LoadProductClient($kq);
 }
 //Lấy tất cả sản phẩm
     function getAll_Product(){
@@ -236,7 +237,7 @@ if (isset($_POST['ProductID'])) {
                             $html .= '<td>'.$sp['TotalQuantity'].'</td>';
                             $html .= '<td>
                                         <div class="proddetails">
-                                            <a href="../admin2/index.php?id='.$sp['ProductID'].'&page=Product/details">Details</a>
+                                            <a href="../admin2/index.php?page=Product/details&id='.$sp['ProductID'].'">Details</a>
                                         </div>
                                     </td>';
                             $html .= '<td>
@@ -260,7 +261,9 @@ if (isset($_POST['ProductID'])) {
         $cc = '';
 
                     foreach ($kq as $sp) {
-                        $cc .= '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">';
+                        $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
+                        
+                        $cc .= '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" id="'.$Name.'">';
                         $cc .= '<a href="index.php?content=pages/product-detail.php">';
                         $cc .= '<div class="block2">';
                         $cc .= '<div class="block2-pic hov-img0">';
@@ -283,4 +286,26 @@ if (isset($_POST['ProductID'])) {
     //$cc = '';
                     return $cc;
     }
+
+    function getProByCate($cate){
+        if (isset($_POST['cate'])) {
+            global $conn;
+            $sql = "SELECT * FROM products WHERE Status = 1 AND CategoryID = $cate";
+            $result = $conn->query($sql);
+    
+            // Kiểm tra truy vấn
+            if (!$result) {
+                die("Truy vấn không thành công: " . $conn->error);
+            }
+            $kq = [];
+    
+            // Lấy từng dòng một từ kết quả
+            while ($row = $result->fetch_assoc()) {
+                $kq[] = $row;
+            }
+    
+            return $kq;
+        }
+    }
+
 ?>

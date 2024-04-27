@@ -56,6 +56,28 @@ if (isset($_GET['id'])) {
             <label for="">Product name</label>
         </div>
 
+        <div class="row">
+            <div class ="col-md-3">
+                <label for="">Feature</label>
+                <i></i>
+            </div>
+
+            <div class ="col-md-3">
+                <label for="">Color</label>
+                <i></i>
+            </div>
+
+            <div class ="col-md-3">
+                <label for="">Price</label>
+                <i></i>
+            </div>
+
+            <div class ="col-md-3">
+                <label for="">Size</label>
+                <i></i>
+            </div>
+        </div>
+
         <div>
             <label for="">Description</label>
             <i></i>
