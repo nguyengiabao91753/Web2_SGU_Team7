@@ -101,23 +101,23 @@
              <p>
                Order
                <i class="right fas fa-angle-left"></i>
-             </p>
+             </p> 
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="" class="nav-link">
+               <a href="index.php?page=pages/order/order&status=1" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Pending</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="" class="nav-link">
+               <a href="index.php?page=pages/order/order&status=2" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Delivering</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="" class="nav-link">
+               <a href="index.php?page=pages/order/order&status=3" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Delivered</p>
                </a>

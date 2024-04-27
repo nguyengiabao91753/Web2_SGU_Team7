@@ -145,7 +145,7 @@ function updateAccountInfo() {
             console.log(response);
             if (response.success) {
                 alert('Cập nhật thành công');
-                // window.location.reload();
+                 window.location.reload();
             } else {
                 alert('Có lỗi xảy ra: ' + response.message);
             }
