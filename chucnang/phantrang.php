@@ -32,13 +32,8 @@ if (mysqli_num_rows($result) > 0) {
         $html='';
         $html = loadSupplierData($result);
     } else if ($tableName == 'products') {
-        if($key == 'client'){
         $html = '';
-        $html =LoadProductClient($result);
-        }else{
-            $html = '';
-            $html =loadProductData($result);
-        }
+        $html =loadProductData();
     } else if($tableName=='goodsreceipt_items'){
         
     }

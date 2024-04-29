@@ -13,8 +13,6 @@ if (isset($_POST['add_product'])){
     deleteProduct($_GET['delete_product']);
 } else if (isset($_POST['update_product'])) {
     updateProduct();
-} else if (isset($_GET['ProductDetails'])){
-    
 }
 //Lấy tất cả sản phẩm
     function getAll_Product(){
@@ -83,6 +81,7 @@ if (isset($_POST['add_product'])){
     {
         global $conn;
         if (isset($_POST['ProductID'])) {
+            echo'<script>alert('.$_POST['ProductID'].')</script>';
             $series =$_POST['series'] ;
             $ProductID = $_POST['ProductID'];
             $CategoryID = $_POST['CategoryID'];
@@ -214,12 +213,12 @@ if (isset($_POST['ProductID'])) {
         $searchText = $_POST['searchText'];
         $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
         $result = mysqli_query($conn, $query);
-        echo loadProductData($result);
+        echo loadProductData();
     }
 //Hiển thị sản phẩm
-    function loadProductData($kq) {
+    function loadProductData() {
         $html = '';
-                    //$kq = getAll_Product();
+                    $kq = getAll_Product();
                     
                         foreach ($kq as $sp) {
                             $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
@@ -236,7 +235,7 @@ if (isset($_POST['ProductID'])) {
                             $html .= '<td>'.$sp['TotalQuantity'].'</td>';
                             $html .= '<td>
                                         <div class="proddetails">
-                                            <a href="../admin2/index.php?id='.$sp['ProductID'].'&page=Product/details">Details</a>
+                                            <a href="index.php?page=Product/details" id="details" name="details">Details</a>
                                         </div>
                                     </td>';
                             $html .= '<td>
@@ -254,33 +253,5 @@ if (isset($_POST['ProductID'])) {
                             $html .= '</tr>';
                         }
                         return $html;
-    }
-
-    function LoadProductClient ($kq){
-        $cc = '';
-
-                    foreach ($kq as $sp) {
-                        $cc .= '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">';
-                        $cc .= '<a href="index.php?content=pages/product-detail.php">';
-                        $cc .= '<div class="block2">';
-                        $cc .= '<div class="block2-pic hov-img0">';
-                        $cc .= '<img src="' . $sp['Image'] . '" alt="IMG-PRODUCT" style="width: 270px; height: 330px;">';
-                        $cc .= '</div>';
-                        $cc .= '<div class="block2-txt flex-w flex-t p-t-14">';
-                        $cc .= '<div class="block2-txt-child1 flex-col-l ">';
-                        $cc .= '<a href="index.php?content=pages/product-detail.php" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">';
-                        $cc .= $sp['ProductName'];
-                        $cc .= '</a>';
-                        $cc .= '<span class="stext-105 cl3">';
-                        $cc .= $sp['Price'];
-                        $cc .= '</span>';
-                        $cc .= '</div>';
-                        $cc .= '</div>';
-                        $cc .= '</div>';
-                        $cc .= '</a>';
-                        $cc .= '</div>';
-                    }
-    //$cc = '';
-                    return $cc;
     }
 ?>

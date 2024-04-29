@@ -102,7 +102,11 @@ require_once('../backend/Userfunction.php');
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
+<<<<<<< HEAD
+                tableName: "goodsreceipt",
+=======
                 tableName: "products",
+>>>>>>> 76686f195879ea6c4c706c8014151f306a1c29d4
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
                 ID: "ProductID"
