@@ -156,8 +156,10 @@ require_once('../backend/Userfunction.php');
         $.ajax({
             url: '../backend/Product.php',
             type: 'post',
+            
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key : 'countproducts'
             },
             success: function(response) {
                 //alert(response);

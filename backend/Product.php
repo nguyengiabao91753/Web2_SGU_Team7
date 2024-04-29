@@ -3,6 +3,7 @@
 //  session_start();
 
 require_once '../db.php';
+require_once 'Category.php';
 $db = new DbConnect();
 //global $conn;
 $conn=$db->getConnect();
@@ -203,7 +204,7 @@ if (isset($_POST['ProductID'])) {
 }
 
 //Xử lý ajax lấy số trang
-    if (isset($_POST['rowofPage'])) {
+    if (isset($_POST['key']) && $_POST['key'] == "countproducts") {
         $rowofPage = $_POST['rowofPage'];
         $total = countProduct();
         $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
@@ -216,6 +217,19 @@ if (isset($_POST['ProductID'])) {
         $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
         $result = mysqli_query($conn, $query);
         echo loadProductData($result);
+    }
+
+// Xử lý ajax show sp khi click cate
+    if(isset($_POST['key']) && $_POST['key'] == 'cate-click'){
+    $CategoryID = $_POST['CategoryID'];
+    $query = "SELECT * FROM products WHERE CategoryID = $CategoryID";
+    $rs = mysqli_query($conn, $query);
+    $html = LoadProductClient($rs);
+    if(mysqli_num_rows($rs) >0){
+
+        echo $html;
+    } else
+    echo "failed";
     }
 //Hiển thị sản phẩm
     function loadProductData($kq) {
@@ -264,7 +278,7 @@ if (isset($_POST['ProductID'])) {
                         $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
                         
                         $cc .= '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" id="'.$Name.'">';
-                        $cc .= '<a href="index.php?content=pages/product-detail.php">';
+                        $cc .= '<a href="index.php?content=pages/product-detail.php&id='.$sp['ProductID'].'">';
                         $cc .= '<div class="block2">';
                         $cc .= '<div class="block2-pic hov-img0">';
                         $cc .= '<img src="' . $sp['Image'] . '" alt="IMG-PRODUCT" style="width: 270px; height: 330px;">';

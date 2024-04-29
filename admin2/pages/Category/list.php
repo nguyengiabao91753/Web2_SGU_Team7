@@ -116,7 +116,8 @@ $CountCate =  countCate();
             url: '../backend/Category.php',
             type: 'post',
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key : 'countcates'
             },
             success: function(response) {
                 //alert(response);

@@ -105,7 +105,8 @@ require_once('../backend/Userfunction.php');
                 tableName: "products",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "ProductID"
+                ID: "ProductID",
+                key:""
             },
             // dataType: 'json',
             success: function(response) {
