@@ -32,7 +32,7 @@ if (mysqli_num_rows($result) > 0) {
         $html='';
         $html = loadSupplierData($result);
     } else if ($tableName == 'products') {
-        //$key=$_GET['key'];
+        $key=$_GET['key'];
         if($key == 'client'){
         $html = '';
         $html =LoadProductClient($result);
