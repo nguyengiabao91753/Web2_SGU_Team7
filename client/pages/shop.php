@@ -5,7 +5,10 @@ require_once '../backend/Category.php';
 
 $cates = getAllCategory();
 ?>
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+
 <script>
+    
     //phân trang đê
 
 
@@ -25,6 +28,7 @@ $cates = getAllCategory();
             },
             // dataType: 'json',
             success: function(response) {
+                $(".row.showsp").append('<p>hello</p>');
                 $(".row.showsp").html(response);
 
                 $(".pagination .page-item").removeClass("active");
@@ -89,8 +93,6 @@ $cates = getAllCategory();
     }
 
     $(document).ready(function() {
-
-
 
         countPage();
         loadData(1);
@@ -386,7 +388,7 @@ $cates = getAllCategory();
         </div>
 
         <div class="row showsp">
-
+            
         </div>
         <div class="row">
             <div class="col-sm-12 col-md-7">
