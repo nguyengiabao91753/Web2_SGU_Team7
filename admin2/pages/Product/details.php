@@ -81,4 +81,8 @@ if (isset($_GET['id'])) {
 
 <div>
     
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> d53bc770515dc43f09da08a50ea2fdc62afb8c38

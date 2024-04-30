@@ -151,29 +151,23 @@
          </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Warehouse')) :  ?>
-          <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-users"></i>
-             <p>
-               Warehouse
-               <i class="right fas fa-angle-left"></i>
-             </p>
-           </a>
-           <ul class="nav nav-treeview">
-             <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Import</p>
-               </a>
-             </li>
-             <li class="nav-item">
-               <a href="" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>List</p>
-               </a>
-             </li>
-           </ul>
-         </li>
+           <li class="nav-item">
+             <a href="#" class="nav-link">
+               <i class="nav-icon fas fa-users"></i>
+               <p>
+                 Warehouse
+                 <i class="right fas fa-angle-left"></i>
+               </p>
+             </a>
+             <ul class="nav nav-treeview">
+               <li class="nav-item">
+                 <a href="index.php?page=Warehouse_demo/list" class="nav-link">
+                   <i class="far fa-circle nav-icon"></i>
+                   <p>List</p>
+                 </a>
+               </li>
+             </ul>
+           </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Supplier')) :  ?>
            <li class="nav-item">
