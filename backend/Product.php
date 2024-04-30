@@ -326,7 +326,8 @@ if (isset($_POST['ProductID'])) {
         global $conn;
             $sql = "SELECT * FROM products WHERE Status = 1 AND Feature = 'Feature'";
             $result = $conn->query($sql);
-    
+
+            //test func
             // Kiểm tra truy vấn
             if (!$result) {
                 die("Truy vấn không thành công: " . $conn->error);
