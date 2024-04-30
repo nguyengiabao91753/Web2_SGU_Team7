@@ -114,9 +114,10 @@ $CountCate =  countCate();
         var rowofPage = $(".custom-select").val();
         $.ajax({
             url: '../backend/Category.php',
-            type: 'get',
+            type: 'post',
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key : 'countcates'
             },
             success: function(response) {
                 //alert(response);

@@ -3,6 +3,7 @@
 //  session_start();
 
 require_once '../db.php';
+require_once 'Category.php';
 $db = new DbConnect();
 //global $conn;
 $conn=$db->getConnect();
@@ -13,6 +14,9 @@ if (isset($_POST['add_product'])){
     deleteProduct($_GET['delete_product']);
 } else if (isset($_POST['update_product'])) {
     updateProduct();
+} else if (isset($_GET['cate'])) {
+    $kq = getProByCate($_GET['cate']);
+    LoadProductClient($kq);
 }
 //Lấy tất cả sản phẩm
     function getAll_Product(){
@@ -81,7 +85,6 @@ if (isset($_POST['add_product'])){
     {
         global $conn;
         if (isset($_POST['ProductID'])) {
-            echo'<script>alert('.$_POST['ProductID'].')</script>';
             $series =$_POST['series'] ;
             $ProductID = $_POST['ProductID'];
             $CategoryID = $_POST['CategoryID'];
@@ -201,8 +204,8 @@ if (isset($_POST['ProductID'])) {
 }
 
 //Xử lý ajax lấy số trang
-    if (isset($_GET['rowofPage'])) {
-        $rowofPage = $_GET['rowofPage'];
+    if (isset($_POST['key']) && $_POST['key'] == "countproducts") {
+        $rowofPage = $_POST['rowofPage'];
         $total = countProduct();
         $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
         echo $page;
@@ -213,12 +216,25 @@ if (isset($_POST['ProductID'])) {
         $searchText = $_POST['searchText'];
         $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
         $result = mysqli_query($conn, $query);
-        echo loadProductData();
+        echo loadProductData($result);
+    }
+
+// Xử lý ajax show sp khi click cate
+    if(isset($_POST['key']) && $_POST['key'] == 'cate-click'){
+    $CategoryID = $_POST['CategoryID'];
+    $query = "SELECT * FROM products WHERE CategoryID = $CategoryID";
+    $rs = mysqli_query($conn, $query);
+    $html = LoadProductClient($rs);
+    if(mysqli_num_rows($rs) >0){
+
+        echo $html;
+    } else
+    echo "failed";
     }
 //Hiển thị sản phẩm
-    function loadProductData() {
+    function loadProductData($kq) {
         $html = '';
-                    $kq = getAll_Product();
+                    //$kq = getAll_Product();
                     
                         foreach ($kq as $sp) {
                             $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
@@ -235,7 +251,7 @@ if (isset($_POST['ProductID'])) {
                             $html .= '<td>'.$sp['TotalQuantity'].'</td>';
                             $html .= '<td>
                                         <div class="proddetails">
-                                            <a href="index.php?page=Product/details" id="details" name="details">Details</a>
+                                            <a href="../admin2/index.php?page=Product/details&id='.$sp['ProductID'].'">Details</a>
                                         </div>
                                     </td>';
                             $html .= '<td>
@@ -254,4 +270,56 @@ if (isset($_POST['ProductID'])) {
                         }
                         return $html;
     }
+
+    function LoadProductClient ($kq){
+        $cc = '';
+
+                    foreach ($kq as $sp) {
+                        $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
+                        
+                        $cc .= '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" id="'.$Name.'">';
+                        $cc .= '<a href="index.php?content=pages/product-detail.php&id='.$sp['ProductID'].'">';
+                        $cc .= '<div class="block2">';
+                        $cc .= '<div class="block2-pic hov-img0">';
+                        $cc .= '<img src="' . $sp['Image'] . '" alt="IMG-PRODUCT" style="width: 270px; height: 330px;">';
+                        $cc .= '</div>';
+                        $cc .= '<div class="block2-txt flex-w flex-t p-t-14">';
+                        $cc .= '<div class="block2-txt-child1 flex-col-l ">';
+                        $cc .= '<a href="index.php?content=pages/product-detail.php" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">';
+                        $cc .= $sp['ProductName'];
+                        $cc .= '</a>';
+                        $cc .= '<span class="stext-105 cl3">';
+                        $cc .= $sp['Price'];
+                        $cc .= '</span>';
+                        $cc .= '</div>';
+                        $cc .= '</div>';
+                        $cc .= '</div>';
+                        $cc .= '</a>';
+                        $cc .= '</div>';
+                    }
+    //$cc = '';
+                    return $cc;
+    }
+
+    function getProByCate($cate){
+        if (isset($_POST['cate'])) {
+            global $conn;
+            $sql = "SELECT * FROM products WHERE Status = 1 AND CategoryID = $cate";
+            $result = $conn->query($sql);
+    
+            // Kiểm tra truy vấn
+            if (!$result) {
+                die("Truy vấn không thành công: " . $conn->error);
+            }
+            $kq = [];
+    
+            // Lấy từng dòng một từ kết quả
+            while ($row = $result->fetch_assoc()) {
+                $kq[] = $row;
+            }
+    
+            return $kq;
+        }
+    }
+
 ?>

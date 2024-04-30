@@ -38,7 +38,7 @@ array_push($jsStack, '
 ?>
 <?php
 
-require_once('../backend/Supplier.php');
+require_once('../backend/Order.php');
 
 
 
@@ -56,14 +56,16 @@ require_once('../backend/Supplier.php');
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "suppliers",
+                tableName: "orders",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "SuppliId"
+                ID: "SuppliId",
+                key: "pending"
             },
             // dataType: 'json',
             success: function(response) {
                 $("tbody").html(response);
+
 
                 $(".pagination .page-item").removeClass("active");
 
@@ -106,10 +108,11 @@ require_once('../backend/Supplier.php');
         var rowofPage = $(".custom-select").val();
         
         $.ajax({
-            url: '../backend/Supplier.php',
-            type: 'post',
+            url: '../backend/Order.php',
+            type: 'get',
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key: 'countorder'
             },
             success: function(response) {
                 //alert(response);
@@ -145,7 +148,7 @@ require_once('../backend/Supplier.php');
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/Supplier.php',
+                url: '../backend/Order.php',
                 type: 'post',
                 data: {
                     searchText: searchText
@@ -172,7 +175,7 @@ require_once('../backend/Supplier.php');
             url: '../chucnang/update.php',
             type: 'post',
             data: {
-                tableName: 'suppliers',
+                tableName: 'orders',
                 Id: parseInt(suppId)
             },
             dataType: 'json',
@@ -257,52 +260,6 @@ require_once('../backend/Supplier.php');
 
 
 <div class="card">
-    <!--addButton and searchButton-->
-    <div class="addform">
-        <button id="addbutton" class="btn btn-tool">
-            <i class="fa fa-plus-square"></i> <b>Add</b>
-        </button>
-        <!--addForm-->
-        <form method="post" action="../backend/Supplier.php" id="formadd">
-            <!-- Default box -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Supplier create</h3>
-                    <input type="text" value="" id="inpSupID" name="SuppliId" hidden>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" id="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter Supplier Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email"  required>
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" id="address" class="form-control" placeholder="Enter Address" name="address" required>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <input type="submit" class="btn btn-primary" name="add_supplier" id="" value="Submit">
-                </div>
-            </div>
-
-            <!-- /.card -->
-        </form>
-
-    </div>
 
     <div class="card-header">
         <!-- <h3>List</h3> -->

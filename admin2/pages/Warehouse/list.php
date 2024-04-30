@@ -1,3 +1,4 @@
+
 <?php
 array_push($cssStack, '<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">');
 array_push($cssStack, '<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">');
@@ -102,14 +103,11 @@ require_once('../backend/Userfunction.php');
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-<<<<<<< HEAD
-                tableName: "goodsreceipt",
-=======
                 tableName: "products",
->>>>>>> 76686f195879ea6c4c706c8014151f306a1c29d4
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "ProductID"
+                ID: "ProductID",
+                key:""
             },
             // dataType: 'json',
             success: function(response) {

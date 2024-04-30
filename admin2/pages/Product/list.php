@@ -56,6 +56,7 @@ require_once('../backend/Userfunction.php');
         var addForm = $("#formadd");
 
         addButton.click(function() {
+            document.querySelector("#formadd").reset();
             addForm.slideDown(); // Sử dụng .show() của jQuery để hiển thị form
         });
     });
@@ -66,6 +67,7 @@ require_once('../backend/Userfunction.php');
 
         removeButton.click(function() {
             addForm.slideToggle();
+            document.querySelector("#formadd").reset();
             addForm.find('input[value="Submit"]').attr('name', 'add_product');
         });
 
@@ -105,7 +107,8 @@ require_once('../backend/Userfunction.php');
                 tableName: "products",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "ProductID"
+                ID: "ProductID",
+                key:"admin"
             },
             // dataType: 'json',
             success: function(response) {
@@ -152,9 +155,11 @@ require_once('../backend/Userfunction.php');
         var rowofPage = $(".custom-select").val();
         $.ajax({
             url: '../backend/Product.php',
-            type: 'get',
+            type: 'post',
+            
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key : 'countproducts'
             },
             success: function(response) {
                 //alert(response);
@@ -231,8 +236,9 @@ require_once('../backend/Userfunction.php');
                     alert('wrong');
                 } else {
                     var addForm = $("#formadd");
+                    //alert(response['data'].CategoryID);
                     addForm.find('input[id="inpproductID"]').val(response['data'].ProductID);
-                    addForm.find('select[name="CategoryID"]').val(response['data'].products).find('option[value="' + response['data'].CategoryID + '"]').prop('selected', true);
+                    addForm.find('select[name="CategoryID"]').val(response['data'].CategoryID).find('option[value="' + response['data'].CategoryID + '"]').prop('selected', true);
                     addForm.find('input[id="productname"]').val(response['data'].ProductName);
                     addForm.find('input[id="series"]').val(response['data'].Series);
                     addForm.find('input[id="uploadimg"]').val(response['data'].Image);

@@ -17,7 +17,7 @@ if (isset($_POST['add_category'])) {
     deleteCategory($_GET['delete_category']);
 }
 //Xử lý ajax lấy số trang
-if (isset($_GET['rowofPage'])) {
+if (isset($_POST['key']) && $_POST['key'] == "countcates") {
     $rowofPage =(int) $_GET['rowofPage'];
     $total = countCate();
     $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
@@ -205,3 +205,4 @@ function loadCateData($result)
 
     return $html;
 }
+?>
