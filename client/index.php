@@ -5,7 +5,7 @@
  $cssStack =[];
  $jsStack =[];
  $selectedContent = isset($_GET['content']) ? $_GET['content'] : 'index';
- $contentPath = "$selectedContent";
+ $contentPath = "pages/$selectedContent.php";
 include("layouts/header.php"); 
 
 ?>

@@ -61,7 +61,7 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Category/list" class="nav-link">
+               <a href="index.php?page=Category/list" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
@@ -99,19 +99,19 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/order/order&status=1" class="nav-link">
+               <a href="index.php?page=order/order&status=1" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Pending</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=pages/order/order&status=2" class="nav-link">
+               <a href="index.php?page=order/order&status=2" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Delivering</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=pages/order/order&status=3" class="nav-link">
+               <a href="index.php?page=order/order&status=3" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Delivered</p>
                </a>
@@ -130,19 +130,19 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Customer/create" class="nav-link">
+               <a href="index.php?page=Customer/create" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Create</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=pages/Customer/list" class="nav-link">
+               <a href="index.php?page=Customer/list" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=pages/Customer/account" class="nav-link">
+               <a href="index.php?page=Customer/account" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Account</p>
                </a>
@@ -199,7 +199,7 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=pages/Feature/modify" class="nav-link">
+               <a href="index.php?page=Feature/modify" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Modify</p>
                </a>

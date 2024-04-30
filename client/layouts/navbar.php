@@ -32,7 +32,7 @@
 			<nav class="limiter-menu-desktop container">
 
 				<!-- Logo desktop -->
-				<a href="index.php" class="logo">
+				<a href="index" class="logo">
 					<img src="images/icons/logo-01.png" alt="IMG-LOGO">
 				</a>
 
@@ -40,7 +40,7 @@
 				<div class="menu-desktop">
 					<ul class="main-menu">
 						<li class="active-menu">
-							<a href="index.php">Home</a>
+							<a href="index">Home</a>
 							<!-- <ul class="sub-menu">
 									<li><a href="index.html">Homepage 1</a></li>
 									<li><a href="home-02.html">Homepage 2</a></li>
@@ -49,23 +49,23 @@
 						</li>
 
 						<li>
-							<a href="?content=pages/shop.php">Shop</a>
+							<a href="?content=shop">Shop</a>
 						</li>
 
 						<li class="label1" data-label1="hot">
-							<a href="?content=pages/shopping-cart.php">Features</a>
+							<a href="?content=shopping-cart">Features</a>
 						</li>
 
 						<li>
-							<a href="?content=pages/blog.php">Blog</a>
+							<a href="?content=blog">Blog</a>
 						</li>
 
 						<li>
-							<a href="?content=pages/about.php">About</a>
+							<a href="?content=about">About</a>
 						</li>
 
 						<li>
-							<a href="?content=pages/contact.php">Contact</a>
+							<a href="?content=contact">Contact</a>
 						</li>
 					</ul>
 				</div>
@@ -155,7 +155,7 @@
 
 		<ul class="main-menu-m">
 			<li>
-				<a href="index.php">Home</a>
+				<a href="index">Home</a>
 				<!-- <ul class="sub-menu-m">
 						<li><a href="index.html">Homepage 1</a></li>
 						<li><a href="home-02.html">Homepage 2</a></li>
@@ -167,23 +167,23 @@
 			</li>
 
 			<li>
-				<a href="?content=pages/shop.php">Shop</a>
+				<a href="?content=shop">Shop</a>
 			</li>
 
 			<li>
-				<a href="?content=pages/shopping-cart.php" class="label1 rs1" data-label1="hot">Features</a>
+				<a href="?content=shopping-cart" class="label1 rs1" data-label1="hot">Features</a>
 			</li>
 
 			<li>
-				<a href="?content=pages/blog.php">Blog</a>
+				<a href="?content=blog">Blog</a>
 			</li>
 
 			<li>
-				<a href="?content=pages/about.php">About</a>
+				<a href="?content=about">About</a>
 			</li>
 
 			<li>
-				<a href="?content=pages/contact.php">Contact</a>
+				<a href="?content=contact">Contact</a>
 			</li>
 		</ul>
 	</div>
