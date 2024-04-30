@@ -42,7 +42,7 @@
        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
          <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-         <li class="nav-item">
+          <li class="nav-item">
            <a href="" class="nav-link">
              <i class="nav-icon fas fa-sitemap"></i>
              <p>
@@ -51,104 +51,104 @@
            </a>
          </li>
          <?php if (getFeaturebyName('Category')) :  ?>
-           <li class="nav-item">
-             <a href="#" class="nav-link">
-               <i class="nav-icon fas fa-sitemap"></i>
-               <p>
-                 Category
-                 <i class="right fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item">
-                 <a href="index.php?page=Category/list" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>List</p>
-                 </a>
-               </li>
-             </ul>
-           </li>
+          <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-sitemap"></i>
+             <p>
+               Category
+               <i class="right fas fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="index.php?page=pages/Category/list" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>List</p>
+               </a>
+             </li>
+           </ul>
+         </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Product')) :  ?>
-           <li class="nav-item">
-             <a href="#" class="nav-link">
-               <i class="nav-icon fas fa-box"></i>
-               <p>
-                 Product
-                 <i class="right fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item">
-                 <a href="index.php?page=Product/list" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>List</p>
-                 </a>
-               </li>
-             </ul>
-           </li>
+          <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-box"></i>
+             <p>
+               Product
+               <i class="right fas fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="index.php?page=Product/list" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>List</p>
+               </a>
+             </li>
+           </ul>
+         </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Order')) :  ?>
-           <li class="nav-item">
-             <a href="#" class="nav-link">
-               <i class="nav-icon fas fa-users"></i>
-               <p>
-                 Order
-                 <i class="right fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item">
-                 <a href="" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Pending</p>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a href="" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Delivering</p>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a href="" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Delivered</p>
-                 </a>
-               </li>
-             </ul>
-           </li>
+          <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-users"></i>
+             <p>
+               Order
+               <i class="right fas fa-angle-left"></i>
+             </p> 
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="index.php?page=pages/order/order&status=1" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Pending</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="index.php?page=pages/order/order&status=2" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Delivering</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="index.php?page=pages/order/order&status=3" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Delivered</p>
+               </a>
+             </li>
+           </ul>
+         </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Customer')) :  ?>
-           <li class="nav-item">
-             <a href="#" class="nav-link">
-               <i class="nav-icon fas fa-users"></i>
-               <p>
-                 Customer
-                 <i class="right fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item">
-                 <a href="index.php?page=Customer/create.php" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Create</p>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a href="index.php?page=Custpomer/list.php" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>List</p>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a href="" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Account</p>
-                 </a>
-               </li>
-             </ul>
-           </li>
+          <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-users"></i>
+             <p>
+               Customer
+               <i class="right fas fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="index.php?page=pages/Customer/create" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Create</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="index.php?page=pages/Customer/list" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>List</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="index.php?page=pages/Customer/account" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Account</p>
+               </a>
+             </li>
+           </ul>
+         </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Warehouse')) :  ?>
            <li class="nav-item">
@@ -189,23 +189,23 @@
            </li>
          <?php endif; ?>
          <?php if (getLevelbyUserId() == 'Admin') :  ?>
-           <li class="nav-item">
-             <a href="#" class="nav-link">
-               <i class="nav-icon fas fa-users"></i>
-               <p>
-                 Feature
-                 <i class="right fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item">
-                 <a href="index.php?page=Feature/modify" class="nav-link">
-                   <i class="far fa-circle nav-icon"></i>
-                   <p>Modify</p>
-                 </a>
-               </li>
-             </ul>
-           </li>
+          <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-users"></i>
+             <p>
+               Feature
+               <i class="right fas fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="index.php?page=pages/Feature/modify" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Modify</p>
+               </a>
+             </li>
+           </ul>
+         </li>
          <?php endif; ?>
        </ul>
      </nav>

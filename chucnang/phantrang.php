@@ -13,10 +13,13 @@ $pageNumber = isset($_GET['pageNumber']) ? (int)$_GET['pageNumber'] : 1;
 $rowofPage = isset($_GET['rowofPage']) ? (int)$_GET['rowofPage'] : 10;
 $rowStart = (int)(($pageNumber - 1) * $rowofPage);
 $ID = $_GET['ID'];
+if(isset($_GET['key'])){
 
+    $key=$_GET['key'];
+}
 
 $query = "SELECT * FROM $tableName
-        ORDER BY $ID
+        ORDER BY $ID desc
         Limit $rowStart, $rowofPage;";
 $result = mysqli_query($conn, $query);
 
@@ -29,7 +32,7 @@ if (mysqli_num_rows($result) > 0) {
         $html='';
         $html = loadSupplierData($result);
     } else if ($tableName == 'products') {
-        $key=$_GET['key'];
+        //$key=$_GET['key'];
         if($key == 'client'){
         $html = '';
         $html =LoadProductClient($result);
