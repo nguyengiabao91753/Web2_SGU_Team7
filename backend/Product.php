@@ -322,4 +322,22 @@ if (isset($_POST['ProductID'])) {
         }
     }
 
+    function getProByFeature (){
+        global $conn;
+            $sql = "SELECT * FROM products WHERE Status = 1 AND Feature = 'Feature'";
+            $result = $conn->query($sql);
+    
+            // Kiểm tra truy vấn
+            if (!$result) {
+                die("Truy vấn không thành công: " . $conn->error);
+            }
+            $kq = [];
+    
+            // Lấy từng dòng một từ kết quả
+            while ($row = $result->fetch_assoc()) {
+                $kq[] = $row;
+            }
+    
+            return $kq;
+    }
 ?>
