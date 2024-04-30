@@ -13,6 +13,7 @@ if (isset($_GET['key']) && $_GET['key'] =='countorder') {
     $total = countOrders();
     $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
     echo $page;
+    
 }
 
 

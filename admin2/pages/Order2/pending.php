@@ -66,6 +66,7 @@ require_once('../backend/Order.php');
             success: function(response) {
                 $("tbody").html(response);
 
+
                 $(".pagination .page-item").removeClass("active");
 
                 $(".pagination .page-item:contains(" + pageNumber + ")").addClass("active");

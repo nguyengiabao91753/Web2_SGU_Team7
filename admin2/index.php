@@ -10,7 +10,7 @@ ob_start();
   <?php
   $cssStack = [];
   $jsStack = [];
-  $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'pages/';
+  $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'pages/Statistical';
   $contentPath = "$selectedContent.php";
 
     require_once("layouts/head.php");
