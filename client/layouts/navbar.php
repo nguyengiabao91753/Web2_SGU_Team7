@@ -39,7 +39,7 @@
 				<!-- Menu desktop -->
 				<div class="menu-desktop">
 					<ul class="main-menu">
-						<li class="active-menu">
+						<li>
 							<a href="index.php">Home</a>
 							<!-- <ul class="sub-menu">
 									<li><a href="index.html">Homepage 1</a></li>

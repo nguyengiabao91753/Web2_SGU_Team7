@@ -13,6 +13,7 @@ if (isset($_GET['id'])) {
     echo '
     
     <div class="container">
+        <a class="btn btn-outline-info" href="../admin2/index.php?page=Product/list">Back</a>
         <h3>Product Information</h3>
         <div class="imgs">
             <!--Hinh anh cua sp-->
