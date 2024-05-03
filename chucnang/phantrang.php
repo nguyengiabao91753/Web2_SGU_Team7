@@ -37,10 +37,21 @@ if (mysqli_num_rows($result) > 0) {
         $html = loadSupplierData($result);
     } else if ($tableName == 'products') {
         $key=$_GET['key'];
-        if($key == 'client'){
-        $html =LoadProductClient($result);
-        }else{
-            $html =loadProductData($result);
+        switch ($key) {
+            case 'client':
+                $html = '';
+                $html = LoadProductClient($result);
+                break;
+
+            case 'feature':
+                $result = getProByFeature();
+                $html = '';
+                $html = LoadProductClient($result);
+                break;
+            case 'admin':
+                $html = '';
+                $html = loadProductData($result);
+                break;
         }
     } else if($tableName=='goodsreceipt_items'){
         

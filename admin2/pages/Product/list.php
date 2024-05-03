@@ -380,8 +380,8 @@ require_once('../backend/Userfunction.php');
                                 <label>Feature</label>
                                 <br>
                                 <select name="feature" id="feature">
-                                    <option class="form-control">Feature</option>
-                                    <option  class="form-control">None</option>
+                                    <option class="form-control">None</option>
+                                    <option  class="form-control">Feature</option>
                                 </select>
                                 </div>
                         </div>
