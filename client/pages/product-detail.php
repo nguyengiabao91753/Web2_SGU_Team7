@@ -5,6 +5,61 @@ $sp = getProByID($_GET['id']);
 $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
 $pro = getProBySeries($_GET['id']);
 ?>
+
+<script>
+    $(document).ready(function() {
+        // Xử lý sự kiện khi giá trị của input thay đổi
+        $('#num').change(function() {
+            var quantity = parseInt($(this).val());
+            updateButtons(quantity);
+            console.log(quantity);
+        });
+        // Hàm điều chỉnh sự hiển thị của các nút
+        function updateButtons(quantity) {
+            if (quantity <= 1) {
+                $('#decrease').addClass('disabled'); // Thêm lớp disabled
+                $('#decrease').prop('disabled', true); // Ngăn chặn sự kiện click  
+            } else {
+                $('#decrease').removeClass('disabled'); // Xóa lớp disabled
+                $('#decrease').prop('disabled', false); // Cho phép sự kiện click
+            }
+
+            if (quantity >= 1000) {
+                $('#increase').addClass('disabled'); // Thêm lớp disabled
+                $('#increase').prop('disabled', true); // Ngăn chặn sự kiện click
+            } else {
+                $('#increase').removeClass('disabled'); // Xóa lớp disabled
+                $('#increase').prop('disabled', false); // Cho phép sự kiện click
+            }
+        }
+
+        // Xử lý sự kiện khi nút giảm được nhấp
+        $('#decrease').click(function() {
+            var quantity = parseInt($('#num').val());
+            if (quantity > 1) {
+                quantity - 1; // Giảm giá trị
+                $('#num').val(quantity); // Cập nhật giá trị trong input
+                updateButtons(quantity); // Cập nhật sự hiển thị của các nút
+            } else {
+                $('#num').val(1); // Cập nhật giá trị trong input
+                updateButtons(1); // Cập nhật sự hiển thị của các nút
+            }
+        });
+
+        // Xử lý sự kiện khi nút giảm được nhấp
+        $('#increase').click(function() {
+            var quantity = parseInt($('#num').val());
+            if (quantity <= 1000) {
+                quantity + 1; // Giảm giá trị
+                $('#num').val(quantity); // Cập nhật giá trị trong input
+                updateButtons(quantity); // Cập nhật sự hiển thị của các nút
+            }
+        });
+    });
+</script>
+
+
+
 <style>
     #bread {
         margin-top: 80px;
@@ -13,7 +68,15 @@ $pro = getProBySeries($_GET['id']);
     .row {
         margin-bottom: 45px;
     }
+
+    .disabled {
+        opacity: 0.5;
+        /* Đặt độ mờ */
+        pointer-events: none;
+        /* Ngăn chặn sự kiện nhấp chuột */
+    }
 </style>
+
 <!-- breadcrumb -->
 <div class="container" id="bread">
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
@@ -32,6 +95,8 @@ $pro = getProBySeries($_GET['id']);
         </span>
     </div>
 </div>
+
+
 <?php
 echo '
                
@@ -94,13 +159,13 @@ echo '
                                         <div class="flex-w flex-r-m p-b-10">
                                             <div class="size-204 flex-w flex-m respon6-next">
                                                 <div class="wrap-num-product flex-w m-r-20 m-tb-10">
-                                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m disabled" id="decrease">
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
             
-                                                    <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1" disabled>
+                                                    <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1" id="num" disabled>
             
-                                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" id="increase">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                                     </div>
                                                 </div>
