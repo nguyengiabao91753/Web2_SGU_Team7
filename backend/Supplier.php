@@ -151,7 +151,7 @@ function loadSupplierData($result)
         $html .= '      </button>';
         $html .= '  </td>';
         $html .= '  <td>';
-        $html .= '    <a onclick="return confirmDelete()" href="../controller/SupplierController.php?delete_supplier=' . $supplier['SuppliId'] . '">';
+        $html .= '    <a onclick="return confirmDelete()" href="../backend/Supplier.php?delete_supplier=' . $supplier['SuppliId'] . '">';
         $html .= '      <button class="btn btn-danger">';
         $html .= '        <i class="far fa-trash-alt"></i>';
         $html .= '      </button>';

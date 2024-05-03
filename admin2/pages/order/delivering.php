@@ -60,7 +60,7 @@ require_once('../backend/Order.php');
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
                 ID: "OrderID",
-                key: "pending"
+                key: "delivered"
             },
             // dataType: 'json',
             success: function(response) {
@@ -285,6 +285,7 @@ require_once('../backend/Order.php');
             </div>
         </div>
     </div>
+
     <div class="card-body">
         <table id="example" class="table table-bordered table-striped">
             <thead>
@@ -294,8 +295,8 @@ require_once('../backend/Order.php');
                     <th>Total</th>
                     <th>Payment</th>
                     <th>Detail</th>
-                    <th>Approve orders</th>
-                    <th>Reject</th>
+                    <th>Done</th>
+                   
                 </tr>
             </thead>
             <tbody>
@@ -308,8 +309,8 @@ require_once('../backend/Order.php');
                     <th>Total</th>
                     <th>Payment</th>
                     <th>Detail</th>
-                    <th>Approve orders</th>
-                    <th>Reject</th>
+                    <th>Done</th>
+                    
                 </tr>
             </tfoot>
         </table>

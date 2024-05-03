@@ -18,7 +18,7 @@ function login(){
     global $conn;
     $email = $_POST['email'];
     $pass = $_POST['password'];
-    $query = "SELECT * FROM Accounts WHERE Username = '$email' AND Password = '$pass' LIMIT 1";
+    $query = "SELECT * FROM Accounts WHERE Username = '$email' AND Password = '$pass' AND Status==0 LIMIT 1";
     $rs = mysqli_query($conn,$query);
     
     if(mysqli_num_rows($rs)>0){
@@ -54,7 +54,7 @@ function loginclient(){
     global $conn;
     $email = $_POST['email'];
     $pass = $_POST['password'];
-    $query = "SELECT * FROM Accounts WHERE Username = '$email' AND Password = '$pass' LIMIT 1";
+    $query = "SELECT * FROM Accounts WHERE Username = '$email' AND Password = '$pass' AND Status == 0 LIMIT 1";
     $rs = mysqli_query($conn,$query);
     
     if(mysqli_num_rows($rs)>0){
@@ -82,7 +82,7 @@ function loginclient(){
         //return $user['UserID'];
        
     }
-    setcookie("err","Invalid Acount",time() + (86400 * 30), "/");
+    setcookie("err","Invalid Acount Or Lcked",time() + (86400 * 30), "/");
     header("Location: ../client/index.php");
     exit();
 }
