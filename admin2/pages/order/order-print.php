@@ -1,7 +1,7 @@
 <?php
-require_once '../backend/Order.php';
-require_once '../backend/Product.php';
-require_once '../backend/User.php';
+// require_once '../../../backend/Order.php';
+// require_once '../backend/Product.php';
+// require_once '../backend/User.php';
 
 
 $orderID = $_GET['Id'];
@@ -11,19 +11,9 @@ $cus = getCusbyId($order['UserID']);
 ?>
 
 <script>
-    function orderprint() {
-        $('.callout.callout-info').hide();
-        window.print()
-        event.preventDefault();
-        $('.callout.callout-info').show();
-        // window.addEventListener("load",function(event) {
-        // });
-
-        // window.onafterprint = function(event) {
-        //     event.preventDefault();
-        //     $('.callout.callout-info').show();
-        // };
-    }
+    
+        //$('.callout.callout-info').hide();
+        window.addEventListener("load", window.print());
 </script>
 
 <!-- Content Header (Page header) -->
@@ -48,8 +38,6 @@ $cus = getCusbyId($order['UserID']);
         <div class="row">
             <div class="col-12">
                 <div class="callout callout-info">
-                    <a href="#" onclick="history.back();"><button class="btn btn-info">Back</button></a>
-
                 </div>
 
 
@@ -70,7 +58,7 @@ $cus = getCusbyId($order['UserID']);
                         <div class="col-sm-4 invoice-col">
                             From
                             <address>
-                                <strong>COZA STORE, Inc.</strong><br>
+                                <strong>Admin, Inc.</strong><br>
                                 795 Folsom Ave, Suite 600<br>
                                 San Francisco, CA 94107<br>
                                 Phone: (804) 123-5432<br>
@@ -158,27 +146,6 @@ $cus = getCusbyId($order['UserID']);
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
-
-                    <!-- this row will not appear when printing -->
-                    <div class="row no-print">
-                        <div class="col-lg-12" style="height: 30px;">
-                            <a href="#" onclick="orderprint()" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-
-                            <?php
-                            if ($order['Status'] == 1) {
-                                echo "<span class='badge bg-primary float-right' style='height: 100%; font-size: large;'>Pending</span>";
-                            } else if ($order['Status'] == 2) {
-                                echo "<span class='badge bg-info text-dark float-right' style='height: 100%; font-size: large;'>Delivering</span>";
-                            } else if ($order['Status'] == 3) {
-                                echo "<span class='badge bg-secondary float-right' style='height: 100%; font-size: large;'>Done</span>";
-                            }
-                            ?>
-
-                            <span class="badge bg-light text-dark float-right" style="height: 100%; font-size: large;">
-                                Status:
-                            </span>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.invoice -->
             </div><!-- /.col -->

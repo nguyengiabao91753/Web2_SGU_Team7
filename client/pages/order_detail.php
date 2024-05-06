@@ -2,14 +2,31 @@
 require_once '../backend/Order.php';
 require_once '../backend/Product.php';
 require_once '../backend/User.php';
-
-
-$orderID = $_GET['Id'];
-$order = getOrderbyID($orderID);
-$items = getItemsbyOrderID($orderID);
-$cus = getCusbyId($order['UserID']);
-?>
-
+require_once '../backend/Account.php';
+if (isset($_COOKIE['client'])) {
+  $orders = getAllOrder();
+  $cus = getCusbyId($_COOKIE['client']);
+  $acc = getAccountByID($_COOKIE['client']);
+}
+?><style>
+  /* Ẩn chữ "Choose File" */
+  input[type="file"]::-webkit-file-upload-button {
+    display: none;
+    color: transparent;
+  }
+</style>
+<script>
+  function previewImage(input) {
+    var preview = document.getElementById('avatarPreview');
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
 <script>
     function orderprint() {
         $('.callout.callout-info').hide();
@@ -26,24 +43,11 @@ $cus = getCusbyId($order['UserID']);
     }
 </script>
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Order-detail</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Invoice</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
-<section class="content">
+<section class="bg0 p-t-104 p-b-116">
+  <div class="container">
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -185,4 +189,7 @@ $cus = getCusbyId($order['UserID']);
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </section>
-<!-- /.content -->
+      <!-- /.content -->
+    </div>
+  </div>
+</section>

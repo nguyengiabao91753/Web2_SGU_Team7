@@ -10,7 +10,7 @@ if (isset($_GET['lock_account'])) {
     lockUser($_GET['lock_account']);
 }
 if (isset($_GET['unlock_account'])) {
-    lockUser($_GET['unlock_account']);
+    unlockUser($_GET['unlock_account']);
 }
 
 //Xử lý ajax lấy số trang
@@ -175,7 +175,7 @@ function loadAccountEmp($rs)
 
 function isAccountIDExists($accountID)
 {
-    global $conn; // Chắc chắn rằng biến $conn đã được khai báo và là kết nối đến cơ sở dữ liệu
+    global $conn;
 
     // Truy vấn SQL để kiểm tra xem AccountID đã tồn tại hay chưa
     $query = "SELECT COUNT(*) AS count FROM accounts WHERE AccountID = ?";

@@ -60,7 +60,7 @@ require_once('../backend/Order.php');
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
                 ID: "OrderID",
-                key: "delivered"
+                key: "delivering"
             },
             // dataType: 'json',
             success: function(response) {

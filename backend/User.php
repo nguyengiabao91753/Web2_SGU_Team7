@@ -24,6 +24,8 @@ if (isset($_POST['add_user'])) {
     updateUser();
 } else if (isset($_GET['delete_user'])) {
     deleteUser($_GET['delete_user']);
+}else if (isset($_POST['clientsignup'])) {
+    signup();
 }
 
 
@@ -81,11 +83,69 @@ function getUserByID($ID)
     $user = mysqli_fetch_assoc($result);
     return $user;
 }
+function signup(){
+    global $conn;
+    if (isset($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['phone'], $_POST['address'])) {
+        $FirstName = $_POST['firstname'];
+        $LastName = $_POST['lastname'];
+        $Email = $_POST['email'];
+        $Phone = $_POST['phone'];
+        $Address = $_POST['address'];
+        $Levels = getAllLevel();
+        foreach($Levels as $level){
+            if($level['Name'] == 'User'){
+                $levelID = $level['LevelId'];
+            }
+        }
 
+        // Kiểm tra tính hợp lệ của email, số điện thoại và mật khẩu trước khi thêm vào cơ sở dữ liệu
+        if (!isValidEmail($Email)) {
+            setcookie("err", "Invalid email format!", time() + (86400 * 30), "/");
+           header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+        if (!isValidPhoneNumber($Phone)) {
+            setcookie("err", "Invalid phone number format!", time() + (86400 * 30), "/");
+           header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+
+        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
+        if (!isEmailAvailable($Email, $conn,0)) {
+            setcookie("err", "Email already exists!", time() + (86400 * 30), "/");
+           header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+
+        $sql = "INSERT INTO users (FirstName, LastName, Email, Phone, Address, Level) VALUES ('$FirstName', '$LastName', '$Email', '$Phone', '$Address', $levelID)";
+        if ($conn->query($sql) === TRUE) {
+            $userID = $conn->insert_id;
+            setcookie("success", "User added successfully!", time() + (86400 * 30), "/");
+            if(isset($_POST['password'])){
+                $password = $_POST['password'];
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $avatar = null;
+                $status = 1;
+                $createdAt = date('Y-m-d H:i:s');
+                $accountSql = "INSERT INTO accounts (AccountID, Username, Password, Avatar, Created_at, Status) VALUES ('$userID', '$Email', '$hashedPassword', '$avatar', '$createdAt', $status)";
+                if ($conn->query($accountSql) === TRUE){
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                }
+            }
+        } else {
+            setcookie("err", "User added failed!", time() + (86400 * 30), "/");
+        }
+    } else {
+        setcookie("err", "User added failed!", time() + (86400 * 30), "/");
+    }
+    //header("Location: ../admin2/index.php?page=Customer_backup/list");
+    header("Location: ../client/index.php");
+    exit();
+}
 function addUser()
 {
     global $conn;
-    if (isset($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['level'])) {
+    if (isset($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['phone'], $_POST['address'])) {
         $FirstName = $_POST['firstname'];
         $LastName = $_POST['lastname'];
         $Email = $_POST['email'];

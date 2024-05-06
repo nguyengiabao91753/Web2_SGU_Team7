@@ -1,7 +1,9 @@
 <?php
 require_once '../backend/Product.php';
 require_once '../backend/Category.php';
+
 $sp = getProByID($_GET['id']);
+
 $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
 $pro = getProBySeries($_GET['id']);
 ?>
@@ -14,6 +16,58 @@ $pro = getProBySeries($_GET['id']);
         margin-bottom: 45px;
     }
 </style>
+<script>
+    $(document).ready(function() {
+        // $('.js-addcart-detail').click(function() {
+
+
+        // });
+
+        $('.js-addcart-detail').each(function() {
+            $(this).on('click', function() {
+                <?php
+                if (!isset($_COOKIE['client'])) :
+                ?>
+                    alert("Hãy đăng nhập trước khi mua hàng");
+                    return false;
+                <?php endif; ?>
+                var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+
+                var buttonID = $(this).attr('id');
+                var productID = buttonID.split('-')[1];
+
+                var ProductID = parseInt(productID);
+                var Quantity = $('.num-product').val();
+                var Price = $('.pro-price').text();
+                //     alert(Quantity);
+                // alert(Price);
+
+                $.ajax({
+                    url: '../backend/Order.php',
+                    type: 'post',
+                    data: {
+                        ProductID: ProductID,
+                        Quantity: parseInt(Quantity),
+                        Price: parseInt(Price),
+                        key: 'add-order'
+                    },
+                    success: function(response) {
+                        // alert(response);
+                        if (response) {
+                            //alert("true");
+                            swal(nameProduct, "is added to cart !", "success");
+                        }
+                        else{
+                            //swal(nameProduct, "is added failed !", "error");
+                            alert(response);
+                        }
+                    }
+                });
+
+            });
+        });
+    });
+</script>
 <!-- breadcrumb -->
 <div class="container" id="bread">
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
@@ -61,8 +115,8 @@ echo '
                                         ' . $sp['ProductName'] . '
                                     </h4>
             
-                                    <span class="mtext-106 cl2">
-                                        $ ' . $sp['Price'] . '
+                                    $<span class="mtext-106 cl2 pro-price">
+                                         ' . $sp['Price'] . '
                                     </span>
             
                                     <p class="stext-102 cl3 p-t-23">
@@ -105,7 +159,8 @@ echo '
                                                     </div>
                                                 </div>
             
-                                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                                <button id="pro-' . $sp['ProductID'] . '" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail ">
+
                                                     Add to cart
                                                 </button>
                                             </div>

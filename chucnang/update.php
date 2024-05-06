@@ -72,7 +72,12 @@ else if ($_POST['tableName'] == 'products') {
 }else 
 if ($_POST['tableName'] == 'users'){
     $user = getCusbyId($Id);
-    $acc = getAccountByID($Id);
+   
+    if(!isAccountIDExists($Id)){
+        $acc['Password'] ="";
+    }else{
+        $acc = getAccountByID($Id);
+    }
     if(!empty($user)){
         $response['data'] = array(
             'userID'=> $user['UserID'],
