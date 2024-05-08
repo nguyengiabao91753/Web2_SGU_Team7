@@ -221,7 +221,12 @@ if (isset($_POST['searchText'])) {
     $searchText = $_POST['searchText'];
     $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
     $result = mysqli_query($conn, $query);
-    echo loadProductData($result);
+
+    if (isset($_POST['key']) && $_POST['key']=="search-admin") {
+        echo loadProductData($result);
+    } else {
+        echo LoadProductClient($result);
+    }
 }
 
 // Xử lý ajax show sp khi click cate
@@ -293,7 +298,7 @@ function LoadProductClient($kq)
         $cc .= '</div>';
         $cc .= '<div class="block2-txt flex-w flex-t p-t-14">';
         $cc .= '<div class="block2-txt-child1 flex-col-l ">';
-        $cc .= '<a href="index.php?content=product-detail&id='.$sp['ProductID'].'" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">';
+        $cc .= '<a href="index.php?content=product-detail&id=' . $sp['ProductID'] . '" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">';
         $cc .= $sp['ProductName'];
         $cc .= '</a>';
         $cc .= '<span class="stext-105 cl3">';
@@ -387,7 +392,7 @@ if (isset($_POST['key']) && $_POST['key'] == 'filter') {
 
     $res = filter();
     if ($res == null) {
-        $html= '<span id="annou">Product was not found</span>';
+        $html = '<span id="annou">Product was not found</span>';
         echo $html;
     } else {
         $html = LoadProductClient($res);
@@ -439,17 +444,16 @@ function filter()
             $sql .= " $and Feature ='$feature'";
         } elseif (!empty($price1) && !empty($price2)) {
             $sql .= " $and Feature ='$feature'";
-        }elseif (empty($color)) {
+        } elseif (!empty($color)) {
             $sql .= " $and Feature ='$feature'";
-        }
-         else {
-            $sql .= "Feature ='$feature'";
+        } else {
+            $sql .= " Feature ='$feature'";
         }
     }
     if (empty($categoryId) && empty($price1) && empty($price2) && empty($color) && empty($feature)) {
         $sql .= " 1";
     }
-
+    // echo $sql;
     $result = $conn->query($sql);
 
     // Kiểm tra truy vấn

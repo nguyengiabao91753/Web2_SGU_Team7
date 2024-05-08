@@ -128,7 +128,7 @@ $cates = getAllCategory();
 
     });
 
-
+    //filter
     $(document).ready(function() {
         // Bắt sự kiện click trên nút Filter
         $(".btn-outline-success").click(function() {
@@ -172,8 +172,7 @@ $cates = getAllCategory();
                 },
                 success: function(response) {
                     $(".row.showsp").html(response);
-
-                    $(".pagination .page-item").hide();
+                    $('.dataTables_paginate.paging_simple_numbers').hide();
                 }
             });
             $("#filter").slideToggle();
@@ -185,6 +184,31 @@ $cates = getAllCategory();
             // Reset các input radio
             $("input[type='radio']").prop("checked", false);
         });
+
+        //đây là search
+        $("#search-inp").change(function() {
+            var searchText = $(this).val();
+
+            if (searchText == "") {
+                return loadData(1);
+            }
+
+            $.ajax({
+                url: '../backend/Product.php',
+                type: 'post',
+                data: {
+                    searchText: searchText,
+                    key: "search-client"
+                },
+                //dataType: 'json',
+                success: function(response) {
+                    $('.row.showsp').html(response);
+                    $('.dataTables_paginate.paging_simple_numbers').hide();
+                }
+            });
+            $("#search").slideToggle();
+        });
+
     });
 </script>
 
@@ -256,13 +280,13 @@ $cates = getAllCategory();
             </div>
 
             <!-- Search product -->
-            <div class="dis-none panel-search w-full p-t-10 p-b-15">
+            <div class="dis-none panel-search w-full p-t-10 p-b-15" id="search">
                 <div class="bor8 dis-flex p-l-15">
                     <span class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                         <i class="zmdi zmdi-search"></i>
                     </span>
 
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
+                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search" id="search-inp">
 
                     <button class="flex-c-m stext-106 cl6 bor4 pointer hov-btn3 trans-04 btn btn-light">
                         <i class="cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
