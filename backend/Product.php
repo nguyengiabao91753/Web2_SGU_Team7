@@ -352,7 +352,8 @@ function getProByFeature()
     return $kq;
 }
 
-function getProBySeries($ID){
+function getProBySeries($ID)
+{
     global $conn;
     $sql = "SELECT * FROM products WHERE Series IN (
                                                         SELECT Series
@@ -373,10 +374,93 @@ function getProBySeries($ID){
     }
 
     //Xóa dòng dữ liệu có ID = ID sản phẩm
-    foreach ($kq as $key=> $sp){
-        if($sp['ProductID'] == $ID){
+    foreach ($kq as $key => $sp) {
+        if ($sp['ProductID'] == $ID) {
             unset($kq[$key]);
         }
+    }
+
+    return $kq;
+}
+
+if (isset($_POST['key']) && $_POST['key'] == 'filter') {
+
+    $res = filter();
+    if ($res == null) {
+        $html= '<span id="annou">Product was not found</span>';
+        echo $html;
+    } else {
+        $html = LoadProductClient($res);
+        echo $html;
+    }
+}
+function filter()
+{
+    global $conn;
+    if (isset($_POST['category'])) {
+        $categoryId = $_POST['category'];
+    }
+    if (isset($_POST['price1']) && isset($_POST['price2'])) {
+        $price1 = $_POST['price1'];
+        $price2 = $_POST['price2'];
+    }
+    if (isset($_POST['color'])) {
+        $color = $_POST['color'];
+    }
+    if (isset($_POST['feature'])) {
+        $feature = $_POST['feature'];
+    }
+
+
+
+    $sql = "SELECT * FROM products WHERE ";
+    $and = " AND";
+    if (!empty($categoryId)) {
+        $sql .= " CategoryID = $categoryId";
+    }
+    if (!empty($price1) && !empty($price2)) {
+        if (!empty($categoryId)) {
+            $sql .= " $and (Price BETWEEN $price1 AND $price2)";
+        } else {
+            $sql .= "(Price BETWEEN $price1 AND $price2)";
+        }
+    }
+    if (!empty($color)) {
+        if (!empty($categoryId)) {
+            $sql .= " $and Color ='$color'";
+        } elseif (!empty($price1) && !empty($price2)) {
+            $sql .= " $and Color ='$color'";
+        } else {
+            $sql .= "Color ='$color'";
+        }
+    }
+    if (!empty($feature)) {
+        if (!empty($categoryId)) {
+            $sql .= " $and Feature ='$feature'";
+        } elseif (!empty($price1) && !empty($price2)) {
+            $sql .= " $and Feature ='$feature'";
+        }elseif (empty($color)) {
+            $sql .= " $and Feature ='$feature'";
+        }
+         else {
+            $sql .= "Feature ='$feature'";
+        }
+    }
+    if (empty($categoryId) && empty($price1) && empty($price2) && empty($color) && empty($feature)) {
+        $sql .= " 1";
+    }
+
+    $result = $conn->query($sql);
+
+    // Kiểm tra truy vấn
+    if (!$result) {
+        die("Truy vấn không thành công: " . $conn->error);
+    }
+    $kq = [];
+
+    // Lấy từng dòng một từ kết quả
+    while ($row = $result->fetch_assoc()) {
+        $kq[] = $row;
     }
 
     return $kq;
