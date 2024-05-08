@@ -38,9 +38,9 @@ array_push($jsStack, '
 ?>
 <?php
 
-require_once('../backend/Order.php');
-
-
+require_once('../backend/User.php');
+require_once('../backend/Userfunction.php');
+$levels = getAllLevel();
 
 
 ?>
@@ -56,16 +56,15 @@ require_once('../backend/Order.php');
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "orders",
+                tableName: "users",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "OrderID",
-                key: "pending"
+                ID: "UserID",
+                key: 'emp'
             },
             // dataType: 'json',
             success: function(response) {
                 $("tbody").html(response);
-
 
                 $(".pagination .page-item").removeClass("active");
 
@@ -106,13 +105,13 @@ require_once('../backend/Order.php');
     //tính số trang
     function countPage() {
         var rowofPage = $(".custom-select").val();
-        
+        //alert(rowofPage);
         $.ajax({
-            url: '../backend/Order.php',
-            type: 'get',
+            url: '../backend/User.php',
+            type: 'post',
             data: {
                 rowofPage: rowofPage,
-                key: 'countorder'
+                key: 'countemppage'
             },
             success: function(response) {
                 //alert(response);
@@ -148,11 +147,10 @@ require_once('../backend/Order.php');
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/Order.php',
+                url: '../backend/User.php',
                 type: 'post',
                 data: {
-                    searchText: searchText,
-                    key : 1
+                    searchText: searchText
                 },
                 //dataType: 'json',
                 success: function(response) {
@@ -169,33 +167,34 @@ require_once('../backend/Order.php');
         $("#formadd").slideDown();
         //element.preventDefault();
 
-       
-        var suppId = $(element).attr('id').split('-')[1];
-        // alert(suppId);
+
+        var userId = element;
+        //alert(userId);
         $.ajax({
             url: '../chucnang/update.php',
             type: 'post',
             data: {
-                tableName: 'orders',
-                Id: parseInt(suppId)
+                tableName: 'users',
+                Id: element
             },
             dataType: 'json',
             success: function(response) {
 
-                if (response.error) {
-                
-                    alert('wrong');
-                } else {
+                // if (response.error) {
 
-                    var addForm = $("#formadd");
-                    addForm.find('input[id="inpSupID"]').val(response['data'].SuppliId);
-                    addForm.find('input[id="name"]').val(response['data'].Name);
-                    addForm.find('input[id="address"]').val(response['data'].Address);
-                    addForm.find('input[id="email"]').val(response['data'].Email);
-                    addForm.find('input[value="Submit"]').attr('name', 'update_supplier');
-
-
-                }
+                //     alert('wrong');
+                // } else {
+                //alert('vô');
+                var addForm = $("#formadd");
+                addForm.find('input[id="inpUserID"]').val(response['data'].userID);
+                addForm.find('input[id="firstname"]').val(response['data'].firstname);
+                addForm.find('input[id="lastname"]').val(response['data'].lastname);
+                addForm.find('input[name="phone"]').val(response['data'].phone);
+                addForm.find('input[id="address"]').val(response['data'].address);
+                addForm.find('input[name="email"]').val(response['data'].email);
+                addForm.find('input[name="password"]').val(response['data'].password);
+                addForm.find('input[value="Submit"]').attr('name', 'update_user');
+                // }
             },
             error: function(error) {
                 alert('errrr');
@@ -211,14 +210,20 @@ require_once('../backend/Order.php');
 
         addButton.click(function() {
             addForm.slideDown();
-            // addForm.find('input[value="Submit"]').attr('name', 'add_supplier');
-            // addForm.find('input[name="name"]').val('');
-            // addForm.find('input[name="email"]').val('');
-            // addForm.find('input[name="address"]').val('');
+            addForm.find('input[value="Submit"]').attr('name', 'add_user');
+            addForm.find('input[name="firstname"]').val('');
+            addForm.find('input[name="lastname"]').val('');
+            addForm.find('input[name="phone"]').val('');
+            addForm.find('input[name="email"]').val('');
+            addForm.find('input[name="address"]').val('');
+            addForm.find('input[name="password"]').val('');
+            addForm.find('input[name="password"]').show();
+            addForm.find('label[id="passlabel"]').show();
+            addForm.find('select[name="level"]').val(response['data'].level).find('option[value="' + response['data'].level + '"]').prop('selected', true);
 
         });
 
-1
+        1
     });
     // Nút đóng(removeButton)
     $(document).ready(function() {
@@ -231,7 +236,7 @@ require_once('../backend/Order.php');
         });
 
 
-       
+
 
 
     });
@@ -261,6 +266,90 @@ require_once('../backend/Order.php');
 
 
 <div class="card">
+    <!--addButton and searchButton-->
+    <div class="addform">
+        <button id="addbutton" class="btn btn-tool">
+            <i class="fa fa-plus-square"></i> <b>Add</b>
+        </button>
+        <!--addForm-->
+        <form method="POST" action="../backend/User.php" id="formadd">
+            <div class="card">
+                <div class="card-header">
+                    <!-- <h3 class="card-title">Customer update</h3> -->
+                    <input type="text" value="" id="inpUserID" name="UserID" hidden>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" id="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Fist Name</label>
+                                <input type="text" id="firstname" class="form-control" placeholder="Enter your last name" name="firstname" value="" require>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" id="lastname" class="form-control" placeholder="Enter your last name" name="lastname" value="" require>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" class="form-control " placeholder="Enter email" name="email" value="" require>
+
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" id="phone" class="form-control" placeholder="Enter phone number" name="phone" value="" require>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="address" class="form-control" placeholder="Enter address" name="address" value="" require>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="level">Level</label>
+                        <select class="form-control" id="level" name="level">
+                            <?php foreach ($levels as $level) : ?>
+                                <?php if ($level['Name'] != 'User') : ?>
+                                    <option value="<?php echo $level['LevelId'] ?>"><?php echo $level['Name'] ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label id="passlabel">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter address" name="password" value="">
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="card-footer">
+                    <input type="submit" class="btn btn-primary" name="add_user" id="submit" value="Submit">
+                </div>
+            </div>
+            <!-- /.card -->
+        </form>
+
+    </div>
 
     <div class="card-header">
         <!-- <h3>List</h3> -->
@@ -285,17 +374,21 @@ require_once('../backend/Order.php');
             </div>
         </div>
     </div>
+
     <div class="card-body">
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Detail</th>
-                    <th>Approve orders</th>
-                    <th>Reject</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Level</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -304,12 +397,15 @@ require_once('../backend/Order.php');
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Detail</th>
-                    <th>Approve orders</th>
-                    <th>Reject</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Level</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                 </tr>
             </tfoot>
         </table>

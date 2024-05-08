@@ -38,9 +38,6 @@ array_push($jsStack, '
 ?>
 <?php
 
-require_once('../backend/Order.php');
-
-
 
 
 ?>
@@ -56,16 +53,15 @@ require_once('../backend/Order.php');
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "orders",
+                tableName: "Accounts",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "OrderID",
-                key: "pending"
+                ID: "AccountID",
+                key:'acccus'
             },
             // dataType: 'json',
             success: function(response) {
                 $("tbody").html(response);
-
 
                 $(".pagination .page-item").removeClass("active");
 
@@ -106,13 +102,13 @@ require_once('../backend/Order.php');
     //tính số trang
     function countPage() {
         var rowofPage = $(".custom-select").val();
-        
+        //alert(rowofPage);
         $.ajax({
-            url: '../backend/Order.php',
-            type: 'get',
+            url: '../backend/Account.php',
+            type: 'post',
             data: {
                 rowofPage: rowofPage,
-                key: 'countorder'
+                key: 'countcusacc'
             },
             success: function(response) {
                 //alert(response);
@@ -148,11 +144,10 @@ require_once('../backend/Order.php');
             if (searchText == "") return loadData(1);
 
             $.ajax({
-                url: '../backend/Order.php',
+                url: '../backend/Account.php',
                 type: 'post',
                 data: {
-                    searchText: searchText,
-                    key : 1
+                    searchText: searchText
                 },
                 //dataType: 'json',
                 success: function(response) {
@@ -170,32 +165,32 @@ require_once('../backend/Order.php');
         //element.preventDefault();
 
        
-        var suppId = $(element).attr('id').split('-')[1];
-        // alert(suppId);
+        var userId = element;
+        //alert(userId);
         $.ajax({
             url: '../chucnang/update.php',
             type: 'post',
             data: {
-                tableName: 'orders',
-                Id: parseInt(suppId)
+                tableName: 'accounts',
+                Id: element
             },
             dataType: 'json',
             success: function(response) {
 
-                if (response.error) {
+                // if (response.error) {
                 
-                    alert('wrong');
-                } else {
-
+                //     alert('wrong');
+                // } else {
+                    //alert('vô');
                     var addForm = $("#formadd");
-                    addForm.find('input[id="inpSupID"]').val(response['data'].SuppliId);
-                    addForm.find('input[id="name"]').val(response['data'].Name);
-                    addForm.find('input[id="address"]').val(response['data'].Address);
-                    addForm.find('input[id="email"]').val(response['data'].Email);
-                    addForm.find('input[value="Submit"]').attr('name', 'update_supplier');
-
-
-                }
+                    addForm.find('input[id="inpUserID"]').val(response['data'].userID);
+                    addForm.find('input[id="firstname"]').val(response['data'].firstname);
+                    addForm.find('input[id="lastname"]').val(response['data'].lastname);
+                    addForm.find('input[name="phone"]').val(response['data'].phone);
+                    addForm.find('input[id="address"]').val(response['data'].address);
+                    addForm.find('input[name="email"]').val(response['data'].email);
+                    addForm.find('input[value="Submit"]').attr('name', 'update_user');
+                // }
             },
             error: function(error) {
                 alert('errrr');
@@ -211,10 +206,13 @@ require_once('../backend/Order.php');
 
         addButton.click(function() {
             addForm.slideDown();
-            // addForm.find('input[value="Submit"]').attr('name', 'add_supplier');
-            // addForm.find('input[name="name"]').val('');
-            // addForm.find('input[name="email"]').val('');
-            // addForm.find('input[name="address"]').val('');
+            addForm.find('input[value="Submit"]').attr('name', 'add_user');
+            addForm.find('input[name="firstname"]').val('');
+            addForm.find('input[name="lastname"]').val('');
+            addForm.find('input[name="phone"]').val('');
+            addForm.find('input[name="email"]').val('');
+            addForm.find('input[name="address"]').val('');
+            addForm.find('select[name="level"]').val(response['data'].level).find('option[value="' + response['data'].level + '"]').prop('selected', true);
 
         });
 
@@ -261,6 +259,13 @@ require_once('../backend/Order.php');
 
 
 <div class="card">
+    <!--addButton and searchButton-->
+    <div class="addform">
+        <!-- <button id="addbutton" class="btn btn-tool">
+            <i class="fa fa-plus-square"></i> <b>Add</b>
+        </button> -->
+        <!--addForm-->
+    </div>
 
     <div class="card-header">
         <!-- <h3>List</h3> -->
@@ -285,17 +290,18 @@ require_once('../backend/Order.php');
             </div>
         </div>
     </div>
+
     <div class="card-body">
         <table id="example" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Detail</th>
-                    <th>Approve orders</th>
-                    <th>Reject</th>
+                <th>ID</th>
+                        <th>UserName</th>
+                        <th>Password</th>
+                        <th>Status</th>
+                
+                        <th>Action</th>
+                        
                 </tr>
             </thead>
             <tbody>
@@ -304,12 +310,12 @@ require_once('../backend/Order.php');
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Detail</th>
-                    <th>Approve orders</th>
-                    <th>Reject</th>
+                        <th>UserName</th>
+                        <th>Password</th>
+                        <th>Status</th>
+                
+                        <th>Action</th>
+                        
                 </tr>
             </tfoot>
         </table>

@@ -1,3 +1,6 @@
+<?php
+	require_once '../backend/Order.php';
+?>
 <header>
 	<!-- Header desktop -->
 	<div class="container-menu-desktop">
@@ -13,17 +16,23 @@
 						Help & FAQs
 					</a>
 
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
+					<?php if(!isset($_COOKIE['client'])): ?>
+					<a href="./pages/login.php" class="flex-c-m p-lr-10 trans-04">
 						My Account
 					</a>
+					<?php else: ?>
+						<a href="../backend/Logout.php?client=true" class="flex-c-m p-lr-10 trans-04">
+						Logout
+					</a>
+					<?php endif; ?>
 
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
+					<!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
 						EN
 					</a>
 
 					<a href="#" class="flex-c-m trans-04 p-lr-25">
 						USD
-					</a>
+					</a> -->
 				</div>
 			</div>
 		</div>
@@ -75,14 +84,17 @@
 					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
 						<i class="zmdi zmdi-search"></i>
 					</div>
-
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+					<?php 
+						if(isset($_COOKIE['client'])) $countitems = countItemsInOrder();
+					?>
+					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php if(isset($countitems)) echo $countitems; else echo 0  ?>">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</div>
-
-					<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-						<i class="zmdi zmdi-favorite-outline"></i>
+					<?php if(isset($_COOKIE['client'])): ?>
+					<a href="?content=profile" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+						<i class="fa fa-user"></i>
 					</a>
+					<?php endif; ?>
 				</div>
 			</nav>
 		</div>
@@ -105,7 +117,7 @@
 				<i class="zmdi zmdi-shopping-cart"></i>
 			</div>
 
-			<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+			<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10">
 				<i class="zmdi zmdi-favorite-outline"></i>
 			</a>
 		</div>
@@ -133,18 +145,22 @@
 					<a href="#" class="flex-c-m p-lr-10 trans-04">
 						Help & FAQs
 					</a>
-
-					<a href="#" class="flex-c-m p-lr-10 trans-04">
+					<?php if(!isset($_COOKIE['client'])): ?>
+					<a href="?content=login" class="flex-c-m p-lr-10 trans-04">
 						My Account
 					</a>
-
-					<a href="#" class="flex-c-m p-lr-10 trans-04">
+					<?php else: ?>
+						<a href="?content=login" class="flex-c-m p-lr-10 trans-04">
+						Profile
+					</a>
+					<?php endif; ?>
+					<!-- <a href="#" class="flex-c-m p-lr-10 trans-04">
 						EN
 					</a>
 
 					<a href="#" class="flex-c-m p-lr-10 trans-04">
 						USD
-					</a>
+					</a> -->
 				</div>
 			</li>
 		</ul>

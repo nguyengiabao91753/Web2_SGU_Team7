@@ -2,10 +2,16 @@
    <!-- Brand Logo -->
    <a href="index3.html" class="brand-link">
      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-     <span class="brand-text font-weight-light">AdminLTE 3</span>
+     <span class="brand-text font-weight-light">Websell-SGU</span>
    </a>
 
    <!-- Sidebar -->
+   <?php 
+    require_once '../backend/User.php';
+    $id = $_COOKIE['user_id'];
+    $user_login = getCusbyId($id);
+   
+   ?>
    <div class="sidebar">
      <!-- Sidebar user panel (optional) -->
      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -14,7 +20,7 @@
        </div>
        <div class="info">
 
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block"><?php echo $user_login['FirstName'].' '. $user_login['LastName'] ?></a>
 
        </div>
      </div>
@@ -99,19 +105,19 @@
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="index.php?page=order/order&status=1" class="nav-link">
+               <a href="index.php?page=Order/pending" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Pending</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=order/order&status=2" class="nav-link">
+               <a href="index.php?page=Order/delivering" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Delivering</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=order/order&status=3" class="nav-link">
+               <a href="index.php?page=Order/delivered" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Delivered</p>
                </a>
@@ -129,20 +135,51 @@
              </p>
            </a>
            <ul class="nav nav-treeview">
-             <li class="nav-item">
+             <!-- <li class="nav-item">
                <a href="index.php?page=Customer/create" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Create</p>
                </a>
-             </li>
+             </li> -->
              <li class="nav-item">
-               <a href="index.php?page=Customer/list" class="nav-link">
+               <a href="index.php?page=Customer_backup/list" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>List</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="index.php?page=Customer/account" class="nav-link">
+               <a href="index.php?page=Customer_backup/account" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Account</p>
+               </a>
+             </li>
+           </ul>
+         </li>
+         <?php endif; ?>
+         <?php if (getFeaturebyName('Employee')) :  ?>
+          <li class="nav-item">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fas fa-users"></i>
+             <p>
+               Employee
+               <i class="right fas fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <!-- <li class="nav-item">
+               <a href="index.php?page=Customer/create" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>Create</p>
+               </a>
+             </li> -->
+             <li class="nav-item">
+               <a href="index.php?page=Employee/list" class="nav-link">
+                 <i class="far fa-circle nav-icon"></i>
+                 <p>List</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="index.php?page=Employee/account" class="nav-link">
                  <i class="far fa-circle nav-icon"></i>
                  <p>Account</p>
                </a>

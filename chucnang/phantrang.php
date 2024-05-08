@@ -6,6 +6,11 @@ $conn=$db->getConnect();
 require_once '../backend/Category.php';
 require_once '../backend/Supplier.php';
 require_once '../backend/Product.php';
+require_once '../backend/Order.php';
+require_once '../backend/User.php';
+require_once '../backend/Account.php';
+
+
 
 
 $tableName = $_GET['tableName'];
@@ -23,13 +28,12 @@ $query = "SELECT * FROM $tableName
         Limit $rowStart, $rowofPage;";
 $result = mysqli_query($conn, $query);
 
+$html='';
 
 if (mysqli_num_rows($result) > 0) {
     if ($tableName == 'categories') {
-        $html = '';
         $html = loadCateData($result);
     }else if($tableName == 'suppliers'){
-        $html='';
         $html = loadSupplierData($result);
     } else if ($tableName == 'products') {
         $key=$_GET['key'];
@@ -51,6 +55,30 @@ if (mysqli_num_rows($result) > 0) {
         }
     } else if($tableName=='goodsreceipt_items'){
         
+    }else if($tableName == 'orders'){
+        if($key == 'pending'){
+            $html= loadOrderData($result,1);
+        }else if($key == 'delivering'){
+            $html= loadOrderData($result,2);
+        }else if($key == 'delivered'){
+            $html= loadOrderData($result,3);
+        }
+    }elseif($tableName== "users"){
+        if($key == 'cus'){
+            $html='';
+            $html = loadUserData($result);
+        }else{
+            $html='';
+            $html=loadEmployeeData($result);
+        }
+    }elseif($tableName== 'Accounts'){
+        if($key == 'accemp'){
+            $html='';
+            $html = loadAccountEmp($result);
+        }else{
+            $html='';
+            $html=loadAccountUser($result);
+        }
     }
 
     echo $html;

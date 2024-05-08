@@ -7,6 +7,7 @@ $conn=$db->getConnect();
 require_once '../backend/Category.php';
 require_once '../backend/Supplier.php';
 require_once '../backend/Product.php';
+require_once '../backend/User.php';
 
 
 $Id = $_POST['Id'];
@@ -26,7 +27,8 @@ if($_POST['tableName'] == 'categories'){
        
         echo json_encode(array('error' => 'Category not found'));
     }
-}else if($_POST['tableName'] == 'suppliers'){
+}
+else if($_POST['tableName'] == 'suppliers'){
     $supp = getSupplierByID($Id);
     if(!empty($supp)){
         $response['data'] = array(
@@ -42,7 +44,8 @@ if($_POST['tableName'] == 'categories'){
        
         echo json_encode(array('error' => 'Category not found'));
     }
-}else if ($_POST['tableName'] == 'products') {
+}
+else if ($_POST['tableName'] == 'products') {
     $prod = getProByID($Id);
     
     if(!empty($prod)){
@@ -65,6 +68,30 @@ if($_POST['tableName'] == 'categories'){
         echo json_encode($response);
     } else {
         echo json_encode(array('error' => 'Product not found'));
+    }
+}else 
+if ($_POST['tableName'] == 'users'){
+    $user = getCusbyId($Id);
+   
+    if(!isAccountIDExists($Id)){
+        $acc['Password'] ="";
+    }else{
+        $acc = getAccountByID($Id);
+    }
+    if(!empty($user)){
+        $response['data'] = array(
+            'userID'=> $user['UserID'],
+            'firstname'=> $user['FirstName'],
+            'lastname'=> $user['LastName'],
+            'email'=> $user['Email'],
+            'phone'=> $user['Phone'],
+            'address'=>$user['Address'],
+            'level'=> $user['Level'],
+            'password'=>$acc['Password']
+        );
+        echo json_encode($response);
+    }else {
+        echo json_encode(array('error' => 'User not found'));
     }
 }
 ?>

@@ -293,7 +293,7 @@ function LoadProductClient($kq)
         $cc .= '</div>';
         $cc .= '<div class="block2-txt flex-w flex-t p-t-14">';
         $cc .= '<div class="block2-txt-child1 flex-col-l ">';
-        $cc .= '<a href="index.php?content=product-detail&id=' . $sp['ProductID'] . '" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">';
+        $cc .= '<a href="index.php?content=product-detail&id='.$sp['ProductID'].'" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">';
         $cc .= $sp['ProductName'];
         $cc .= '</a>';
         $cc .= '<span class="stext-105 cl3">';

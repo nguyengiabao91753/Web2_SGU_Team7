@@ -14,6 +14,14 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
+<script>
+        <?php if(isset($_COOKIE['errlogin'])): ?>
+            alert('<?php echo $_COOKIE['errlogin']; ?>');
+            <?php 
+                 setcookie("errlogin","",time() -1,"/");
+            ?>
+          <?php endif; ?> 
+    </script>
 <body class="hold-transition login-page" style="height: 85vh;">
         <?php if (isset($_COOKIE['err'])) : ?>
           <script>alert(<?php echo $_COOKIE['err']  ?>)</script>

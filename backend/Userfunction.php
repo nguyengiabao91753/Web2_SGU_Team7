@@ -122,7 +122,13 @@ function getFeaturebyAction($name,$action){
         return false;
     }
 }
-
+function getLevelbyId($Id){
+    global $conn;
+    $query = "SELECT * FROM Levels WHERE LevelId = $Id LIMIT 1";
+    $rs = mysqli_query($conn,$query);
+    $level = mysqli_fetch_assoc($rs);
+    return $level;
+}
 function getLevelbyUserId(){
     global $conn;
     $user_id = $_COOKIE['user_id'];

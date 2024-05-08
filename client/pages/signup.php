@@ -30,30 +30,44 @@
 
 <body>
     <section class="container forms">
+        <!-- Signup Form -->
+
         <div class="form login">
             <div class="form-content">
-                <header>Login</header>
-                <form action="../../backend/Login.php" method="post">
+                <header>Signup</header>
+                <form action="../../backend/User.php" method="post">
                     <div class="field input-field">
-                        <input type="email" name="email" placeholder="Email" class="input">
+                        <input type="text" placeholder="FirstName" name="firstname" class="input" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="text" placeholder="LastName" name="lastname" class="input" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="email" placeholder="Email" name="email" class="input" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="number" placeholder="Phone" name="phone" class="input" required>
+                    </div>
+                    <div class="field input-field">
+                        <input type="text" placeholder="Address" name="address" class="input" required>
                     </div>
 
                     <div class="field input-field">
-                        <input type="password" name="password" placeholder="Password" class="password">
+                        <input type="password" placeholder="Create password" name="password" class="password" required>
+                    </div>
+
+                    <div class="field input-field">
+                        <input type="password" placeholder="Confirm password" class="password" required>
                         <i class='bx bx-hide eye-icon'></i>
                     </div>
 
-                    <div class="form-link">
-                        <a href="#" class="forgot-pass">Forgot password?</a>
-                    </div>
-
                     <div class="field button-field">
-                        <input type="submit" class="log" name="clientlogin" value="Login">
+                        <input type="submit" class="log" name="clientsignup" value="Sign Up">
                     </div>
                 </form>
 
                 <div class="form-link">
-                    <span>Don't have an account? <a href="signup.php" class=" signup-link">Signup</a></span>
+                    <span>Already have an account? <a href="login.php" class="login-link">Login</a></span>
                 </div>
             </div>
 
@@ -74,9 +88,6 @@
             </div>
 
         </div>
-
-        <!-- Signup Form -->
-
     </section>
 
     <!-- JavaScript -->
