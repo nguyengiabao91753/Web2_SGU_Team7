@@ -222,7 +222,7 @@ if (isset($_POST['searchText'])) {
     $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
     $result = mysqli_query($conn, $query);
 
-    if (isset($_POST['key']) && $_POST['key']=="search-admin") {
+    if (isset($_POST['key']) && $_POST['key'] == "search-admin") {
         echo loadProductData($result);
     } else {
         echo LoadProductClient($result);
@@ -416,43 +416,27 @@ function filter()
         $feature = $_POST['feature'];
     }
 
+    $conditions = [];
 
-
-    $sql = "SELECT * FROM products WHERE ";
-    $and = " AND";
     if (!empty($categoryId)) {
-        $sql .= " CategoryID = $categoryId";
+        $conditions[] = "CategoryID = $categoryId";
     }
     if (!empty($price1) && !empty($price2)) {
-        if (!empty($categoryId)) {
-            $sql .= " $and (Price BETWEEN $price1 AND $price2)";
-        } else {
-            $sql .= "(Price BETWEEN $price1 AND $price2)";
-        }
+        $conditions[] = "(Price BETWEEN $price1 AND $price2)";
     }
     if (!empty($color)) {
-        if (!empty($categoryId)) {
-            $sql .= " $and Color ='$color'";
-        } elseif (!empty($price1) && !empty($price2)) {
-            $sql .= " $and Color ='$color'";
-        } else {
-            $sql .= "Color ='$color'";
-        }
+        $conditions[] = "Color ='$color'";
     }
     if (!empty($feature)) {
-        if (!empty($categoryId)) {
-            $sql .= " $and Feature ='$feature'";
-        } elseif (!empty($price1) && !empty($price2)) {
-            $sql .= " $and Feature ='$feature'";
-        } elseif (!empty($color)) {
-            $sql .= " $and Feature ='$feature'";
-        } else {
-            $sql .= " Feature ='$feature'";
-        }
+        $conditions[] = "Feature ='$feature'";
     }
-    if (empty($categoryId) && empty($price1) && empty($price2) && empty($color) && empty($feature)) {
-        $sql .= " 1";
+
+    $sql = "SELECT * FROM products";
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $conditions); 
+        // implode("chuỗi dùng để nối các phần tử", mảng chứa các phần tử cần nối): nối các phần tử của một mảng thành một chuỗi
     }
+
     // echo $sql;
     $result = $conn->query($sql);
 
@@ -469,3 +453,39 @@ function filter()
 
     return $kq;
 }
+//code này để xử lý filter phòng TH code filter ở trên ko ổn hay ko hiểu
+//  $sql = "SELECT * FROM products WHERE ";
+// $and = " AND";
+// if (!empty($categoryId)) {
+//     $sql .= " CategoryID = $categoryId";
+// }
+// if (!empty($price1) && !empty($price2)) {
+//     if (!empty($categoryId)) {
+//         $sql .= " $and (Price BETWEEN $price1 AND $price2)";
+//     } else {
+//         $sql .= "(Price BETWEEN $price1 AND $price2)";
+//     }
+// }
+// if (!empty($color)) {
+//     if (!empty($categoryId)) {
+//         $sql .= " $and Color ='$color'";
+//     } elseif (!empty($price1) && !empty($price2)) {
+//         $sql .= " $and Color ='$color'";
+//     } else {
+//         $sql .= "Color ='$color'";
+//     }
+// }
+// if (!empty($feature)) {
+//     if (!empty($categoryId)) {
+//         $sql .= " $and Feature ='$feature'";
+//     } elseif (!empty($price1) && !empty($price2)) {
+//         $sql .= " $and Feature ='$feature'";
+//     } elseif (!empty($color)) {
+//         $sql .= " $and Feature ='$feature'";
+//     } else {
+//         $sql .= " Feature ='$feature'";
+//     }
+// }
+// if (empty($categoryId) && empty($price1) && empty($price2) && empty($color) && empty($feature)) {
+//     $sql .= " 1";
+// }
