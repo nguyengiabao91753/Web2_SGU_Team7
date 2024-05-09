@@ -51,7 +51,7 @@
 				
 				<div class="w-full">
 					<div class="header-cart-total w-full p-tb-40">
-						Total: <?php if(isset( $order['TotalAmount'])) echo "$"+$order['TotalAmount']; ?>
+						Total: <?php if(isset( $order['TotalAmount'])) echo "$".$order['TotalAmount']; ?>
 					</div>
 
 					<div class="header-cart-buttons flex-w w-full">
