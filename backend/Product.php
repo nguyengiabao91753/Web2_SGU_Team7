@@ -72,9 +72,9 @@ function addProduct()
     // Thực hiện truy vấn
     if (mysqli_query($conn, $sql)) {
         //echo "Dữ liệu đã được thêm vào cơ sở dữ liệu thành công!";
-        header("Location: ../admin2/index.php?page=Product/list");
-        header("Location: ../admin2/index.php?page=Product/list");
+        // header("Location: ../admin2/index.php?page=Product/list");
         setcookie("success", "Product added successfully!", time() + (86400 * 30), "/");
+        header("Location: ../admin2/index.php?page=Product/list");
         exit();
     } else {
         echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
