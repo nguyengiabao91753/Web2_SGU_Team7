@@ -309,7 +309,7 @@ function loadOrderData($rs, $key)
             $html .= '      </button>';
             $html .= '    </a>';
             $html .= '  </td>';
-            if ($key != 3) {
+            if ($key ==2) {
                 $html .= '  <td>';
                 $html .= '    <a  href="../backend/Order.php?approve=' . $order['OrderID'] . '">';
                 $html .= '      <button class="btn btn-success">';
@@ -319,6 +319,14 @@ function loadOrderData($rs, $key)
                 $html .= '  </td>';
             }
             if ($key == 1) {
+                $html .= '  <td>';
+                $html .= '    <a  href="../backend/Order.php?checkout=' . $order['OrderID'] . '">';
+                $html .= '      <button class="btn btn-success">';
+                $html .= '        <i class="far fa-check-circle"></i>';
+                $html .= '      </button>';
+                $html .= '    </a>';
+                $html .= '  </td>';
+
                 $html .= '  <td>';
                 $html .= '    <a onclick="return confirmDelete()" href="../backend/Order.php?reject=' . $order['OrderID'] . '">';
                 $html .= '      <button class="btn btn-danger">';
@@ -361,7 +369,21 @@ if (isset($_POST['key'])) {
         );
         echo  json_encode($response) ; 
     }
+
+    elseif($_POST['key'] == 'remove-item'){
+        $orderItemID = $_POST['orderItemID'];
+
+        removeItem($orderItemID);
+
+        $neworder = getOrder();
+        $response['data'] = array(
+            'total'=> $neworder['TotalAmount']
+        );
+        echo  json_encode($response) ; 
+    }
 }
+
+
 
 // Hàm cập nhật số lượng sản phẩm
 function updateItemQuantity($orderItemID, $quantity) {
@@ -370,8 +392,18 @@ function updateItemQuantity($orderItemID, $quantity) {
     $query = "UPDATE orderitems SET Quantity = $quantity, Subtotal = $quantity * Price WHERE OrderItemID = $orderItemID";
 
     if (mysqli_query($conn, $query)) {
-        // Nếu cập nhật thành công, cập nhật lại tổng tiền cho hóa đơn
+        
         $orderID = getOrderIDFromOrderItemID($orderItemID);
+        updateTotal($orderID);
+    }
+}
+
+//Hàm xóa sản phẩm khỏi giỏ hàng
+function removeItem($OrderItemID){
+    global $conn;
+    $orderID = getOrderIDFromOrderItemID($OrderItemID);
+    $query = "DELETE FROM orderitems WHERE OrderItemID = $OrderItemID";
+    if (mysqli_query($conn, $query)) { 
         updateTotal($orderID);
     }
 }
