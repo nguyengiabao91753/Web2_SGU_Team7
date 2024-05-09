@@ -28,6 +28,7 @@ if (isset($_COOKIE['client'])) {
   }
 </script>
 
+
 <section class="bg0 p-t-104 p-b-116">
   <div class="container">
     <div class="content-wrapper">
@@ -254,7 +255,7 @@ if (isset($_COOKIE['client'])) {
                             <?php endforeach; ?>
                             <div class="card-footer text-end">
                               <p style="float: inline-end; font-size: 14px;">Total: <span style="color: #ee4d2d; font-size: 24px;">$<?php echo $order['TotalAmount']; ?></span></p>
-                              <a class="btn btn-outline-info" href="?order_detail$id=1" >Detail</a>
+                              <a class="btn btn-outline-info" href="?content=order_detail&Id=1" >Detail</a>
 
                             </div>
 

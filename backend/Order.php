@@ -26,12 +26,18 @@ if (isset($_GET['reject'])) {
 
 
 if (isset($_POST['key']) && $_POST['key'] == 'add-order') {
+    $client = $_COOKIE['client'];
     $orderID = (int) checkOrders();
     $productID = $_POST['ProductID'];
     $quantity = $_POST['Quantity'];
     $price = $_POST['Price'];
     $subtotal = (int) $quantity * (int) $price;
+    if($orderID==0){
+        $createorder = "INSERT INTO Orders (UserID, Status, CreatedAt) VALUES ($client, 0, NOW() );";
+        $rs = mysqli_query($conn, $createorder);
 
+        $orderID = mysqli_insert_id($conn);
+    }
     // Kiểm tra xem sản phẩm đã có trong orderitems của orderID hay chưa
     $checkItemQuery = "SELECT * FROM orderitems WHERE OrderID = $orderID AND ProductID = $productID";
     $checkItemResult = mysqli_query($conn, $checkItemQuery);

@@ -118,6 +118,7 @@ $pro = getProBySeries($_GET['id']);
                         if (response) {
                             //alert("true");
                             swal(nameProduct, "is added to cart !", "success");
+                           //window.location.reload(true);
                         }
                         else{
                             //swal(nameProduct, "is added failed !", "error");

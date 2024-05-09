@@ -1,7 +1,7 @@
 <?php
 	require_once '../backend/Order.php';
 ?>
-<header>
+<header class="no-print">
 	<!-- Header desktop -->
 	<div class="container-menu-desktop">
 		<!-- Topbar -->
