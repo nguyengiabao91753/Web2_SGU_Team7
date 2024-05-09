@@ -198,7 +198,8 @@ require_once('../backend/Userfunction.php');
                 url: '../backend/Product.php',
                 type: 'post',
                 data: {
-                    searchText: searchText
+                    searchText: searchText,
+                    key: "search-admin"
                 },
                 //dataType: 'json',
                 success: function(response) {
