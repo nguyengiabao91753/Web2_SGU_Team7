@@ -117,19 +117,21 @@ if (isset($_COOKIE['client'])) {
                       ?>
 
                           <div class="post">
-                            <?php foreach ($items as $item) :
-                              $sp = getProByID($item['ProductID']);
-                            ?>
 
-                              <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                  <span>COZA STORE</span>
-                                  <span class="badge bg-success">Pending</span>
-                                </div>
-                                <div class="card-body">
-                                  <div class="row">
+                            <div class="card">
+                              <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>COZA STORE</span>
+                                <span class="badge bg-success">Pending</span>
+                              </div>
+                              <div class="card-body">
+                                <?php foreach ($items as $item) :
+                                  $sp = getProByID($item['ProductID']);
+                                ?>
+                                  <hr>
+                                  <div class="row pt-3">
                                     <div class="col-md-4">
-                                      <img src="<?php echo $sp['Image']; ?>" class="img-fluid" alt="Ảnh sản phẩm">
+
+                                      <img src="<?php echo $sp['Image']; ?>" class="img-fluid" style="width: 160px;" alt="Ảnh sản phẩm">
                                     </div>
                                     <div class="col-md-6">
                                       <h5 class="card-title"><?php echo $sp['ProductName']; ?></h5>
@@ -139,13 +141,14 @@ if (isset($_COOKIE['client'])) {
                                       <p class="card-text"><?php echo $item['Subtotal']; ?></p>
                                     </div>
                                   </div>
-                                </div>
-                                <div class="card-footer text-end">
-                                  <a class="btn btn-primary">Detail</a>
-                                  <a class="btn btn-danger">Cancel order</a>
-                                </div>
+                                <?php endforeach; ?>
+
                               </div>
-                            <?php endforeach; ?>
+                              <div class="card-footer text-end">
+                                <a class="btn btn-outline-primary">Detail</a>
+                                <a class="btn btn-outline-danger">Cancel order</a>
+                              </div>
+                            </div>
                           </div>
                         <?php endif; ?>
                       <?php endforeach; ?>
@@ -255,7 +258,7 @@ if (isset($_COOKIE['client'])) {
                             <?php endforeach; ?>
                             <div class="card-footer text-end">
                               <p style="float: inline-end; font-size: 14px;">Total: <span style="color: #ee4d2d; font-size: 24px;">$<?php echo $order['TotalAmount']; ?></span></p>
-                              <a class="btn btn-outline-info" href="?content=order_detail&Id=1" >Detail</a>
+                              <a class="btn btn-outline-info" href="?content=order_detail&Id=1">Detail</a>
 
                             </div>
 

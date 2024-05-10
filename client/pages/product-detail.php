@@ -26,7 +26,7 @@ $pro = getProBySeries($_GET['id']);
                 $('#decrease').prop('disabled', false); // Cho phép sự kiện click
             }
 
-            if (quantity >= 1000) {
+            if (quantity >= <?php echo $sp['Quantity'] ?>) {
                 $('#increase').addClass('disabled'); // Thêm lớp disabled
                 $('#increase').prop('disabled', true); // Ngăn chặn sự kiện click
             } else {
@@ -51,7 +51,7 @@ $pro = getProBySeries($_GET['id']);
         // Xử lý sự kiện khi nút giảm được nhấp
         $('#increase').click(function() {
             var quantity = parseInt($('#num').val());
-            if (quantity <= 1000) {
+            if (quantity <= <?php echo $sp['Quantity'] ?>) {
                 quantity + 1; // Giảm giá trị
                 $('#num').val(quantity); // Cập nhật giá trị trong input
                 updateButtons(quantity); // Cập nhật sự hiển thị của các nút
@@ -118,15 +118,16 @@ $pro = getProBySeries($_GET['id']);
                         if (response) {
                             //alert("true");
                             swal(nameProduct, "is added to cart !", "success");
-                           //window.location.reload(true);
-                        }
-                        else{
+                            setTimeout(function() {
+                                window.location.reload(true);
+                            }, 1500); // Thời gian tính bằng mili giây, ở đây là 3 giây
+                        } else {
                             //swal(nameProduct, "is added failed !", "error");
                             alert(response);
                         }
                     }
-                });
 
+                });
             });
         });
     });
@@ -235,20 +236,20 @@ echo '
                                     <!--  -->
                                     <div class="flex-w flex-m p-l-100 p-t-40 respon7">
                                         <div class="flex-m bor9 p-r-10 m-r-11">
-                                            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+                                            <a href="" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
                                                 <i class="zmdi zmdi-favorite"></i>
                                             </a>
                                         </div>
             
-                                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
+                                        <a href="" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
                                             <i class="fa fa-facebook"></i>
                                         </a>
             
-                                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
+                                        <a href="" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
                                             <i class="fa fa-twitter"></i>
                                         </a>
             
-                                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
+                                        <a href="" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
                                             <i class="fa fa-google-plus"></i>
                                         </a>
                                     </div>

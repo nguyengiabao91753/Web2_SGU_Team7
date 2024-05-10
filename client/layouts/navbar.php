@@ -1,5 +1,5 @@
 <?php
-	require_once '../backend/Order.php';
+require_once '../backend/Order.php';
 ?>
 <header class="no-print">
 	<!-- Header desktop -->
@@ -16,14 +16,14 @@
 						Help & FAQs
 					</a>
 
-					<?php if(!isset($_COOKIE['client'])): ?>
-					<a href="./pages/login.php" class="flex-c-m p-lr-10 trans-04">
-						My Account
-					</a>
-					<?php else: ?>
+					<?php if (!isset($_COOKIE['client'])) : ?>
+						<a href="./pages/login.php" class="flex-c-m p-lr-10 trans-04">
+							My Account
+						</a>
+					<?php else : ?>
 						<a href="../backend/Logout.php?client=true" class="flex-c-m p-lr-10 trans-04">
-						Logout
-					</a>
+							Logout
+						</a>
 					<?php endif; ?>
 
 					<!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
@@ -61,10 +61,6 @@
 							<a href="?content=shop">Shop</a>
 						</li>
 
-						<li class="label1" data-label1="hot">
-							<a href="?content=shopping-cart">Features</a>
-						</li>
-
 						<li>
 							<a href="?content=blog">Blog</a>
 						</li>
@@ -81,19 +77,20 @@
 
 				<!-- Icon header -->
 				<div class="wrap-icon-header flex-w flex-r-m">
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+					<!-- <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
 						<i class="zmdi zmdi-search"></i>
-					</div>
-					<?php 
-						if(isset($_COOKIE['client'])) $countitems = countItemsInOrder();
+					</div> -->
+					<?php
+					if (isset($_COOKIE['client'])) $countitems = countItemsInOrder();
 					?>
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php if(isset($countitems)) echo $countitems; else echo 0  ?>">
+					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php if (isset($countitems)) echo $countitems;
+																																else echo 0  ?>">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</div>
-					<?php if(isset($_COOKIE['client'])): ?>
-					<a href="?content=profile" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-						<i class="fa fa-user"></i>
-					</a>
+					<?php if (isset($_COOKIE['client'])) : ?>
+						<a href="?content=profile" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+							<i class="fa fa-user"></i>
+						</a>
 					<?php endif; ?>
 				</div>
 			</nav>
@@ -145,14 +142,14 @@
 					<a href="#" class="flex-c-m p-lr-10 trans-04">
 						Help & FAQs
 					</a>
-					<?php if(!isset($_COOKIE['client'])): ?>
-					<a href="?content=login" class="flex-c-m p-lr-10 trans-04">
-						My Account
-					</a>
-					<?php else: ?>
+					<?php if (!isset($_COOKIE['client'])) : ?>
 						<a href="?content=login" class="flex-c-m p-lr-10 trans-04">
-						Profile
-					</a>
+							My Account
+						</a>
+					<?php else : ?>
+						<a href="?content=login" class="flex-c-m p-lr-10 trans-04">
+							Profile
+						</a>
 					<?php endif; ?>
 					<!-- <a href="#" class="flex-c-m p-lr-10 trans-04">
 						EN
@@ -201,7 +198,7 @@
 	</div>
 
 	<!-- Modal Search -->
-	<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+	<!-- <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
 		<div class="container-search-header">
 			<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
 				<img src="images/icons/icon-close2.png" alt="CLOSE">
@@ -214,5 +211,5 @@
 				<input class="plh3" type="text" name="search" placeholder="Search...">
 			</form>
 		</div>
-	</div>
+	</div> -->
 </header>
