@@ -43,12 +43,12 @@ require_once('../backend/Userfunction.php');
 
 <script>
     function confirmDelete() {
-                    <?php if(!getFeaturebyAction('Category','Delete')): ?>
-                        alert("There are no permissions for this function");
-                        return false;
-                    <?php endif; ?>
-                    return confirm('Are you sure you want to delete this?');
-                }
+        <?php if (!getFeaturebyAction('Product', 'Delete')) : ?>
+            alert("There are no permissions for this function");
+            return false;
+        <?php endif; ?>
+        return confirm('Are you sure you want to delete this?');
+    }
 
     // Nút thêm(addButton)
     $(document).ready(function() {
@@ -71,10 +71,10 @@ require_once('../backend/Userfunction.php');
             addForm.find('input[value="Submit"]').attr('name', 'add_product');
         });
 
-        $("#color").change(function () {
-        var selectedColor = $(this).val(); // Lấy giá trị màu đã chọn
-        $("#showcolor").css("background-color", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
-        $("#showcolor").css("border", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+        $("#color").change(function() {
+            var selectedColor = $(this).val(); // Lấy giá trị màu đã chọn
+            $("#showcolor").css("background-color", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+            $("#showcolor").css("border", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
         });
 
     });
@@ -108,7 +108,7 @@ require_once('../backend/Userfunction.php');
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
                 ID: "ProductID",
-                key:"admin"
+                key: "admin"
             },
             // dataType: 'json',
             success: function(response) {
@@ -146,7 +146,7 @@ require_once('../backend/Userfunction.php');
                 alert("This is last page");
             }
         } else {
-            loadData(pageNumber);   
+            loadData(pageNumber);
         }
     }
 
@@ -156,10 +156,10 @@ require_once('../backend/Userfunction.php');
         $.ajax({
             url: '../backend/Product.php',
             type: 'post',
-            
+
             data: {
                 rowofPage: rowofPage,
-                key : 'countproducts'
+                key: 'countproducts'
             },
             success: function(response) {
                 //alert(response);
@@ -211,19 +211,19 @@ require_once('../backend/Userfunction.php');
 
     //tính số trang
     $(document).ready(function() {
-            <?php
-            // $totalPage  = $CountCate / 
-            ?>
-     });
+        <?php
+        // $totalPage  = $CountCate / 
+        ?>
+    });
 
     //Cập nhật
     function update(element) {
-        <?php if(!getFeaturebyAction('Product','Update')): ?>
+        <?php if (!getFeaturebyAction('Product', 'Update')) : ?>
             return alert("There are no permissions for this function");
         <?php endif; ?>
         $("#formadd").slideDown();
         var ProductID = $(element).attr('id').split('-')[1];
-       
+
         $.ajax({
             url: '../chucnang/update.php',
             type: 'post',
@@ -264,44 +264,50 @@ require_once('../backend/Userfunction.php');
     }
 </script>
 <style>
-      #formadd {
+    #formadd {
         display: none;
-      }
+    }
 
-      #addbutton{
-        width: 89.49px; 
+    #addbutton {
+        width: 89.49px;
         height: 60px;
         font-size: 20px;
         margin: 5px 0 0 10px;
-      }
-      #feature{
+    }
+
+    #feature {
         height: 38px;
         width: 284.45px;
-      }
-      #color{
+    }
+
+    #color {
         height: 38px;
         width: 184.63px;
-     }
-     #showcolor{
+    }
+
+    #showcolor {
         width: 38px;
         height: 38px;
         margin-top: 31.5px;
-     }
-     #preview{
+    }
+
+    #preview {
         width: auto;
         height: 116.6px;
         margin-top: 3px;
-     }
-     #details{
+    }
+
+    #details {
         color: #20b2aa;
         text-decoration: underline;
         font-size: 16px;
         text-align: center;
-     }
-     .proddetails{
+    }
+
+    .proddetails {
         margin: 5px 0 0 16px;
-     }
-   </style>
+    }
+</style>
 
 
 
@@ -311,9 +317,11 @@ require_once('../backend/Userfunction.php');
 
     <!--addButton and searchButton-->
     <div class="addform">
+    <?php if(getFeaturebyAction('Product','Create')): ?>
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
+        <?php endif; ?>
         <!--addForm-->
         <form method="post" action="../backend/Product.php" id="formadd" enctype="multipart/form-data">
             <!-- Default box -->
@@ -360,7 +368,7 @@ require_once('../backend/Userfunction.php');
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>Images</label>
-                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*"  onchange="previewImage(event)">
+                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)">
                                 <img src="" alt="Preview Image" id="preview" style="display:none;">
                             </div>
                         </div>
@@ -373,7 +381,7 @@ require_once('../backend/Userfunction.php');
                         </div>
                     </div>
 
-                    
+
 
                     <div class="row">
                         <div class="col-md-3">
@@ -382,9 +390,9 @@ require_once('../backend/Userfunction.php');
                                 <br>
                                 <select name="feature" id="feature">
                                     <option class="form-control">None</option>
-                                    <option  class="form-control">Feature</option>
+                                    <option class="form-control">Feature</option>
                                 </select>
-                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-3">
@@ -450,11 +458,11 @@ require_once('../backend/Userfunction.php');
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card-footer">
                     <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
                 </div>
-                
+
             </div>
             <!-- /.card -->
         </form>
@@ -503,7 +511,7 @@ require_once('../backend/Userfunction.php');
                 </tr>
             </thead>
             <tbody>
-                    
+
             </tbody>
             <tfoot>
                 <tr>

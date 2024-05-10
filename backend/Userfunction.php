@@ -191,3 +191,18 @@ function updateUserFunction()
     header("Location: ../admin2/index.php?page=Feature/modify");
     exit();
 }
+
+function getActionByFunctID($Id){
+    global $conn;
+    $sql = "SELECT DISTINCT Action FROM Userfunctions WHERE FunctId = $Id";
+    $rs = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($rs) > 0) {
+        $actions = array();
+        while ($row = mysqli_fetch_assoc($rs)) {
+            $actions[] = $row;
+        }
+        return $actions;
+    } else {
+        return array();
+    }
+}

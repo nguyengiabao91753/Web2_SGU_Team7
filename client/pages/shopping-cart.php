@@ -143,7 +143,7 @@ $order = getOrder();
                                             <i class="fs-16 zmdi zmdi-minus"></i>
                                         </button>
 
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product<?php echo $item['OrderItemID'] ?>" value="<?php echo $item['Quantity'] ?>" max="<?php echo $sp['Quantity'] ?>">
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product<?php echo $item['OrderItemID'] ?>" value="<?php echo $item['Quantity'] ?>" max="<?php echo $sp['Quantity'] ?>" disabled>
 
                                         <button class="btn btn-sm btn-outline-secondary btn-num-product-up" name="up-<?php echo $item['OrderItemID'] ?>" type="button">
                                             <i class="fs-16 zmdi zmdi-plus"></i>
@@ -211,7 +211,7 @@ $order = getOrder();
                     <!-- <a type="su" class="btn btn-outline-secondary btn-lg">                  
                         Proceed to Checkout
                         </a> -->
-                    <button type="submit" name="approve" class="btn btn-outline-secondary btn-lg">Proceed to Checkout</button>
+                    <button type="submit" name="checkout" class="btn btn-outline-secondary btn-lg">Proceed to Checkout</button>
                 </form>
             </div>
         </div>

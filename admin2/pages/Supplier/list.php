@@ -28,9 +28,7 @@ array_push($jsStack, '
                 }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
             });
 
-            function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
-            }
+           
         </script>
     ');
 
@@ -45,6 +43,13 @@ require_once('../backend/Supplier.php');
 
 ?>
 <script>
+    function confirmDelete() {
+        <?php if (!getFeaturebyAction('Supplier', 'Delete')) : ?>
+            alert("There are no permissions for this function");
+            return false;
+        <?php endif; ?>
+        return confirm('Are you sure you want to delete this?');
+    }
     //phân trang đê
 
 
@@ -109,7 +114,8 @@ require_once('../backend/Supplier.php');
             url: '../backend/Supplier.php',
             type: 'post',
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key: 'countsup'
             },
             success: function(response) {
                 //alert(response);

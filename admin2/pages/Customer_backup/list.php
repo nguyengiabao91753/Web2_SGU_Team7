@@ -28,9 +28,7 @@ array_push($jsStack, '
                 }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
             });
 
-            function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
-            }
+           
         </script>
     ');
 
@@ -45,6 +43,13 @@ $levels = getAllLevel();
 
 ?>
 <script>
+    function confirmDelete() {
+        <?php if (!getFeaturebyAction('Customer', 'Delete')) : ?>
+            alert("There are no permissions for this function");
+            return false;
+        <?php endif; ?>
+        return confirm('Are you sure you want to delete this?');
+    }
     //phân trang đê
 
 
@@ -164,6 +169,9 @@ $levels = getAllLevel();
 
     //update
     function update(element) {
+        <?php if(!getFeaturebyAction('Customer','Update')): ?>
+            return alert("There are no permissions for this function");
+        <?php endif; ?>
         $("#formadd").slideDown();
         //element.preventDefault();
 
@@ -267,9 +275,11 @@ $levels = getAllLevel();
 <div class="card">
     <!--addButton and searchButton-->
     <div class="addform">
+    <?php if(getFeaturebyAction('Customer','Create')): ?>
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
+        <?php endif; ?>
         <!--addForm-->
         <form method="POST" action="../backend/User.php" id="formadd">
             <div class="card">

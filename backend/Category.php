@@ -18,7 +18,7 @@ if (isset($_POST['add_category'])) {
 }
 //Xử lý ajax lấy số trang
 if (isset($_POST['key']) && $_POST['key'] == "countcates") {
-    $rowofPage =(int) $_GET['rowofPage'];
+    $rowofPage =(int) $_POST['rowofPage'];
     $total = countCate();
     $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
     echo $page;
@@ -154,8 +154,16 @@ function deleteCategory($CategoryID)
 {
     global $conn;
     if (isset($CategoryID)) {
+        $pro = "SELECT * FROM products WHERE CategoryID = $CategoryID";
+        $rspro = mysqli_query($conn, $pro);
+        if(mysqli_num_rows($rspro) >0){
+            setcookie("err","This category is having products so cannot delete",time() + (86400 * 30), "/");
+            header("Location: ../admin2/index.php?page=Category/list");
+            exit();
+        }
         $validate = "SELECT * FROM categories WHERE parentID = $CategoryID";
         $rs = mysqli_query($conn,$validate);
+
         if(mysqli_num_rows($rs) >0 ){
             setcookie("err","Delete this category's child first",time() + (86400 * 30), "/");
             header("Location: ../admin2/index.php?page=Category/list");

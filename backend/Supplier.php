@@ -13,8 +13,8 @@ if(isset($_POST['add_supplier'])){
     deleteSupplier($_GET['delete_supplier']);
 }
 //Xử lý ajax lấy số trang
-if (isset($_POST['rowofPage'])) {
-    $rowofPage = $_GET['rowofPage'];
+if (isset($_POST['key']) && $_POST['key'] == 'countsup') {
+    $rowofPage = $_POST['rowofPage'];
     $total = countSuppliers();
     $page = ((float) ($total / $rowofPage) > (int)($total / $rowofPage)) ? ((int)($total / $rowofPage)) + 1 : (int) ($total / $rowofPage);
     echo $page;

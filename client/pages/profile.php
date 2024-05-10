@@ -115,19 +115,19 @@ if (isset($_COOKIE['client'])) {
                           $count1 += 1;
                           $items = getItemsbyOrderID($order['OrderID']);
                       ?>
-
                           <div class="post">
-                            <?php foreach ($items as $item) :
-                              $sp = getProByID($item['ProductID']);
-                            ?>
 
                               <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                   <span>COZA STORE</span>
                                   <span class="badge bg-success">Pending</span>
                                 </div>
-                                <div class="card-body">
-                                  <div class="row">
+                                <?php foreach ($items as $item) :
+                              $sp = getProByID($item['ProductID']);
+                              ?>
+                              <div class="card-body pt-3">
+                           
+                                  <div class="row ">
                                     <div class="col-md-4">
                                       <img src="<?php echo $sp['Image']; ?>" class="img-fluid" alt="Ảnh sản phẩm">
                                     </div>
@@ -140,12 +140,13 @@ if (isset($_COOKIE['client'])) {
                                     </div>
                                   </div>
                                 </div>
+                                  <?php endforeach; ?>
+
                                 <div class="card-footer text-end">
                                 <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
-                                  <a class="btn btn-danger" href="../backend/Order.php?">Cancel order</a>
+                                  <a class="btn btn-danger" href="../backend/Order.php?cancel=<?php echo $order['OrderID'] ?>">Cancel order</a>
                                 </div>
                               </div>
-                            <?php endforeach; ?>
                           </div>
                         <?php endif; ?>
                       <?php endforeach; ?>
@@ -221,22 +222,28 @@ if (isset($_COOKIE['client'])) {
                       <?php $count3 = 0;
                       foreach ($orders as $order) :
 
-                        if ($order['Status'] == 3) :
+                        if ($order['Status'] >= 3) :
                           $count3 += 1;
                           $items = getItemsbyOrderID($order['OrderID']);
                       ?>
 
-                          <div class="post">
-                            <?php foreach ($items as $item) :
-                              $sp = getProByID($item['ProductID']);
-                            ?>
+                          <div class="post pt-5">
                               <div class="card">
 
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                   <span>COZA STORE</span>
-                                  <span class="badge badge-success">Delivered</span>
+                                  <?php  if ($order['Status'] == 3) :?>
+                                  <span class="badge badge-secondary">Delivered</span>
+                                  <?php  elseif ($order['Status'] ==4 ) :?>
+                                    <span class="badge badge-warning">Canceled</span>
+                                  <?php  elseif ($order['Status'] == 5) :?>
+                                    <span class="badge badge-danger">Delivered</span>
+                                  <?php endif; ?>
                                 </div>
-                                <div class="card-body">
+                            <?php foreach ($items as $item) :
+                              $sp = getProByID($item['ProductID']);
+                            ?>
+                                <div class="card-body pt-3">
                                   <div class="row">
                                     <div class="col-md-4">
                                       <img src="<?php echo $sp['Image']; ?>" class="img-fluid" alt="Ảnh sản phẩm">
@@ -251,8 +258,9 @@ if (isset($_COOKIE['client'])) {
                                     </div>
                                   </div>
                                 </div>
+
+                                <?php endforeach; ?>
                               </div>
-                            <?php endforeach; ?>
                             <div class="card-footer text-end">
                               <p style="float: inline-end; font-size: 14px;">Total: <span style="color: #ee4d2d; font-size: 24px;">$<?php echo $order['TotalAmount']; ?></span></p>
                               <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>

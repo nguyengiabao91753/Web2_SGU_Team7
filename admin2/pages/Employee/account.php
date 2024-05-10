@@ -28,9 +28,6 @@ array_push($jsStack, '
                 }).buttons().container().appendTo(\'#example1_wrapper .col-md-6:eq(0)\');
             });
 
-            function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
-            }
         </script>
     ');
 
@@ -44,6 +41,13 @@ require_once('../backend/Userfunction.php');
 
 ?>
 <script>
+    function confirmDelete() {
+        <?php if (!getFeaturebyAction('Employee', 'Delete')) : ?>
+            alert("There are no permissions for this function");
+            return false;
+        <?php endif; ?>
+        return confirm('Are you sure you want to delete this?');
+    }
     //phân trang đê
 
 
@@ -163,6 +167,9 @@ require_once('../backend/Userfunction.php');
 
     //update
     function update(element) {
+        <?php if(!getFeaturebyAction('Employee','Update')): ?>
+            return alert("There are no permissions for this function");
+        <?php endif; ?>
         $("#formadd").slideDown();
         //element.preventDefault();
 
@@ -277,8 +284,6 @@ require_once('../backend/Userfunction.php');
             <div class="dataTables_length" id="example2_length" style="float: left; margin-left: 4%;">
                 <label>Show
                     <select name="example2_length" aria-controls="example2" class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value="3">3</option>
-                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>

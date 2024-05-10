@@ -19,6 +19,14 @@ if (isset($_POST['checkout'])) {
     $ID = $_POST['OrderID'];
     checkout($ID);
 }
+if (isset($_GET['approvecheckout'])) {
+    $ID = $_GET['OrderID'];
+    approvecheckout($ID);
+}
+if (isset($_GET['cancel'])) {
+    $ID = $_GET['cancel'];
+    cancel($ID);
+}
 if (isset($_GET['reject'])) {
     $ID = $_GET['reject'];
     reject($ID);
@@ -218,12 +226,11 @@ function getItemsbyOrderID($ID){
     return $items;
 }
 
-function checkout($ID){
+function approvecheckout($ID){
     global $conn;
 
-    $payement = $_POST['payment'];
 
-    $query = "UPDATE orders SET Status = Status + 1, Payment = '$payement', CreatedAt = NOW() WHERE OrderID = $ID";
+    $query = "UPDATE orders SET Status = Status + 1 WHERE OrderID = $ID";
     if ($conn->query($query) === TRUE) {
 
        
@@ -244,7 +251,7 @@ function checkout($ID){
             }
         
 
-        header("Location: ../client/index.php");
+        header("Location:  ../admin2/index.php?page=Order/pending");
         //setcookie("success", "Approve Order successfully!", time() + (86400 * 30), "/");
         exit();
     } else {
@@ -260,8 +267,39 @@ function approve($ID)
     $query = "UPDATE orders SET Status = Status + 1 WHERE OrderID = $ID";
     if ($conn->query($query) === TRUE) {
 
-        header("Location: ../admin2/index.php?page=Order/pending");
+        header("Location: ../admin2/index.php?page=Order/delivering");
         setcookie("success", "Approve Order successfully!", time() + (86400 * 30), "/");
+        exit();
+    } else {
+        echo "Failed";
+    }
+}
+
+function checkout($ID)
+{
+    global $conn;
+    $payement = $_POST['payment'];
+
+    $query = "UPDATE orders SET Status = Status + 1, Payment = '$payement', CreatedAt = NOW() WHERE OrderID = $ID";
+    if ($conn->query($query) === TRUE) {
+
+        header("Location: ../client/index.php?content=profile");
+        //setcookie("success", "Approve Order successfully!", time() + (86400 * 30), "/");
+        exit();
+    } else {
+        echo "Failed";
+    }
+}
+
+function cancel($ID){
+    global $conn;
+
+
+    $query = "UPDATE orders SET Status = 4 WHERE OrderID = $ID";
+    if ($conn->query($query) === TRUE) {
+
+        header("Location: ../client/index.php?content=profile");
+        //setcookie("success", "Approve Order successfully!", time() + (86400 * 30), "/");
         exit();
     } else {
         echo "Failed";
@@ -271,17 +309,17 @@ function approve($ID)
 function reject($ID)
 {
     global $conn;
-    $query1 = "DELETE FROM orderitems WHERE OrderID = $ID";
-    if ($conn->query($query1) === TRUE) {
-        $query = "DELETE FROM orders WHERE OrderID = $ID";
-        if ($conn->query($query) === TRUE) {
 
-            header("Location: ../admin2/index.php?page=Order/pending");
-            setcookie("success", "Approve Order successfully!", time() + (86400 * 30), "/");
-            exit();
-        }
+
+    $query = "UPDATE orders SET Status = 5 WHERE OrderID = $ID";
+    if ($conn->query($query) === TRUE) {
+
+        header("Location: ../admin2/index.php?page=Order/pending");
+        setcookie("success", "Reject Order successfully!", time() + (86400 * 30), "/");
+        exit();
+    } else {
+        echo "Failed";
     }
-    echo "Failed";
 }
 
 function loadOrderData($rs, $key)
@@ -320,7 +358,7 @@ function loadOrderData($rs, $key)
             }
             if ($key == 1) {
                 $html .= '  <td>';
-                $html .= '    <a  href="../backend/Order.php?checkout=' . $order['OrderID'] . '">';
+                $html .= '    <a  href="../backend/Order.php?approvecheckout=' . $order['OrderID'] . '">';
                 $html .= '      <button class="btn btn-success">';
                 $html .= '        <i class="far fa-check-circle"></i>';
                 $html .= '      </button>';

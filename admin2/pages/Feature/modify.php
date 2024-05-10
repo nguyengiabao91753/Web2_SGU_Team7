@@ -224,18 +224,22 @@ $levels = getAllLevel();
 
                                             </div>
                                             <div class="collapse" id="<?php echo $function['FunctionId']; ?>Collapse">
+                                                <?php  $actions = getActionByFunctID($function['FunctionId']); ?>
+
                                                 <ul class="nav nav-pills nav-sidebar">
+                                                    <?php foreach($actions as $action): ?>
                                                     <li class="nav-item flex-column">
                                                         <div class="row form-group" style="text-align: center;">
-                                                            <input type="checkbox" name="<?php echo $function['FunctionId']; ?>-Create" id="" value="create" class="form-control" style="width: 20px;">
-                                                            <p class="form-control">Create</p>
+                                                            <input type="checkbox" name="<?php echo $function['FunctionId']; ?>-<?php echo $action['Action'] ?>" id="" value="create" class="form-control" style="width: 20px;">
+                                                            <p class="form-control"><?php echo $action['Action'] ?></p>
                                                         </div>
                                                         <!-- <input type="checkbox" name="" id="" class="form-control" style="width: 20px;">
                                                         <a class="nav-link">
                                                             <p>Level 3</p>
                                                         </a> -->
                                                     </li>
-                                                    <li class="nav-item">
+                                                    <?php endforeach; ?>
+                                                    <!-- <li class="nav-item">
                                                         <div class="row form-group" style="text-align: center;">
                                                             <input type="checkbox" name="<?php echo $function['FunctionId']; ?>-Update" value="update" id="" class="form-control" style="width: 20px;">
                                                             <p class="form-control">Update</p>
@@ -246,7 +250,7 @@ $levels = getAllLevel();
                                                             <input type="checkbox" name="<?php echo $function['FunctionId']; ?>-Delete" value="delete" id="" class="form-control" style="width: 20px;">
                                                             <p class="form-control">Delete</p>
                                                         </div>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </li>
