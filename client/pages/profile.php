@@ -198,7 +198,7 @@ if (isset($_COOKIE['client'])) {
                                   </div>
                                 </div>
                                 <div class="card-footer text-end">
-                                  <a class="btn btn-primary">Detail</a>
+                                <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
 
                                 </div>
                               </div>
@@ -258,7 +258,11 @@ if (isset($_COOKIE['client'])) {
                             <?php endforeach; ?>
                             <div class="card-footer text-end">
                               <p style="float: inline-end; font-size: 14px;">Total: <span style="color: #ee4d2d; font-size: 24px;">$<?php echo $order['TotalAmount']; ?></span></p>
+<<<<<<< HEAD
                               <a class="btn btn-outline-info" href="?content=order_detail&Id=1">Detail</a>
+=======
+                              <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
+>>>>>>> f55ed077d85af65cf137b481726e0f4f067cac55
 
                             </div>
 
@@ -317,7 +321,7 @@ if (isset($_COOKIE['client'])) {
                             <div class="form-group row">
                               <label for="inputSkills" class="col-sm-4 col-form-label">Password</label>
                               <div class="col-sm-8">
-                                <input type="password" class="form-control" name="password" placeholder="Password" value="<?php echo $acc['Password'] ?>">
+                                <input type="password" class="form-control" name="password" placeholder="Password" value="">
                               </div>
                             </div>
                           </div>
