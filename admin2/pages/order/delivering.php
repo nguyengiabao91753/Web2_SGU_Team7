@@ -29,7 +29,10 @@ array_push($jsStack, '
             });
 
             function confirmDelete() {
-                return confirm(\'Are you sure you want to delete this?\');
+                return confirm(\'Are you sure you want to reject this?\');
+            }
+            function confirmApprove() {
+                return confirm(\'Are you sure you want to approve this?\');
             }
         </script>
     ');

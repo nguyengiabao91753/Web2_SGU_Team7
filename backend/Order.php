@@ -349,7 +349,7 @@ function loadOrderData($rs, $key)
             $html .= '  </td>';
             if ($key ==2) {
                 $html .= '  <td>';
-                $html .= '    <a  href="../backend/Order.php?approve=' . $order['OrderID'] . '">';
+                $html .= '    <a onclick="return confirmApprove()" href="../backend/Order.php?approve=' . $order['OrderID'] . '">';
                 $html .= '      <button class="btn btn-success">';
                 $html .= '        <i class="far fa-check-circle"></i>';
                 $html .= '      </button>';
@@ -358,7 +358,7 @@ function loadOrderData($rs, $key)
             }
             if ($key == 1) {
                 $html .= '  <td>';
-                $html .= '    <a  href="../backend/Order.php?approvecheckout=' . $order['OrderID'] . '">';
+                $html .= '    <a onclick="return confirmApprove()" href="../backend/Order.php?approvecheckout=' . $order['OrderID'] . '">';
                 $html .= '      <button class="btn btn-success">';
                 $html .= '        <i class="far fa-check-circle"></i>';
                 $html .= '      </button>';
