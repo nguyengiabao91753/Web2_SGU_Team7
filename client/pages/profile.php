@@ -145,8 +145,8 @@ if (isset($_COOKIE['client'])) {
 
                               </div>
                               <div class="card-footer text-end">
-                                <a class="btn btn-outline-primary">Detail</a>
-                                <a class="btn btn-outline-danger">Cancel order</a>
+                                <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>">Detail</a>
+                                <a class="btn btn-danger" href="../backend/Order.php?">Cancel order</a>
                               </div>
                             </div>
                           </div>
@@ -198,7 +198,7 @@ if (isset($_COOKIE['client'])) {
                                   </div>
                                 </div>
                                 <div class="card-footer text-end">
-                                <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
+                                  <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>">Detail</a>
 
                                 </div>
                               </div>
@@ -258,12 +258,7 @@ if (isset($_COOKIE['client'])) {
                             <?php endforeach; ?>
                             <div class="card-footer text-end">
                               <p style="float: inline-end; font-size: 14px;">Total: <span style="color: #ee4d2d; font-size: 24px;">$<?php echo $order['TotalAmount']; ?></span></p>
-<<<<<<< HEAD
-                              <a class="btn btn-outline-info" href="?content=order_detail&Id=1">Detail</a>
-=======
-                              <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
->>>>>>> f55ed077d85af65cf137b481726e0f4f067cac55
-
+                              <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>">Detail</a>
                             </div>
 
                           </div>
@@ -285,7 +280,7 @@ if (isset($_COOKIE['client'])) {
                     <div class="tab-pane" id="settings">
 
 
-                      <form class="form-horizontal" action="../backend/User.php" method="post">
+                      <form class="form-horizontal" action="../backend/User.php" method="post" enctype="multipart/form-data">
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group row">
@@ -341,14 +336,14 @@ if (isset($_COOKIE['client'])) {
                                 <label for="fileInput" class="btn btn-info btn-large" style="display: block;margin-top: 10px;">
                                   Choose Image
                                 </label>
-                                <input type="file" id="fileInput" name="avatar" hidden onchange="previewImage(this)">
+                                <input type="file" id="fileInput" name="avatar" accept="image/*" hidden onchange="previewImage(this)">
                               </div>
                             </div>
                           </div>
 
                           <div class="form-group row">
                             <div class="offset-sm-2 col-sm-8">
-                              <input type="submit" class="btn btn-info" value="Submit">
+                              <input type="submit" class="btn btn-info" value="Submit" id="update_profile" name="update_profile">
                             </div>
                           </div>
                       </form>

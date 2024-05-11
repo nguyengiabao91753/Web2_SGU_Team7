@@ -427,7 +427,7 @@ require_once('../backend/Userfunction.php');
                         </div>
                     </div>
 
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Total quantity</label>
@@ -449,7 +449,7 @@ require_once('../backend/Userfunction.php');
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
                 <div class="card-footer">
                     <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>

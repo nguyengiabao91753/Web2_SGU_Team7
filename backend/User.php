@@ -24,8 +24,10 @@ if (isset($_POST['add_user'])) {
     updateUser();
 } else if (isset($_GET['delete_user'])) {
     deleteUser($_GET['delete_user']);
-}else if (isset($_POST['clientsignup'])) {
+} else if (isset($_POST['clientsignup'])) {
     signup();
+} else if (isset($_POST['update_profile'])) {
+    updateProfile();
 }
 
 
@@ -83,7 +85,8 @@ function getUserByID($ID)
     $user = mysqli_fetch_assoc($result);
     return $user;
 }
-function signup(){
+function signup()
+{
     global $conn;
     if (isset($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['phone'], $_POST['address'])) {
         $FirstName = $_POST['firstname'];
@@ -92,8 +95,8 @@ function signup(){
         $Phone = $_POST['phone'];
         $Address = $_POST['address'];
         $Levels = getAllLevel();
-        foreach($Levels as $level){
-            if($level['Name'] == 'User'){
+        foreach ($Levels as $level) {
+            if ($level['Name'] == 'User') {
                 $levelID = $level['LevelId'];
             }
         }
@@ -101,19 +104,19 @@ function signup(){
         // Kiểm tra tính hợp lệ của email, số điện thoại và mật khẩu trước khi thêm vào cơ sở dữ liệu
         if (!isValidEmail($Email)) {
             setcookie("err", "Invalid email format!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
         if (!isValidPhoneNumber($Phone)) {
             setcookie("err", "Invalid phone number format!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
-        if (!isEmailAvailable($Email, $conn,0)) {
+        if (!isEmailAvailable($Email, $conn, 0)) {
             setcookie("err", "Email already exists!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
@@ -121,14 +124,14 @@ function signup(){
         if ($conn->query($sql) === TRUE) {
             $userID = $conn->insert_id;
             setcookie("success", "User added successfully!", time() + (86400 * 30), "/");
-            if(isset($_POST['password'])){
+            if (isset($_POST['password'])) {
                 $password = $_POST['password'];
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $avatar = null;
                 $status = 1;
                 $createdAt = date('Y-m-d H:i:s');
                 $accountSql = "INSERT INTO accounts (AccountID, Username, Password, Avatar, Created_at, Status) VALUES ('$userID', '$Email', '$hashedPassword', '$avatar', '$createdAt', $status)";
-                if ($conn->query($accountSql) === TRUE){
+                if ($conn->query($accountSql) === TRUE) {
                     header("Location: " . $_SERVER['HTTP_REFERER']);
                 }
             }
@@ -156,19 +159,19 @@ function addUser()
         // Kiểm tra tính hợp lệ của email, số điện thoại và mật khẩu trước khi thêm vào cơ sở dữ liệu
         if (!isValidEmail($Email)) {
             setcookie("err", "Invalid email format!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
         if (!isValidPhoneNumber($Phone)) {
             setcookie("err", "Invalid phone number format!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
-        if (!isEmailAvailable($Email, $conn,0)) {
+        if (!isEmailAvailable($Email, $conn, 0)) {
             setcookie("err", "Email already exists!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
@@ -176,14 +179,14 @@ function addUser()
         if ($conn->query($sql) === TRUE) {
             $userID = $conn->insert_id;
             setcookie("success", "User added successfully!", time() + (86400 * 30), "/");
-            if(isset($_POST['password'])){
+            if (isset($_POST['password'])) {
                 $password = $_POST['password'];
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $avatar = null;
                 $status = 1;
                 $createdAt = date('Y-m-d H:i:s');
                 $accountSql = "INSERT INTO accounts (AccountID, Username, Password, Avatar, Created_at, Status) VALUES ('$userID', '$Email', '$hashedPassword', '$avatar', '$createdAt', $status)";
-                if ($conn->query($accountSql) === TRUE){
+                if ($conn->query($accountSql) === TRUE) {
                 }
             }
         } else {
@@ -207,7 +210,8 @@ function countUsers()
     return $count;
 }
 
-function countEmps(){
+function countEmps()
+{
     global $conn;
     $query = "SELECT COUNT(*) FROM users WHERE Level != 3";
     $result = mysqli_query($conn, $query);
@@ -231,38 +235,38 @@ function updateUser()
         // Kiểm tra tính hợp lệ của email, số điện thoại và mật khẩu trước khi thêm vào cơ sở dữ liệu
         if (!isValidEmail($Email)) {
             setcookie("err", "Invalid email format!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
         if (!isValidPhoneNumber($Phone)) {
             setcookie("err", "Invalid phone number format!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
         if (!isEmailAvailable($Email, $conn, $UserID)) {
             setcookie("err", "Email already exists!", time() + (86400 * 30), "/");
-           header("Location: " . $_SERVER['HTTP_REFERER']);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         $sql = "UPDATE users SET FirstName='$FirstName', LastName='$LastName', Email='$Email', Phone='$Phone', Address='$Address', Level=$Level WHERE UserID=$UserID";
         if ($conn->query($sql) === TRUE) {
             setcookie("success", "User updated successfully!", time() + (86400 * 30), "/");
-            if(isset($_POST['password'])){
+            if (isset($_POST['password'])) {
                 $password = $_POST['password'];
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                if(!isAccountIDExists($UserID)){
+                if (!isAccountIDExists($UserID)) {
                     $avatar = null;
                     $status = 1;
                     $createdAt = date('Y-m-d H:i:s');
                     $accountSql = "INSERT INTO accounts (AccountID, Username, Password, Avatar, Created_at, Status) VALUES ('$UserID', '$Email', '$hashedPassword', '$avatar', '$createdAt', $status)";
-                }else{
+                } else {
                     $accountSql = "UPDATE accounts SET Password = '$hashedPassword' WHERE AccountID = $UserID";
                 }
-               
-                if ($conn->query($accountSql) === TRUE){
+
+                if ($conn->query($accountSql) === TRUE) {
                 }
             }
         } else {
@@ -289,8 +293,8 @@ function deleteUser($UserID)
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     }
-   //header("Location: " . $_SERVER['HTTP_REFERER']);
-   header("Location: " . $_SERVER['HTTP_REFERER']);
+    //header("Location: " . $_SERVER['HTTP_REFERER']);
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     exit();
 }
 function isValidEmail($email)
@@ -359,13 +363,13 @@ function loadUserData($rs)
     return $html;
 }
 
- function loadEmployeeData($rs)
+function loadEmployeeData($rs)
 {
     $html = '';
     while ($row = mysqli_fetch_assoc($rs)) {
         $level = getLevelbyId($row['Level']);
         $emp_login = getCusbyId($_COOKIE['user_id']);
-       
+
         if ($row['Status'] != 0 && $level['Name'] != 'User') {
 
             $html .= "<tr>";
@@ -377,7 +381,7 @@ function loadUserData($rs)
             $html .= "<td>" . $row['Phone'] . "</td>";
             $html .= "<td>" . $row['Address'] . "</td>";
             $html .= "<td>" . $level['Name'] . "</td>";
-            if($emp_login['Level'] <= $row['Level']){
+            if ($emp_login['Level'] <= $row['Level']) {
 
                 $html .= '<td>
                 <button class="btn btn-success" >
@@ -386,17 +390,142 @@ function loadUserData($rs)
                 
                 </td>';
             }
-            
+
             $html .= "<td>";
             if ($_COOKIE['user_id'] != $row['UserID'] && $emp_login['Level'] < $row['Level']) {
 
 
                 $html .= "<a href='../backend/Customer.php?delete_user=" . $row['UserID'] . "' class='btn btn-danger' onclick=\"return confirm('Bạn có muốn xóa tài khoản này không?')\"><i class='far fa-trash-alt'></i></a>";
             }
-            $html .="</td>";
+            $html .= "</td>";
             $html .= "</tr>";
         }
     }
 
     return $html;
+}
+
+function updateProfile()
+{
+    global $conn;
+    if (isset($_COOKIE['client'], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['phone'], $_POST['address'])) {
+        $UserID = $_COOKIE['client'];
+        $FirstName = $_POST['firstname'];
+        $LastName = $_POST['lastname'];
+        $Email = $_POST['email'];
+        $Phone = $_POST['phone'];
+        $Address = $_POST['address'];
+
+        // Kiểm tra tính hợp lệ của email, số điện thoại và mật khẩu trước khi thêm vào cơ sở dữ liệu
+        if (!isValidEmail($Email)) {
+            setcookie("err", "Invalid email format!", time() + (86400 * 30), "/");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+        if (!isValidPhoneNumber($Phone)) {
+            setcookie("err", "Invalid phone number format!", time() + (86400 * 30), "/");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+
+        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
+        if (!isEmailAvailable($Email, $conn, $UserID)) {
+            setcookie("err", "Email already exists!", time() + (86400 * 30), "/");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+
+        $sql = "UPDATE users SET FirstName='$FirstName', LastName='$LastName', Email='$Email', Phone='$Phone', Address='$Address' WHERE UserID=$UserID";
+        if ($conn->query($sql) === TRUE)
+            $avatar = updateAvatar($UserID);
+        $status = 1;
+        $createdAt = date('Y-m-d H:i:s');
+        $accountSql = "UPDATE accounts SET Username='$Email', Avatar='$avatar', Created_at='$createdAt', Status='$status' WHERE AccountID = $UserID";
+        if (isset($_POST['password']) && !empty($_POST['password'])) {
+            $password = $_POST['password'];
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $accountSql = "UPDATE accounts SET Password = '$hashedPassword', Avatar='$avatar', Created_at='$createdAt', Status='$status' WHERE AccountID = $UserID ";
+
+            if ($conn->query($accountSql) === TRUE) {
+            }
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+            exit();
+        }
+    }
+    //header("Location: ../admin2/index.php?page=Customer_backup/list");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit();
+}
+
+function uploadAvatar()
+{
+    $target_dir = "../client/avatar/";
+    $target_file = $target_dir . basename($_FILES["avatar"]["name"]);
+    $flag = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    // Check if image file is a actual image or fake image
+    if (isset($_POST["submit"])) {
+        $check = getimagesize($_FILES["avatar"]["tmp_name"]);
+        if ($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $flag = 1;
+        } else {
+            echo "File is not an image.";
+            $flag = 0;
+        }
+    }
+
+
+    // Allow certain file formats
+    if (
+        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif"
+    ) {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $flag = 0;
+    }
+
+    // Check if $flag is set to 0 by an error
+    if ($flag == 0) {
+        echo "Sorry, your file was not uploaded.";
+        return 0;
+        // if everything is ok, try to upload file
+    } else {
+        if (move_uploaded_file($_FILES["avatar"]["tmp_name"], $target_file)) {
+            echo "The file " . htmlspecialchars(basename($_FILES["avatar"]["name"])) . " has been uploaded.";
+            return $target_file;
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
+}
+
+function updateAvatar($UserID)
+{
+    global $conn;
+    $newAvatar = uploadAvatar();
+
+    $sql = "SELECT Avatar FROM accounts WHERE AccountID = $UserID";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $currentImageName = $row["Avatar"];
+
+    // Xóa hình ảnh hiện tại từ thư mục lưu trữ
+    $imagePath = "../client/avatar/" . $currentImageName;
+    if (file_exists($imagePath)) {
+        unlink($imagePath); // Xóa tệp hình ảnh
+    }
+
+    // Cập nhật thông tin hình ảnh mới của sản phẩm trong cơ sở dữ liệu
+    $sql = "UPDATE accounts SET Avatar = '$newAvatar' WHERE AccountID = $UserID";
+    if ($conn->query($sql) === TRUE) {
+        // Cập nhật thành công
+        return $newAvatar;
+    } else {
+        // Xảy ra lỗi khi cập nhật cơ sở dữ liệu
+        return false;
+    }
 }

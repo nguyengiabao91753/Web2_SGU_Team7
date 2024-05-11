@@ -121,10 +121,7 @@ $order = getOrder();
                             <th class="column-3">Price</th>
                             <th class="column-4">Quantity</th>
                             <th class="column-5">Total</th>
-<<<<<<< HEAD
-=======
                            
->>>>>>> f55ed077d85af65cf137b481726e0f4f067cac55
                         </tr>
                         <?php foreach ($items as $item) : ?>
                             <?php
@@ -132,11 +129,7 @@ $order = getOrder();
 
                             $sp = getProByID($item['ProductID']);
                             ?>
-<<<<<<< HEAD
-                            <tr class="table_row">
-=======
                             <tr class="table_row" id="item-<?php echo $item['OrderItemID'] ?>">                              
->>>>>>> f55ed077d85af65cf137b481726e0f4f067cac55
                                 <td class="column-1">
                                     <div class="how-itemcart1">
                                         <img src="<?php echo $sp['Image'] ?>" alt="IMG">
@@ -146,15 +139,6 @@ $order = getOrder();
                                 <td class="column-3">$ <?php echo $item['Price'] ?></td>
                                 <td class="column-4">
                                     <div class="wrap-num-product flex-w m-l-auto m-r-0">
-<<<<<<< HEAD
-                                        <button class="btn btn-sm btn-outline-secondary btn-num-product-down" type="button">
-                                            <i class="fs-16 zmdi zmdi-minus"></i>
-                                        </button>
-
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product<?php echo $item['OrderItemID'] ?>" value="<?php echo $item['Quantity'] ?>">
-
-                                        <button class="btn btn-sm btn-outline-secondary btn-num-product-up" type="button">
-=======
                                         <button class="btn btn-sm btn-outline-secondary btn-num-product-down" name="down-<?php echo $item['OrderItemID'] ?>" type="button">
                                             <i class="fs-16 zmdi zmdi-minus"></i>
                                         </button>
@@ -162,7 +146,6 @@ $order = getOrder();
                                         <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product<?php echo $item['OrderItemID'] ?>" value="<?php echo $item['Quantity'] ?>" max="<?php echo $sp['Quantity'] ?>">
 
                                         <button class="btn btn-sm btn-outline-secondary btn-num-product-up" name="up-<?php echo $item['OrderItemID'] ?>" type="button">
->>>>>>> f55ed077d85af65cf137b481726e0f4f067cac55
                                             <i class="fs-16 zmdi zmdi-plus"></i>
                                         </button>
                                     </div>
@@ -225,11 +208,7 @@ $order = getOrder();
                     <!-- <a type="su" class="btn btn-outline-secondary btn-lg">                  
                         Proceed to Checkout
                         </a> -->
-<<<<<<< HEAD
-                    <button type="submit" name="checkout" class="btn btn-outline-secondary btn-lg">Proceed to Checkout</button>
-=======
                     <button type="submit" name="approve" class="btn btn-outline-secondary btn-lg">Proceed to Checkout</button>
->>>>>>> f55ed077d85af65cf137b481726e0f4f067cac55
                 </form>
             </div>
         </div>
