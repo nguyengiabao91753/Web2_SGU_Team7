@@ -16,6 +16,9 @@ if (isset($_COOKIE['client'])) {
   }
 </style>
 <script>
+  function confirmcancel(){
+    return confirm('Are you sure about that?');
+  }
   function previewImage(input) {
     var preview = document.getElementById('avatarPreview');
     if (input.files && input.files[0]) {
@@ -117,19 +120,20 @@ if (isset($_COOKIE['client'])) {
                       ?>
                           <div class="post">
 
-                              <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                  <span>COZA STORE</span>
-                                  <span class="badge bg-success">Pending</span>
-                                </div>
+                            <div class="card">
+                              <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>COZA STORE</span>
+                                <span class="badge bg-success">Pending</span>
+                              </div>
+                              <div class="card-body">
                                 <?php foreach ($items as $item) :
-                              $sp = getProByID($item['ProductID']);
-                              ?>
-                              <div class="card-body pt-3">
-                           
-                                  <div class="row ">
+                                  $sp = getProByID($item['ProductID']);
+                                ?>
+                                  <hr>
+                                  <div class="row pt-3">
                                     <div class="col-md-4">
-                                      <img src="<?php echo $sp['Image']; ?>" class="img-fluid" alt="Ảnh sản phẩm">
+
+                                      <img src="<?php echo $sp['Image']; ?>" class="img-fluid" style="width: 160px;" alt="Ảnh sản phẩm">
                                     </div>
                                     <div class="col-md-6">
                                       <h5 class="card-title"><?php echo $sp['ProductName']; ?></h5>
@@ -139,14 +143,14 @@ if (isset($_COOKIE['client'])) {
                                       <p class="card-text"><?php echo $item['Subtotal']; ?></p>
                                     </div>
                                   </div>
-                                </div>
-                                  <?php endforeach; ?>
+                                <?php endforeach; ?>
 
-                                <div class="card-footer text-end">
-                                <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
-                                  <a class="btn btn-danger" href="../backend/Order.php?cancel=<?php echo $order['OrderID'] ?>">Cancel order</a>
-                                </div>
                               </div>
+                              <div class="card-footer text-end">
+                                <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>">Detail</a>
+                                <a onclick="return confirmcancel()" class="btn btn-danger" href="../backend/Order.php?cancel=<?php echo $order['OrderID'] ?>">Cancel order</a>
+                              </div>
+                            </div>
                           </div>
                         <?php endif; ?>
                       <?php endforeach; ?>
@@ -172,15 +176,15 @@ if (isset($_COOKIE['client'])) {
                       ?>
 
                           <div class="post">
-                            <?php foreach ($items as $item) :
-                              $sp = getProByID($item['ProductID']);
-                            ?>
 
                               <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                   <span>COZA STORE</span>
                                   <span class="badge bg-success">Delivering</span>
                                 </div>
+                            <?php foreach ($items as $item) :
+                              $sp = getProByID($item['ProductID']);
+                            ?>
                                 <div class="card-body">
                                   <div class="row">
                                     <div class="col-md-4">
@@ -195,12 +199,12 @@ if (isset($_COOKIE['client'])) {
                                     </div>
                                   </div>
                                 </div>
+                                <?php endforeach; ?>
                                 <div class="card-footer text-end">
-                                <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
+                                  <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>">Detail</a>
 
                                 </div>
                               </div>
-                            <?php endforeach; ?>
                           </div>
                         <?php endif; ?>
                       <?php endforeach; ?>
@@ -263,8 +267,7 @@ if (isset($_COOKIE['client'])) {
                               </div>
                             <div class="card-footer text-end">
                               <p style="float: inline-end; font-size: 14px;">Total: <span style="color: #ee4d2d; font-size: 24px;">$<?php echo $order['TotalAmount']; ?></span></p>
-                              <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>" >Detail</a>
-
+                              <a class="btn btn-outline-info" href="?content=order_detail&Id=<?php echo $order['OrderID'] ?>">Detail</a>
                             </div>
 
                           </div>
@@ -286,7 +289,7 @@ if (isset($_COOKIE['client'])) {
                     <div class="tab-pane" id="settings">
 
 
-                      <form class="form-horizontal" action="../backend/User.php" method="post">
+                      <form class="form-horizontal" action="../backend/User.php" method="post" enctype="multipart/form-data">
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group row">
@@ -342,14 +345,14 @@ if (isset($_COOKIE['client'])) {
                                 <label for="fileInput" class="btn btn-info btn-large" style="display: block;margin-top: 10px;">
                                   Choose Image
                                 </label>
-                                <input type="file" id="fileInput" name="avatar" hidden onchange="previewImage(this)">
+                                <input type="file" id="fileInput" name="avatar" accept="image/*" hidden onchange="previewImage(this)">
                               </div>
                             </div>
                           </div>
 
                           <div class="form-group row">
                             <div class="offset-sm-2 col-sm-8">
-                              <input type="submit" class="btn btn-info" value="Submit">
+                              <input type="submit" class="btn btn-info" value="Submit" id="update_profile" name="update_profile">
                             </div>
                           </div>
                       </form>

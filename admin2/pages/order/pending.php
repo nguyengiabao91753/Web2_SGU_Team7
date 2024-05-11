@@ -31,6 +31,9 @@ array_push($jsStack, '
             function confirmDelete() {
                 return confirm(\'Are you sure you want to delete this?\');
             }
+            function confirmApprove(){
+                return confirm(\'Are you sure you want to approve this?\');
+            }
         </script>
     ');
 
@@ -270,8 +273,6 @@ require_once('../backend/Order.php');
             <div class="dataTables_length" id="example2_length" style="float: left; margin-left: 4%;">
                 <label>Show
                     <select name="example2_length" aria-controls="example2" class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value="3">3</option>
-                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>

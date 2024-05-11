@@ -190,12 +190,13 @@ $cates = getAllCategory();
             var searchText = $(this).val();
 
             if (searchText == "") {
+                countPage();
                 return loadData(1);
             }
 
             $.ajax({
                 url: '../backend/Product.php',
-                type: 'post',
+                type: 'get',
                 data: {
                     searchText: searchText,
                     key: "search-client"
@@ -240,11 +241,11 @@ $cates = getAllCategory();
                     All Products
                 </button>
                 <?php foreach ($cates as $cate) : ?>
-                    <?php if ($cate['parentID'] == 0) : ?>
+                    
                         <button type="button" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 cate-click" name="<?php echo $cate['CategoryID']; ?>">
                             <?php echo $cate['CategoryName']; ?>
                         </button>
-                    <?php endif; ?>
+                    
                 <?php endforeach; ?>
                 <!-- <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
                             Women
@@ -310,12 +311,12 @@ $cates = getAllCategory();
                             </div>
 
                             <?php foreach ($cates as $cate) : ?>
-                                <?php if ($cate['parentID'] == 0) : ?>
+                                
                                     <div class="form-check p-b-6">
                                         <input type="radio" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 form-check-input" name="cate" value="<?php echo $cate['CategoryID']; ?>">
                                         <label class="form-check-label"><?php echo $cate['CategoryName']; ?></label>
                                     </div>
-                                <?php endif; ?>
+                               
                             <?php endforeach; ?>
                         </ul>
                     </div>

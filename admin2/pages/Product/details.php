@@ -72,6 +72,23 @@ if (isset($_GET['id'])) {
                 <label for="">Description: </label>
                 <span class="form-control" id="des">' . $kq['Description'] . '</span>
             </div>
+
+            <div class="row">
+                <div class ="col-md-4">
+                    <label for="">Total Quantity: </label>
+                    <span class="form-control">' . $kq['TotalQuantity'] . '</span>
+                </div>
+
+                <div class ="col-md-4">
+                    <label for="">Quantity </label>
+                    <span class="form-control">' . $kq['Quantity'] . '</span>
+                </div>
+
+                <div class ="col-md-4">
+                    <label for="">Sale Quantity: </label>
+                    <span class="form-control">' . $kq['Sale_Quantity'] . '</span>
+                </div>
+            </div>
         </div>
     </div>
         ';

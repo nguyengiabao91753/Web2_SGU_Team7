@@ -28,7 +28,7 @@ function statismonth()
     // Truy vấn dữ liệu từ cơ sở dữ liệu cho tháng từ
     $queryFrom = "SELECT DAY(CreatedAt) AS Day, SUM(TotalAmount) AS TotalAmount 
           FROM orders 
-          WHERE MONTH(CreatedAt) = $fromMonth AND Status = 3
+          WHERE MONTH(CreatedAt) = '$fromMonth' AND Status = 3
           GROUP BY DAY(CreatedAt)";
 
     $resultFrom = $conn->query($queryFrom);
@@ -44,7 +44,7 @@ function statismonth()
     // Truy vấn dữ liệu từ cơ sở dữ liệu cho tháng đến
     $queryTo = "SELECT DAY(CreatedAt) AS Day, SUM(TotalAmount) AS TotalAmount 
           FROM orders 
-          WHERE MONTH(CreatedAt) = $toMonth AND Status = 3
+          WHERE MONTH(CreatedAt) = '$toMonth' AND Status = 3
           GROUP BY DAY(CreatedAt)";
 
     $resultTo = $conn->query($queryTo);
@@ -89,7 +89,7 @@ function statisyear()
     // Truy vấn dữ liệu từ cơ sở dữ liệu cho năm từ
     $queryFrom = "SELECT MONTH(CreatedAt) AS Month, SUM(TotalAmount) AS TotalAmount 
                   FROM orders 
-                  WHERE YEAR(CreatedAt) = $yearFrom AND Status = 3
+                  WHERE YEAR(CreatedAt) = '$yearFrom' AND Status = 3
                   GROUP BY MONTH(CreatedAt)";
 
     $resultFrom = $conn->query($queryFrom);
@@ -103,7 +103,7 @@ function statisyear()
     // Truy vấn dữ liệu từ cơ sở dữ liệu cho năm đến
     $queryTo = "SELECT MONTH(CreatedAt) AS Month, SUM(TotalAmount) AS TotalAmount 
                 FROM orders 
-                WHERE YEAR(CreatedAt) = $yearTo AND Status = 3
+                WHERE YEAR(CreatedAt) = '$yearTo' AND Status = 3
                 GROUP BY MONTH(CreatedAt)";
 
     $resultTo = $conn->query($queryTo);
@@ -123,7 +123,7 @@ function statisyear()
 
     // Trả về dữ liệu cho biểu đồ dưới dạng JSON
     $response = [
-        'yearform' => array_values(array_replace(array_fill_keys($labels, 0), $dataFrom)),
+        'yearfrom' => array_values(array_replace(array_fill_keys($labels, 0), $dataFrom)),
         'yearto' =>  array_values(array_replace(array_fill_keys($labels, 0), $dataTo)),
         'percent' => $percentageIncrease
     ];

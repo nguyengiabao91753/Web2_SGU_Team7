@@ -10,10 +10,11 @@ $order = getOrder();
             var inputQuantity = $(this).siblings('.num-product');
             var currentVal = parseInt(inputQuantity.val());
             var orderItemID = inputQuantity.attr('name').replace('num-product', '');
-            
+
             if (currentVal === 0) {
-                if(confirm('You will remove this product form your cart')){
-                   removeitem(orderItemID);
+                if (confirm('You will remove this product form your cart')) {
+                    removeitem(orderItemID);
+                    
                 }
             }
             $('button[name="up-' + orderItemID + '"]').removeAttr('disabled');
@@ -46,7 +47,7 @@ $order = getOrder();
 
     });
 
-    function removeitem(orderItemID){
+    function removeitem(orderItemID) {
         $('#total').empty();
         $.ajax({
             type: 'post',
@@ -56,10 +57,14 @@ $order = getOrder();
                 orderItemID: orderItemID
             },
             dataType: 'json',
-            success:function(response){
-                $('#item-'+orderItemID).hide();
+            success: function(response) {
+                $('#item-' + orderItemID).hide();
                 $('#total').append(response['data'].total);
-                
+                if(response['data'].total == 0){
+                    $("#checkout").attr("disabled", true);
+                    alert('vô');
+                    $('#total').append('');
+                }
             }
         });
     }
@@ -80,10 +85,6 @@ $order = getOrder();
                 $('#subtotal-' + orderItemID + '').append(response['data'].subtotal);
                 $('#total').append(response['data'].total);
 
-            },
-            error: function(error) {
-                // Xử lý lỗi nếu có
-                alert("error");
             }
         });
     }
@@ -121,7 +122,7 @@ $order = getOrder();
                             <th class="column-3">Price</th>
                             <th class="column-4">Quantity</th>
                             <th class="column-5">Total</th>
-                           
+
                         </tr>
                         <?php foreach ($items as $item) : ?>
                             <?php
@@ -129,7 +130,7 @@ $order = getOrder();
 
                             $sp = getProByID($item['ProductID']);
                             ?>
-                            <tr class="table_row" id="item-<?php echo $item['OrderItemID'] ?>">                              
+                            <tr class="table_row" id="item-<?php echo $item['OrderItemID'] ?>">
                                 <td class="column-1">
                                     <div class="how-itemcart1">
                                         <img src="<?php echo $sp['Image'] ?>" alt="IMG">
@@ -151,9 +152,6 @@ $order = getOrder();
                                     </div>
                                 </td>
                                 <td id="subtotal-<?php echo $item['OrderItemID'] ?>" class="column-5">$ <?php echo $item['Subtotal'] ?></td>
-                               
-                                   
-                                
                             </tr>
                         <?php endforeach; ?>
 
@@ -211,7 +209,8 @@ $order = getOrder();
                     <!-- <a type="su" class="btn btn-outline-secondary btn-lg">                  
                         Proceed to Checkout
                         </a> -->
-                    <button type="submit" name="checkout" class="btn btn-outline-secondary btn-lg">Proceed to Checkout</button>
+
+                    <button type="submit" name="checkout" id="checkout" class="btn btn-outline-secondary btn-lg checkout" <?php if ($items == null) echo 'disabled' ?>>Proceed to Checkout</button>
                 </form>
             </div>
         </div>

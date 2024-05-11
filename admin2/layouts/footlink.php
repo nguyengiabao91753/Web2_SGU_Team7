@@ -7,4 +7,4 @@
 
 
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="dist/js/pages/dashboard3.js"></script>
+<!-- <script src="dist/js/pages/dashboard3.js"></script> -->

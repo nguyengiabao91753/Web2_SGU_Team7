@@ -55,13 +55,13 @@ else if ($_POST['tableName'] == 'products') {
             'CategoryID' => $prod['CategoryID'],
             'ProductName' => $prod['ProductName'],
             'Description' => $prod['Description'],
+            'Image' => $prod['Image'],
             'Feature' => $prod['Feature'],
             'Price' => $prod['Price'],
             'Color' => $prod['Color'],
             'Size' => $prod['Size'],
             'TotalQuantity'=>$prod['TotalQuantity'],
-            'Quantity' => $prod['Quantity'],
-            'Sale_Quantity'=> $prod['Sale_Quantity']
+            'Quantity' => $prod['Quantity']
         );
 
         

@@ -237,12 +237,14 @@ require_once('../backend/Userfunction.php');
                     alert('wrong');
                 } else {
                     var addForm = $("#formadd");
+                    //alert(response['data'].Image);
                     //alert(response['data'].CategoryID);
                     addForm.find('input[id="inpproductID"]').val(response['data'].ProductID);
                     addForm.find('select[name="CategoryID"]').val(response['data'].CategoryID).find('option[value="' + response['data'].CategoryID + '"]').prop('selected', true);
                     addForm.find('input[id="productname"]').val(response['data'].ProductName);
                     addForm.find('input[id="series"]').val(response['data'].Series);
-                    addForm.find('input[id="uploadimg"]').val(response['data'].Image);
+                    //addForm.find('input[id="uploadimg"]').val(response['data'].Image);
+                    $('#preview').attr('src', response['data'].Image);
                     addForm.find('input[id="description"]').val(response['data'].Description);
                     addForm.find('input[id="feature"]').val(response['data'].Feature);
                     addForm.find('input[id="price"]').val(response['data'].Price);
@@ -368,7 +370,7 @@ require_once('../backend/Userfunction.php');
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>Images</label>
-                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)">
+                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)" required>
                                 <img src="" alt="Preview Image" id="preview" style="display:none;">
                             </div>
                         </div>
@@ -450,15 +452,15 @@ require_once('../backend/Userfunction.php');
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="form-group">
                                 <label>Sale Quantity</label>
                                 <input type="number" name="salequan" id="salequan" placeholder="Enter Sale quantity" min="0" class="form-control">
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-                </div>
-
+                </div> 
+                
                 <div class="card-footer">
                     <input type="submit" class="btn btn-primary" name="add_product" id="" value="Submit"></input>
                 </div>

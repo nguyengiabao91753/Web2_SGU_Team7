@@ -62,19 +62,26 @@ function addProduct()
     $size = $_POST['size'];
     $totalQuan = $_POST['totalquan'];
     $Quantity = $_POST['quantity'];
-    $saleQuan = $_POST['salequan'];
+    //$saleQuan = $_POST['salequan'];
 
+    // // Kiểm tra xem sản phẩm đã tồn tại chưa
+    // $check_sql = "SELECT * FROM products WHERE ProductName = '$productName' AND Series != '$series'";
+    // $result = mysqli_query($conn, $check_sql);
+    // if (mysqli_num_rows($result) > 0) {
+    //     setcookie("err", "Already have Product with this series", time() + (86400 * 30), "/");
+    //     return;
+    // }
 
 
     // Chuẩn bị câu truy vấn
-    $sql = "INSERT INTO products (CategoryID, Series, ProductName, Image, Description, Feature, Price, Color, Size, TotalQuantity, Quantity, Sale_Quantity, Status) VALUES ('$CategoryID', '$series', '$productName', '$uploadIMG', '$description', '$feature', '$price', '$color', '$size', '$totalQuan', '$Quantity', '$saleQuan', 1)";
+    $sql = "INSERT INTO products (CategoryID, Series, ProductName, Image, Description, Feature, Price, Color, Size, TotalQuantity, Quantity, Sale_Quantity, Status) VALUES ('$CategoryID', '$series', '$productName', '$uploadIMG', '$description', '$feature', '$price', '$color', '$size', '$totalQuan', '$Quantity', '0', 1)";
 
     // Thực hiện truy vấn
     if (mysqli_query($conn, $sql)) {
         //echo "Dữ liệu đã được thêm vào cơ sở dữ liệu thành công!";
-        header("Location: ../admin2/index.php?page=Product/list");
-        header("Location: ../admin2/index.php?page=Product/list");
+        // header("Location: ../admin2/index.php?page=Product/list");
         setcookie("success", "Product added successfully!", time() + (86400 * 30), "/");
+        header("Location: ../admin2/index.php?page=Product/list");
         exit();
     } else {
         echo "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
@@ -100,9 +107,9 @@ function updateProduct()
         $size = $_POST['size'];
         $totalQuan = $_POST['totalquan'];
         $Quantity = $_POST['quantity'];
-        $saleQuan = $_POST['salequan'];
+        // $saleQuan = $_POST['salequan'];
 
-        $sql = "UPDATE products SET Series='$series', ProductName='$productName', Image='$newIMG', Description = '$description', Feature='$feature', Price = '$price', Color='$color', Size ='$size',  CategoryID= $CategoryID, TotalQuantity='$totalQuan', Quantity='$Quantity', Sale_Quantity = '$saleQuan', Status = 1
+        $sql = "UPDATE products SET Series='$series', ProductName='$productName', Image='$newIMG', Description = '$description', Feature='$feature', Price = '$price', Color='$color', Size ='$size',  CategoryID= $CategoryID, TotalQuantity='$totalQuan', Quantity='$Quantity', Status = 1
             WHERE ProductID = $ProductID            ";
         if ($conn->query($sql) === TRUE) {
             $_SESSION['success'] = "Product updated successfully!";
@@ -144,6 +151,12 @@ function countProduct()
     $Count = (int)$row[0];
     return $Count;
 }
+
+//kiểm tra thông tin
+// function isValidName($productName)
+// {
+//     if
+// }
 //Tải hình ảnh lên db
 function UploadIMG()
 {
@@ -151,10 +164,7 @@ function UploadIMG()
     $target_file = $target_dir . basename($_FILES["uploadimg"]["name"]);
     $uploadIMG = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $flag = 1;
-    //kiểm tra file có tồn tại chưa
-    if (file_exists($target_file)) {
-        $flag = 0;
-    }
+    
     //kiểm tra file đúng định dạng ảnh không
     if ($uploadIMG != "jpg" && $uploadIMG != "png" && $uploadIMG != "jpeg" && $uploadIMG != "gif") {
         echo '<script>alert("The File is not an Image")</script>';
@@ -182,7 +192,7 @@ function updateProductImage($productId)
 
         // Xóa hình ảnh hiện tại từ thư mục lưu trữ
         $imagePath = "../img/" . $currentImageName;
-        if (file_exists($imagePath)) {
+        if (file_exists($imagePath) && !empty($newImageName)) {
             unlink($imagePath); // Xóa tệp hình ảnh
         }
 
@@ -222,11 +232,30 @@ if (isset($_POST['searchText'])) {
     $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
     $result = mysqli_query($conn, $query);
 
-    if (isset($_POST['key']) && $_POST['key'] == "search-admin") {
+    
+    if (isset($_POST['key']) && $_POST['key'] == "search-admin")
+    {
         echo loadProductData($result);
-    } else {
-        echo LoadProductClient($result);
     }
+}
+
+
+if (isset($_GET['searchText'])) {
+    $searchText = $_GET['searchText'];
+    $query = "SELECT * FROM products WHERE ProductName LIKE '%$searchText%'";
+    $result = mysqli_query($conn, $query);
+
+    if ($_GET['key'] == "search-client") {
+        $html ='';
+        $html= LoadProductClient($result);
+        echo $html;
+    }else{
+        echo "err";
+    }
+    //  else {
+    //     echo loadProductData($result);
+    // }
+    //if (isset($_POST['key']) && $_POST['key'] == "search-admin")
 }
 
 // Xử lý ajax show sp khi click cate

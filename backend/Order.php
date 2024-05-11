@@ -20,7 +20,7 @@ if (isset($_POST['checkout'])) {
     checkout($ID);
 }
 if (isset($_GET['approvecheckout'])) {
-    $ID = $_GET['OrderID'];
+    $ID = $_GET['approvecheckout'];
     approvecheckout($ID);
 }
 if (isset($_GET['cancel'])) {

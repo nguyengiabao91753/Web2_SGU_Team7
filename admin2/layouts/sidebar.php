@@ -1,3 +1,6 @@
+<style>
+  
+</style> 
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
    <!-- Brand Logo -->
    <a href="index3.html" class="brand-link">
@@ -28,7 +31,7 @@
      </div>
      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
        <div class="col-md-12" style="text-align: center;">
-         <a href="../backend/Logout.php?user_id=true" class="btn btn-block btn-outline-danger"><i class="fas fa-power-off"></i> Logout</a>
+         <a href="../backend/Logout.php?user_id=true" class="btn btn-block btn-outline-danger"><i class="fas fa-power-off"></i><span class=""> Logout</span></a>
        </div>
 
      </div>

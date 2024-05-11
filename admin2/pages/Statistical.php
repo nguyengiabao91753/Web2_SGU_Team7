@@ -191,7 +191,7 @@ $categories = getAllCategory()
           {
             type: 'line',
             data: datato,
-            backgroundColor: 'tansparent',
+            backgroundColor: 'transparent',
             borderColor: '#ced4da',
             pointBorderColor: '#ced4da',
             pointBackgroundColor: '#ced4da',
@@ -518,7 +518,7 @@ $categories = getAllCategory()
                 <?php foreach ($years as $year) : ?>
                   <option value="<?php echo $year ?>"><?php echo $year ?></option>
                 <?php endforeach; ?>
-                <option value="2023">2023</option>
+                <!-- <option value="2023">2023</option> -->
               </select>
 
               <label>To: </label>
