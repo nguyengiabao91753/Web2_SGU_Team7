@@ -337,7 +337,7 @@ function LoadProductClient($kq)
         $cc .= $sp['ProductName'];
         $cc .= '</a>';
         $cc .= '<span class="stext-105 cl3">';
-        $cc .= $sp['Price'];
+        $cc .= '$ '.$sp['Price'].'';
         $cc .= '</span>';
         $cc .= '</div>';
         $cc .= '</div>';
