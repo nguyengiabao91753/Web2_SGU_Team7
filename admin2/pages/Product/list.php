@@ -372,7 +372,7 @@ require_once('../backend/Userfunction.php');
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>Images</label>
-                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)" required>
+                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)">
                                 <img src="" alt="Preview Image" id="preview" style="display:none;">
                             </div>
                         </div>
