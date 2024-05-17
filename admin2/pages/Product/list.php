@@ -244,7 +244,9 @@ require_once('../backend/Userfunction.php');
                     addForm.find('input[id="productname"]').val(response['data'].ProductName);
                     addForm.find('input[id="series"]').val(response['data'].Series);
                     //addForm.find('input[id="uploadimg"]').val(response['data'].Image);
-                    $('#preview').attr('src', response['data'].Image);
+                    // Sử dụng jQuery để tìm phần tử img với id là "preview" và thiết lập thuộc tính src
+                    addForm.find('img[id="preview"]').attr('src', response['data'].Image);
+                    addForm.find('img[id="preview"]').show();
                     addForm.find('input[id="description"]').val(response['data'].Description);
                     addForm.find('input[id="feature"]').val(response['data'].Feature);
                     addForm.find('input[id="price"]').val(response['data'].Price);
@@ -370,7 +372,7 @@ require_once('../backend/Userfunction.php');
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>Images</label>
-                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)" required>
+                                <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)">
                                 <img src="" alt="Preview Image" id="preview" style="display:none;">
                             </div>
                         </div>

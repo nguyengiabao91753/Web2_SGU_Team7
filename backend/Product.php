@@ -183,17 +183,23 @@ function updateProductImage($productId)
     global $conn;
 
     $newImageName = UploadIMG();
+    
     // Lấy đường dẫn hoặc tên tệp hình ảnh hiện tại của sản phẩm từ cơ sở dữ liệu
     $sql = "SELECT Image FROM products WHERE ProductID = $productId";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+
         $currentImageName = $row["Image"];
 
         // Xóa hình ảnh hiện tại từ thư mục lưu trữ
         $imagePath = "../img/" . $currentImageName;
         if (file_exists($imagePath) && !empty($newImageName)) {
             unlink($imagePath); // Xóa tệp hình ảnh
+        }
+
+        if ($newImageName ==  null) {
+            $newImageName = $imagePath;
         }
 
         // Cập nhật thông tin hình ảnh mới của sản phẩm trong cơ sở dữ liệu
@@ -331,7 +337,7 @@ function LoadProductClient($kq)
         $cc .= $sp['ProductName'];
         $cc .= '</a>';
         $cc .= '<span class="stext-105 cl3">';
-        $cc .= $sp['Price'];
+        $cc .= '$ '.$sp['Price'].'';
         $cc .= '</span>';
         $cc .= '</div>';
         $cc .= '</div>';
