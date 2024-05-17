@@ -86,7 +86,7 @@ $pro = getProBySeries($_GET['id']);
         // });
 
         $('.js-addcart-detail').each(function() {
-            $(this).on('click', function() {
+            $(this).on('click', async function() {
                 <?php
                 if (!isset($_COOKIE['client'])) :
                 ?>
@@ -104,7 +104,7 @@ $pro = getProBySeries($_GET['id']);
                 //     alert(Quantity);
                 // alert(Price);
 
-                $.ajax({
+                await $.ajax({
                     url: '../backend/Order.php',
                     type: 'post',
                     data: {
@@ -117,17 +117,36 @@ $pro = getProBySeries($_GET['id']);
                         // alert(response);
                         if (response) {
                             //alert("true");
-                            swal(nameProduct, "is added to cart !", "success");
-                            setTimeout(function() {
-                                window.location.reload(true);
-                            }, 1500); // Thời gian tính bằng mili giây, ở đây là 3 giây
+                            swal(nameProduct, "is added to cart !", "success")
+                            .then(async (value) => {
+                                
+                                await $.ajax({
+                                    url: '../backend/Order.php',
+                                    type: 'get',
+                                    data:{
+                                        key: "update-viewcart"
+                                    },
+                                    success: function(count) {
+                                        $('#cart-icon').attr('data-notify', count);
+                                    },
+                                    error: function() {
+                                        alert("Error fetching cart count.");
+                                    }
+                                });
+                            });
+
+                            // setTimeout(function() {
+                            //     window.location.reload(true);
+                            // }, 1500); // Thời gian tính bằng mili giây, ở đây là 3 giây
                         } else {
                             //swal(nameProduct, "is added failed !", "error");
                             alert(response);
                         }
                     }
 
-                });
+                })
+
+
             });
         });
     });

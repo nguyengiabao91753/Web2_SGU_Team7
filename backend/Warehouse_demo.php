@@ -17,15 +17,14 @@ if (isset($_POST['key']) && $_POST['key'] == 'countwarehouse') {
     echo $page;
 }
 
- //Xử lý Ajax kt sp
+
  if(isset($_POST['checkproduct'])){
     $id = $_POST['ProductID'];
     $query = "SELECT * FROM products WHERE ProductID = $id";
     $re = mysqli_query($conn,$query);
     if(mysqli_num_rows($re) >0){
         echo "exists";
-    }
-    echo 'new';
+    }else echo "new";
 
 }//ktra tồn tại sp
 

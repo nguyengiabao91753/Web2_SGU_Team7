@@ -267,10 +267,12 @@ $Supplier = getAllSupplier();
                     ProductID: ProductID
                 },
                 success: function(response) {
-                    if (response == 'new') {
+                    //alert(response);
+                    response = response.trim();
+                    if (response == 'new' ) {
                         $newProductForm.show();
                         $existsProductForm.remove();
-                    } else {
+                    } else if (response == 'exists') {
                         $newProductForm.remove();
                         $existsProductForm.show();
                     }

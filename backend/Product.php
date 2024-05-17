@@ -284,6 +284,7 @@ function loadProductData($kq)
     //$kq = getAll_Product();
 
     foreach ($kq as $sp) {
+        
         $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
 
         $html .= '<tr>';
@@ -323,6 +324,9 @@ function LoadProductClient($kq)
     $cc = '';
 
     foreach ($kq as $sp) {
+        if($sp['Image']==NULL){
+            continue;
+        }
         $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
 
         $cc .= '<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item" id="' . $Name . '">';

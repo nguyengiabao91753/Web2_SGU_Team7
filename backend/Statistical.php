@@ -17,7 +17,9 @@ if (isset($_POST['key']) && $_POST['key'] == 'yearfromto') {
 if (isset($_POST['key']) && $_POST['key'] == 'bestseller') {
     showbestseller();
 }
-
+if (isset($_POST['key']) && $_POST['key'] == 'history') {
+    showHistory();
+}
 
 function statismonth()
 {
@@ -138,13 +140,13 @@ function showbestseller(){
         $sql = "SELECT *
         FROM products
         ORDER BY Sale_Quantity DESC
-        LIMIT 4";
+        LIMIT 10";
     }else{
         $sql = "SELECT *
         FROM products
         WHERE CategoryID = $categoryID
         ORDER BY Sale_Quantity DESC
-        LIMIT 4";
+        LIMIT 10";
     }
 
     $rs = mysqli_query($conn, $sql);
@@ -155,9 +157,54 @@ function showbestseller(){
     echo $html;
 }
 
+function showHistory() {
+    global $conn;
+
+
+        $categoryID = $_POST['categoryID'];
+        $timefrom = $_POST['timefrom'];
+        $timeto = $_POST['timeto'];
+
+        if(empty($timefrom) || empty($timeto)){
+            return;
+        }
+        if (empty($categoryID) ) {
+           
+            $sql = "SELECT p.*, oi.Quantity AS OrderItemQuantity, o.CreatedAt AS OrderCreatedAt
+            FROM Products p
+            JOIN OrderItems oi ON p.ProductID = oi.ProductID
+            JOIN Orders o ON oi.OrderID = o.OrderID
+            WHERE o.Status=3 AND  o.CreatedAt BETWEEN '$timefrom' AND '$timeto'
+            ORDER BY o.CreatedAt DESC
+            ";
+        }else{
+
+        $sql = "SELECT p.*, oi.Quantity AS OrderItemQuantity, o.CreatedAt AS OrderCreatedAt
+                FROM Products p
+                JOIN OrderItems oi ON p.ProductID = oi.ProductID
+                JOIN Orders o ON oi.OrderID = o.OrderID
+                WHERE p.CategoryID = '$categoryID' AND o.Status = 3 AND o.CreatedAt BETWEEN '$timefrom' AND '$timeto'
+                ORDER BY o.CreatedAt DESC
+                ";
+
+        }
+
+        $result = mysqli_query($conn, $sql);
+        $html='';
+        $html = loadhistory($result);
+
+
+    echo $html;
+        
+    
+}
+
 function loadbestseller($kq){
     $html='';
     foreach ($kq as $sp) {
+        if($sp['Image']==NULL){
+            continue;
+        }
         $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
 
         $html .= '<tr>';
@@ -165,6 +212,23 @@ function loadbestseller($kq){
         $html .= '<td>' . $Name . '</td>';
         $html .= ' <td>' . $sp['Sale_Quantity'] . '</td>';
         $html .= '<td>' . $sp['Quantity'] . '</td>';
+        $html .= '</tr>';
+    }
+    return $html;
+}
+function loadhistory($kq){
+    $html='';
+    foreach ($kq as $sp) {
+        if($sp['Image']==NULL){
+            continue;
+        }
+        $Name = ($sp['CategoryID'] != 0) ? getCateByID($sp['CategoryID'])['CategoryName'] : "";
+
+        $html .= '<tr>';
+        $html .= '<td><img src="' . $sp['Image'] . '" alt="Product 1" class="img-circle img-size-32 mr-2"> ' . $sp['ProductName'] . '</td>';
+        $html .= '<td>' . $Name . '</td>';
+        $html .= '<td>' . $sp['OrderItemQuantity'] . '</td>';
+        $html .= '<td>' . $sp['OrderCreatedAt'] . '</td>';
         $html .= '</tr>';
     }
     return $html;

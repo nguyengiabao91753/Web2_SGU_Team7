@@ -167,8 +167,30 @@ $cus = getCusbyId($order['UserID']);
                             <?php
                             if ($order['Status'] == 1) {
                                 echo "<span class='badge bg-primary float-right' style='height: 100%; font-size: large;'>Pending</span>";
+                                $html = '';
+                                $html .= '    <a onclick="return confirmApprove()" href="../backend/Order.php?approvecheckout=' . $order['OrderID'] . '">';
+                                $html .= '      <button class="btn btn-success">';
+                                $html .= '        <i class="far fa-check-circle"></i>';
+                                $html .= '      </button>';
+                                $html .= '    </a>';
+
+
+
+                                $html .= '    <a onclick="return confirmDelete()" href="../backend/Order.php?reject=' . $order['OrderID'] . '">';
+                                $html .= '      <button class="btn btn-danger">';
+                                $html .= '        <i class="far fa-trash-alt"></i>';
+                                $html .= '      </button>';
+                                $html .= '    </a>';
+                                echo $html;
                             } else if ($order['Status'] == 2) {
                                 echo "<span class='badge bg-info text-dark float-right' style='height: 100%; font-size: large;'>Delivering</span>";
+                                $html='';
+                                $html .= '    <a onclick="return confirmApprove()" href="../backend/Order.php?approve=' . $order['OrderID'] . '">';
+                                $html .= '      <button class="btn btn-success">';
+                                $html .= '        <i class="far fa-check-circle"></i>';
+                                $html .= '      </button>';
+                                $html .= '    </a>';
+                                echo $html;
                             } else if ($order['Status'] == 3) {
                                 echo "<span class='badge bg-secondary float-right' style='height: 100%; font-size: large;'>Done</span>";
                             }

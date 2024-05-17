@@ -315,22 +315,60 @@ $categories = getAllCategory()
 
 
 
-  function showbestseller(){
+  function showbestseller() {
     var categoryID = $('#bestseller-select').val();
     $.ajax({
       url: '../backend/Statistical.php',
       type: 'post',
-      data:{
+      data: {
         key: 'bestseller',
         categoryID: categoryID
       },
-      
-      success:function(response){
-        $("tbody").html(response);
+
+      success: function(response) {
+        $("#bestseller tbody").html(response);
 
       }
     });
   }
+
+  $(document).ready(function() {
+  $('#timefrom-select, #timeto-select, #history-select').change(function() {
+    //alert("vô");
+    var timefrom = $('#timefrom-select').val();
+    var timeto = $('#timeto-select').val();
+    var dateFrom = new Date(timefrom);
+    var dateTo = new Date(timeto);
+
+    if (dateTo < dateFrom) {
+      alert('Please select a valid date range. The "To" date must be after the "From" date.');
+      $('#timefrom-select').val('');
+      $('#timeto-select').val('');
+      return;
+    }
+    //alert(timefrom);
+    var categoryID = $('#history-select').val();
+    //alert(categoryID);
+
+    $.ajax({
+      url: '../backend/Statistical.php',
+      type: 'post',
+      data: {
+        key: 'history',
+        categoryID: categoryID,
+        timefrom:timefrom,
+        timeto:timeto
+      },
+
+      success: function(response) {
+        
+       $('#history tbody').html(response);
+
+      }
+    });
+  });
+});
+
 
 </script>
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -354,6 +392,7 @@ $categories = getAllCategory()
 <!-- Main content -->
 <div class="content">
   <div class="container-fluid">
+
     <div class="row">
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -416,41 +455,45 @@ $categories = getAllCategory()
       </div>
       <!-- ./col -->
     </div>
+
+    <h2>Statistical chart</h2>
     <div class="row">
       <div class="col-lg-6">
         <div class="card">
-          <div class="card-header border-0">
-            <h3 class="card-title">Sales - Month</h3>
+          <div class="card-header">
+            <div class="form-inline">
 
-            <!-- <a href="javascript:void(0);">View Report</a> -->
-            <div class="card-tools">
               <label>From:</label>
-              <select class="select-statis" id="monthFromSelect">
+              <select class="select-statis form-control" id="monthFromSelect">
 
               </select>
 
               <label>To:</label>
-              <select class="select-statis" id="monthToSelect">
+              <select class="select-statis form-control" id="monthToSelect">
 
               </select>
             </div>
+          </div>
 
+        </div>
+        <div class="card">
+          <div class="card-header border-0">
+            <h3 class="card-title">Sales - Month</h3>
 
           </div>
           <div class="card-body">
             <div class="d-flex">
               <p class="d-flex flex-column">
-                <!-- <span class="text-bold text-lg">820</span> -->
+
                 <span>Visitors Over Time</span>
               </p>
               <p class="ml-auto d-flex flex-column text-right">
                 <span class="text-success" id="percent-month">
 
                 </span>
-                <!-- <span class="text-muted">Since last week</span> -->
+
               </p>
             </div>
-            <!-- /.d-flex -->
 
             <div class="position-relative mb-4">
               <canvas id="visitors-chart" height="200"></canvas>
@@ -469,65 +512,36 @@ $categories = getAllCategory()
         </div>
         <!-- /.card -->
 
-        <div class="card">
-          <div class="card-header border-0">
-            <h3 class="card-title">Best-seller Products</h3>
 
-            <div class="card-tools">
-              <label for="">Category</label>
-              <select name="parentID" class="selectParent" id="bestseller-select">
-                <option value="0">All</option>
-                <?php
-                recursiveCategory($categories, 0);
-                ?>
-              </select>
-              <!-- <a href="#" class="btn btn-tool btn-sm">
-                <i class="fas fa-download"></i>
-              </a>
-              <a href="#" class="btn btn-tool btn-sm">
-                <i class="fas fa-bars"></i>
-              </a> -->
-            </div>
-          </div>
-          <div class="card-body table-responsive p-0">
-            <table class="table table-striped table-valign-middle" id="bestseller">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Sold</th>
-                  <th>Quantity</th>
-                </tr>
-              </thead>
-              <tbody>
-                
-              </tbody>
-            </table>
-          </div>
-        </div>
         <!-- /.card -->
       </div>
       <!-- /.col-md-6 -->
       <div class="col-lg-6">
         <div class="card">
-          <div class="card-header border-0">
-            <h3 class="card-title">Sales - Year</h3>
-            <div class="card-tools">
+          <div class="card-header">
+            <div class="form-inline">
               <label>From: </label>
-              <select class="select-statis" id="yearFromSelect">
+              <select class="select-statis form-control" id="yearFromSelect">
                 <?php foreach ($years as $year) : ?>
                   <option value="<?php echo $year ?>"><?php echo $year ?></option>
                 <?php endforeach; ?>
-                <!-- <option value="2023">2023</option> -->
               </select>
 
               <label>To: </label>
-              <select class="select-statis" id="yearToSelect">
+              <select class="select-statis form-control" id="yearToSelect">
                 <?php foreach ($years as $year) : ?>
                   <option value="<?php echo $year ?>"><?php echo $year ?></option>
                 <?php endforeach; ?>
               </select>
+
             </div>
+          </div>
+
+        </div>
+        <div class="card">
+          <div class="card-header border-0">
+            <h3 class="card-title">Sales - Year</h3>
+
           </div>
           <div class="card-body">
             <div class="d-flex">
@@ -561,59 +575,100 @@ $categories = getAllCategory()
         </div>
         <!-- /.card -->
 
+
+      </div>
+      <!-- /.col-md-6 -->
+    </div>
+    <h2>Best-seller Products</h2>
+    <div class="row">
+      <div class="col-lg-12">
         <div class="card">
           <div class="card-header border-0">
-            <h3 class="card-title">Online Store Overview</h3>
-            <div class="card-tools">
-              <a href="#" class="btn btn-sm btn-tool">
+
+
+
+            <!-- <label for="">Category</label> -->
+            <select name="parentID" class="selectParent form-control" style="width: 25%;" id="bestseller-select">
+              <option value="0">All</option>
+              <?php
+              recursiveCategory($categories, 0);
+              ?>
+            </select>
+            <!-- <a href="#" class="btn btn-tool btn-sm">
                 <i class="fas fa-download"></i>
               </a>
-              <a href="#" class="btn btn-sm btn-tool">
+              <a href="#" class="btn btn-tool btn-sm">
                 <i class="fas fa-bars"></i>
-              </a>
-            </div>
+              </a> -->
+
           </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-              <p class="text-success text-xl">
-                <i class="ion ion-ios-refresh-empty"></i>
-              </p>
-              <p class="d-flex flex-column text-right">
-                <span class="font-weight-bold">
-                  <i class="ion ion-android-arrow-up text-success"></i> 12%
-                </span>
-                <span class="text-muted">CONVERSION RATE</span>
-              </p>
-            </div>
-            <!-- /.d-flex -->
-            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-              <p class="text-warning text-xl">
-                <i class="ion ion-ios-cart-outline"></i>
-              </p>
-              <p class="d-flex flex-column text-right">
-                <span class="font-weight-bold">
-                  <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-                </span>
-                <span class="text-muted">SALES RATE</span>
-              </p>
-            </div>
-            <!-- /.d-flex -->
-            <div class="d-flex justify-content-between align-items-center mb-0">
-              <p class="text-danger text-xl">
-                <i class="ion ion-ios-people-outline"></i>
-              </p>
-              <p class="d-flex flex-column text-right">
-                <span class="font-weight-bold">
-                  <i class="ion ion-android-arrow-down text-danger"></i> 1%
-                </span>
-                <span class="text-muted">REGISTRATION RATE</span>
-              </p>
-            </div>
-            <!-- /.d-flex -->
+          <div class="card-body table-responsive p-0">
+            <table class="table table-striped table-valign-middle" id="bestseller">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Sold</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <!-- /.col-md-6 -->
+    </div>
+    <h2>Sales history</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="form-group">
+              <div class="row">
+
+
+                <div class="form-group col-md-4">
+
+                  <label class="">From:</label>
+                  <input type="date" class="form-control" name="" id="timefrom-select">
+                </div>
+                <div class="form-group col-md-4">
+
+                  <label class="">To:</label>
+                  <input type="date" class="form-control" name="" id="timeto-select">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="">Category</label>
+                  <select name="parentID" class="selectParent form-control" id="history-select">
+                    <option value="0">All</option>
+                    <?php
+                    recursiveCategory($categories, 0);
+                    ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body table-responsive p-0">
+            <table class="table table-striped table-valign-middle" id="history">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Sold</th>
+                  <th>At</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
     </div>
     <!-- /.row -->
   </div>

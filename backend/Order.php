@@ -471,3 +471,9 @@ function updateTotal($orderID){
     mysqli_query($conn, $updateTotalAmountQuery);
 
 }
+
+
+if(isset($_GET['key']) && $_GET['key'] == 'update-viewcart'){
+    $count = countItemsInOrder();
+    echo $count;
+}

@@ -41,7 +41,7 @@ require_once '../backend/Order.php';
 			<nav class="limiter-menu-desktop container">
 
 				<!-- Logo desktop -->
-				<a href="index" class="logo">
+				<a href="index.php" class="logo">
 					<img src="images/icons/logo-01.png" alt="IMG-LOGO">
 				</a>
 
@@ -84,7 +84,7 @@ require_once '../backend/Order.php';
 						if(isset($_COOKIE['client'])): 
 						$countitems = countItemsInOrder();
 					?>
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php if (isset($countitems)) echo $countitems;
+					<div id="cart-icon" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php if (isset($countitems)) echo $countitems;
 																																else echo 0  ?>">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</div>
