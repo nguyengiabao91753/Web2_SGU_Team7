@@ -15,6 +15,9 @@ $order = getOrder();
                 if (confirm('You will remove this product form your cart')) {
                     removeitem(orderItemID);
                     
+                }else{
+                    $(this).siblings('.num-product').val(currentVal+1);
+                    currentVal++;
                 }
             }
             $('button[name="up-' + orderItemID + '"]').removeAttr('disabled');
@@ -60,9 +63,9 @@ $order = getOrder();
             success: function(response) {
                 $('#item-' + orderItemID).hide();
                 $('#total').append(response['data'].total);
-                if(response['data'].total == 0){
+                //alert(response['data'].total);
+                if(response['data'].total == null){
                     $("#checkout").attr("disabled", true);
-                    alert('vô');
                     $('#total').append('');
                 }
             }

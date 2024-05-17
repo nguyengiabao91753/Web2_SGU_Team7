@@ -9,6 +9,7 @@ require_once '../backend/Product.php';
 require_once '../backend/Order.php';
 require_once '../backend/User.php';
 require_once '../backend/Account.php';
+require_once '../backend/Warehouse_demo.php';
 
 
 
@@ -53,7 +54,8 @@ if (mysqli_num_rows($result) > 0) {
                 $html = loadProductData($result);
                 break;
         }
-    } else if($tableName=='goodsreceipt_items'){
+    } else if($tableName=='goodsreceipt'){
+        $html= loadWarehouse($result);
         
     }else if($tableName == 'orders'){
         if($key == 'pending'){

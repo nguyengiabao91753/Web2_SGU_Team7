@@ -58,10 +58,10 @@ $Supplier = getAllSupplier();
             url: '../chucnang/phantrang.php',
             type: 'get',
             data: {
-                tableName: "suppliers",
+                tableName: "goodsreceipt",
                 rowofPage: rowofPage,
                 pageNumber: pageNumber,
-                ID: "SuppliId"
+                ID: "ReceiptId"
             },
             // dataType: 'json',
             success: function(response) {
@@ -109,9 +109,10 @@ $Supplier = getAllSupplier();
 
         $.ajax({
             url: '../backend/Warehouse_demo.php',
-            type: 'get',
+            type: 'post',
             data: {
-                rowofPage: rowofPage
+                rowofPage: rowofPage,
+                key: 'countwarehouse'
             },
             success: function(response) {
                 //alert(response);
@@ -203,7 +204,7 @@ $Supplier = getAllSupplier();
 
     }
     // Nút thêm(addButton)
-    $(document).ready(function() {
+       $(document).ready(function() {
         var addButton = $("#addbutton");
         var addForm = $("#formadd");
 
@@ -229,11 +230,14 @@ $Supplier = getAllSupplier();
         });
 
 
-        $("#color").change(function() {
+        $('#productFormsContainer').on('change', '.color', function() {
             var selectedColor = $(this).val(); // Lấy giá trị màu đã chọn
-            $("#showcolor").css("background-color", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
-            $("#showcolor").css("border", selectedColor); // Đặt màu nền của phần tử thành màu đã chọn
+            //alert(selectedColor);
+            $(this).closest(".form-group").find(".showcolor").css("background-color", selectedColor);
+            $(this).closest(".form-group").find(".showcolor").css("border", selectedColor);
+           
         });
+
 
     });
 
@@ -243,10 +247,10 @@ $Supplier = getAllSupplier();
 
     //JS PHẦN FORM GIAO DIỆN 
     //kiểm tra id sản phẩm
-    $(document).ready(function() {
+    $(document).ready(function(){
         var formCounter = 2;
 
-        $('.new_product').hide();   
+        $('.new_product').hide();
         $('.exists_product').hide();
 
         $('#productFormsContainer').on('click', '.check_product', function() {
@@ -254,6 +258,7 @@ $Supplier = getAllSupplier();
             var $newProductForm = $('.new_product[data-id="' + dataId + '"]');
             var $existsProductForm = $('.exists_product[data-id="' + dataId + '"]');
             var ProductID = $('.ProductID[data-id="' + dataId + '"]').val();
+            $('.ProductID[data-id="' + dataId + '"]').prop('readonly', true);
             $.ajax({
                 url: '../backend/Warehouse_demo.php',
                 type: 'post',
@@ -264,9 +269,9 @@ $Supplier = getAllSupplier();
                 success: function(response) {
                     if (response == 'new') {
                         $newProductForm.show();
-                        $existsProductForm.hide();
+                        $existsProductForm.remove();
                     } else {
-                        $newProductForm.hide();
+                        $newProductForm.remove();
                         $existsProductForm.show();
                     }
                 },
@@ -274,25 +279,142 @@ $Supplier = getAllSupplier();
 
 
         });
+        $('#productFormsContainer').on('click', '.remove', function() {
+            var dataId = $(this).attr('data-id');
+
+            var item = $(this).closest('#item_add');
+
+            item.remove();
+        });
 
         $('#addMore').click(function() {
-            var newProductForm = $('#item_add').first().clone(); 
-            newProductForm.find('input[type="number"]').val(''); 
+            //Cach 1
+            //var newProductForm = $('#item_add').first().clone(); 
+            //Cach 2
+            var newProductFormHtml = `
+            <div id="item_add">
+                <hr><hr>
+                <!-- Product check -->
+                <div class="form-group">
+                    <label for="">Product Id</label>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <input type="number" name="ProductID[]" data-id="${formCounter}" class="form-control ProductID" placeholder="Enter Product Id" required>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="button" class="btn btn-info check_product" name="" data-id="${formCounter}" value="Check">
+                        </div>
+                    </div>
+                </div>
+                <!-- Existing product -->
+                <div class="exists_product" data-id="${formCounter}">
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="ex_quantity" class="form-control" placeholder="Enter quantity" name="ex_quantity[]" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" id="ex_price" class="form-control" placeholder="Enter Price" name="ex_price[]" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-danger remove" data-id="${formCounter}" value="X">
+                    </div>
+                </div>
+                <!-- New product -->
+                <div class="new_product" data-id="${formCounter}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Series</label>
+                                <input type="number" min="0" class="form-control" name="series[]" id="series" placeholder="Enter Series">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>CategoryID:</label>
+                                <select name="CategoryID[]" class="selectParent form-control">
+                                    <option value="0">-----------Root-----------</option>
+                                    <?php recursiveCategory($categories, 0); ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Product name</label>
+                                <input type="text" class="form-control" placeholder="Enter Product name" name="productname[]" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="number" name="new_price[]" id="new_price" min="0" placeholder="Enter Price" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Color</label>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <select name="color[]"  class="form-control color">
+                                            <option value="White">White</option>
+                                            <option value="Black">Black</option>
+                                            <option value="Red">Red</option>
+                                            <option value="Yellow">Yellow</option>
+                                            <option value="Green">Green</option>
+                                            <option value="Brown">Brown</option>
+                                            <option value="Blue">Blue</option>
+                                            <option value="Grey">Grey</option>
+                                            <option value="Violet">Violet</option>
+                                            <option value="Navy">Navy</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control showcolor" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Size</label>
+                                <input type="number" name="size[]" id="size" placeholder="Enter size" min="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" name="new_quantity[]" id="new_quantity" placeholder="Enter quantity" min="0" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-danger remove" data-id="${formCounter}" value="X">
+                    </div>
+                </div>
+            </div>`;
 
-          
+            var newProductForm = $(newProductFormHtml);
+
+            newProductForm.find('input[type="number"]').val('').attr('disabled', false);
+
+
             newProductForm.find('[data-id]').each(function() {
                 var oldId = $(this).attr('data-id');
                 $(this).attr('data-id', formCounter);
             });
             newProductForm.find('.new_product').hide();
             newProductForm.find('.exists_product').hide();
-            formCounter++; 
+            formCounter++;
 
             $('#productFormsContainer').append(newProductForm);
         });
 
-
     });
+
 </script>
 <style>
     #formadd {
@@ -337,8 +459,18 @@ $Supplier = getAllSupplier();
                 <div class="card-body">
                     <input type="button" class="btn btn-info" id="addMore" value="More">
                     <div id="productFormsContainer">
+                        <div class="form-group">
+                            <label>Supplier</label>
+                            <select name="SuppliId" class="form-control" id="" required>
+                                <option value="">------Select Supplier------</option>
+                                <?php foreach ($Supplier as $sup) : ?>
+                                    <option value="<?php echo $sup['SuppliId']; ?>"><?php echo $sup['Name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <div id="item_add">
                             <!-- Doạn check sản phẩm -->
+
                             <div class="form-group">
                                 <label for="">Product Id</label>
                                 <div class="row">
@@ -352,15 +484,7 @@ $Supplier = getAllSupplier();
                             </div>
                             <!-- Sản phẩm đã có -->
                             <div class="exists_product" data-id="1">
-                                <div class="form-group">
-                                    <label>Supplier</label>
-                                    <select name="SuppliId[]" class="form-control" id="">
-                                        <option value="">------Select Supplier------</option>
-                                        <?php foreach ($Supplier as $sup) : ?>
-                                            <option value="<?php echo $sup['SuppliId']; ?>"><?php echo $sup['Name']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+
                                 <div class="form-group">
                                     <label>Quantity</label>
                                     <input type="number" id="ex_quantity" class="form-control" placeholder="Enter quantity" name="ex_quantity[]" required>
@@ -369,21 +493,14 @@ $Supplier = getAllSupplier();
                                     <label>Price</label>
                                     <input type="number" id="ex_price" class="form-control" placeholder="Enter Price" name="ex_price[]" required>
                                 </div>
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-danger remove" data-id="1" value="X">
+                                </div>
                             </div>
                             <!-- Sản phẩm mới -->
                             <div class="new_product" data-id="1">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Supplier</label>
-                                            <select name="SuppliId[]" class="form-control" id="">
-                                                <option value="">------Select Supplier------</option>
-                                                <?php foreach ($Supplier as $sup) : ?>
-                                                    <option value="<?php echo $sup['SuppliId']; ?>"><?php echo $sup['Name']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Series</label>
@@ -403,7 +520,7 @@ $Supplier = getAllSupplier();
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Product name</label>
                                             <input type="text" class="form-control" placeholder="Enter Product name" name="productname[]" value="">
@@ -428,7 +545,7 @@ $Supplier = getAllSupplier();
                                             <label>Color</label>
                                             <div class="row">
                                                 <div class="col-md-10">
-                                                    <select name="color[]" class="form-control" id="color">
+                                                    <select name="color[]" class="form-control color">
                                                         <option value="White">White</option>
                                                         <option value="Black">Black</option>
                                                         <option value="Red">Red</option>
@@ -442,7 +559,7 @@ $Supplier = getAllSupplier();
                                                     </select>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <input type="text" class="form-control" disabled id="showcolor">
+                                                    <input type="text" class="form-control showcolor" disabled >
                                                 </div>
                                             </div>
 
@@ -455,6 +572,7 @@ $Supplier = getAllSupplier();
                                             <input type="number" name="size[]" id="size" placeholder="Enter size" min="0" class="form-control">
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="row">
@@ -466,6 +584,10 @@ $Supplier = getAllSupplier();
                                             <input type="number" name="new_quantity[]" id="new_quantity" placeholder="Enter quantity" min="0" class="form-control">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-danger remove" data-id="1" value="X">
                                 </div>
                             </div>
                         </div>
@@ -511,11 +633,11 @@ $Supplier = getAllSupplier();
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th>Employee Name</th>
+                    <th>Supplier</th>
+                    <th>Total</th>
+                    <th>CreatedAt</th>
+                    <th>Detail</th>
                 </tr>
             </thead>
             <tbody>
@@ -524,11 +646,11 @@ $Supplier = getAllSupplier();
             <tfoot>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th>Employee Name</th>
+                    <th>Supplier</th>
+                    <th>Total</th>
+                    <th>CreatedAt</th>
+                    <th>Detail</th>
                 </tr>
             </tfoot>
         </table>
