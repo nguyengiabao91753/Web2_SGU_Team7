@@ -233,7 +233,8 @@ array_push($jsStack, '
 
         removeButton.click(function() {
             addForm.slideToggle();
-
+            document.querySelector("#formadd").reset();
+            addForm.find('input[value="Submit"]').attr('name', 'add_product');
         });
 
 
