@@ -12,10 +12,11 @@ require_once '../backend/Order.php';
 				</div>
 
 				<div class="right-top-bar flex-w h-full">
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
-						Help & FAQs
+					<?php if(isset($_COOKIE['client']) && $_COOKIE['client'] == 1): ?>
+					<a href="../admin2/index.php" class="flex-c-m trans-04 p-lr-25">
+						Admin
 					</a>
-
+					<?php endif; ?>
 					<?php if (!isset($_COOKIE['client'])) : ?>
 						<a href="./pages/login.php" class="flex-c-m p-lr-10 trans-04">
 							My Account
@@ -84,10 +85,12 @@ require_once '../backend/Order.php';
 						if(isset($_COOKIE['client'])): 
 						$countitems = countItemsInOrder();
 					?>
-					<div id="cart-icon" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<?php if (isset($countitems)) echo $countitems;
+					<a href="?content=shopping-cart">
+					<div id="cart-icon" class="" data-notify="<?php if (isset($countitems)) echo $countitems;
 																																else echo 0  ?>">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</div>
+					</a>
 					<?php endif; ?>
 
 					<?php if(isset($_COOKIE['client'])): ?>

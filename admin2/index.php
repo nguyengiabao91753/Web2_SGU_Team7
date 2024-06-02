@@ -11,8 +11,8 @@ ob_start();
   $cssStack = [];
   $jsStack = [];
   $selectedContent = isset($_GET['page']) ? $_GET['page'] : 'Statistical';
+  if(!isset($_GET['page'])) $_GET['page'] = "Statistical";
   $contentPath = "pages/$selectedContent.php";
-
     require_once("layouts/head.php");
     require_once '../backend/Userfunction.php';
     ?>

@@ -69,6 +69,7 @@ require_once('../backend/Userfunction.php');
             addForm.slideToggle();
             document.querySelector("#formadd").reset();
             addForm.find('input[value="Submit"]').attr('name', 'add_product');
+            addForm.find('img[id="preview"]').attr('src', null);
         });
 
         $("#color").change(function() {
@@ -373,7 +374,7 @@ require_once('../backend/Userfunction.php');
                             <div class="form-group">
                                 <label>Images</label>
                                 <input type="file" name="uploadimg" id="uploadimg" class="form-control" accept="image/*" onchange="previewImage(event)">
-                                <img src="" alt="Preview Image" id="preview" style="display:none;">
+                                <img src="" id="preview" style="display:none;">
                             </div>
                         </div>
 

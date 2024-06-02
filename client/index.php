@@ -19,7 +19,7 @@ include("layouts/header.php");
 
 	
     <!-- Cart -->
-    <?php include("layouts/viewcart.php") ?>
+    
 
 	<!-- Product -->
     <?php 

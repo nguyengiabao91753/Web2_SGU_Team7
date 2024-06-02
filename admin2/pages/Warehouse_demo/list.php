@@ -439,9 +439,11 @@ $Supplier = getAllSupplier();
 <div class="card">
     <!--addButton and searchButton-->
     <div class="addform">
+    <?php if(getFeaturebyAction('Warehouse','Create')): ?>
         <button id="addbutton" class="btn btn-tool">
             <i class="fa fa-plus-square"></i> <b>Add</b>
         </button>
+        <?php endif; ?>
         <!--addForm-->
         <form method="post" action="../backend/Warehouse_demo.php" id="formadd">
             <!-- Default box -->
@@ -496,6 +498,10 @@ $Supplier = getAllSupplier();
                                     <label>Price</label>
                                     <input type="number" id="ex_price" class="form-control" placeholder="Enter Price" name="ex_price[]" required>
                                 </div>
+                                <!-- <div class="form-group">
+                                    <label></label>
+                                    <input type="number" id="ex_price" class="form-control" placeholder="Enter Price" name="ex_price[]" required>
+                                </div> -->
                                 <div class="form-group">
                                     <input type="button" class="btn btn-danger remove" data-id="1" value="X">
                                 </div>

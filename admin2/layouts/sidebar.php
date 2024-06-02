@@ -16,6 +16,7 @@
     $id = $_COOKIE['user_id'];
     $user_login = getCusbyId($id);
 
+    
     ?>
    <div class="sidebar">
      <!-- Sidebar user panel (optional) -->
@@ -55,7 +56,7 @@
                with font-awesome or any other icon font library -->
         <?php if (getLevelbyUserId() == 'Admin') :  ?>
          <li class="nav-item">
-           <a href="?page=Statistical" class="nav-link">
+           <a href="?page=Statistical" class="nav-link <?php echo (isset($_GET['page']) && strpos($_GET['page'], 'Statistical') !== false) ? 'active' : ''; ?>">
              <i class="nav-icon fas fa-sitemap"></i>
              <p>
                Statistical
@@ -64,7 +65,7 @@
          </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Category')) :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Category') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-sitemap"></i>
                <p>
@@ -72,9 +73,9 @@
                  <i class="right fas fa-angle-left"></i>
                </p>
              </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item">
-                 <a href="index.php?page=Category/list" class="nav-link">
+             <ul class="nav nav-treeview ">
+               <li class="nav-item ">
+                 <a href="index.php?page=Category/list" class="nav-link <?php echo (strpos($_GET['page'], 'Category/list') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
@@ -83,7 +84,7 @@
            </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Product')) :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Product') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-box"></i>
                <p>
@@ -93,7 +94,7 @@
              </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a href="index.php?page=Product/list" class="nav-link">
+                 <a href="index.php?page=Product/list" class="nav-link <?php echo (strpos($_GET['page'], 'Product/list') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
@@ -111,7 +112,7 @@
             $count = (int)$row[0];
             if($count==0) $count = '';
             ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Order') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-users"></i>
                <p>
@@ -123,7 +124,7 @@
              <ul class="nav nav-treeview">
              <?php if(getFeaturebyAction('Order','Pending')): ?>
                <li class="nav-item">
-                 <a href="index.php?page=Order/pending" class="nav-link">
+                 <a href="index.php?page=Order/pending" class="nav-link <?php echo (strpos($_GET['page'], 'Order/pending') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>Pending</p>
                    <span class="badge badge-danger right"><?php echo $count ?></span>
@@ -132,7 +133,7 @@
                <?php endif; ?>
                <?php if(getFeaturebyAction('Order','Delivering')): ?>
                <li class="nav-item">
-                 <a href="index.php?page=Order/delivering" class="nav-link">
+                 <a href="index.php?page=Order/delivering" class="nav-link <?php echo (strpos($_GET['page'], 'Order/delivering') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>Delivering</p>
                  </a>
@@ -140,7 +141,7 @@
                <?php endif; ?>
                <?php if(getFeaturebyAction('Order','Delivered')): ?>
                <li class="nav-item">
-                 <a href="index.php?page=Order/delivered" class="nav-link">
+                 <a href="index.php?page=Order/delivered" class="nav-link <?php echo (strpos($_GET['page'], 'Order/delivered') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>Delivered</p>
                  </a>
@@ -150,7 +151,7 @@
            </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Customer')) :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Customer_backup') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-users"></i>
                <p>
@@ -166,13 +167,13 @@
                </a>
              </li> -->
                <li class="nav-item">
-                 <a href="index.php?page=Customer_backup/list" class="nav-link">
+                 <a href="index.php?page=Customer_backup/list" class="nav-link <?php echo (strpos($_GET['page'], 'Customer_backup/list') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
                </li>
                <li class="nav-item">
-                 <a href="index.php?page=Customer_backup/account" class="nav-link">
+                 <a href="index.php?page=Customer_backup/account" class="nav-link  <?php echo (strpos($_GET['page'], 'Customer_backup/account') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>Account</p>
                  </a>
@@ -181,7 +182,7 @@
            </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Employee')) :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Employee') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-users"></i>
                <p>
@@ -197,13 +198,13 @@
                </a>
              </li> -->
                <li class="nav-item">
-                 <a href="index.php?page=Employee/list" class="nav-link">
+                 <a href="index.php?page=Employee/list" class="nav-link <?php echo (strpos($_GET['page'], 'Employee/list') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
                </li>
                <li class="nav-item">
-                 <a href="index.php?page=Employee/account" class="nav-link">
+                 <a href="index.php?page=Employee/account" class="nav-link <?php echo (strpos($_GET['page'], 'Employee/account') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>Account</p>
                  </a>
@@ -212,7 +213,7 @@
            </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Warehouse')) :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Warehouse_demo') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-users"></i>
                <p>
@@ -222,7 +223,7 @@
              </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a href="index.php?page=Warehouse_demo/list" class="nav-link">
+                 <a href="index.php?page=Warehouse_demo/list" class="nav-link <?php echo (strpos($_GET['page'], 'Warehouse_demo/list') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
@@ -231,7 +232,7 @@
            </li>
          <?php endif; ?>
          <?php if (getFeaturebyName('Supplier')) :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Supplier') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-sitemap"></i>
                <p>
@@ -241,7 +242,7 @@
              </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a href="index.php?page=Supplier/list" class="nav-link">
+                 <a href="index.php?page=Supplier/list" class="nav-link <?php echo (strpos($_GET['page'], 'Supplier/list') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>List</p>
                  </a>
@@ -250,7 +251,7 @@
            </li>
          <?php endif; ?>
          <?php if (getLevelbyUserId() == 'Admin') :  ?>
-           <li class="nav-item">
+           <li class="nav-item <?php echo (strpos($_GET['page'], 'Feature') !== false) ? 'menu-open' : ''; ?>">
              <a href="#" class="nav-link">
                <i class="nav-icon fas fa-users"></i>
                <p>
@@ -260,7 +261,7 @@
              </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a href="index.php?page=Feature/modify" class="nav-link">
+                 <a href="index.php?page=Feature/modify" class="nav-link <?php echo (strpos($_GET['page'], 'Feature/modify') !== false) ? 'active' : ''; ?>">
                    <i class="far fa-circle nav-icon"></i>
                    <p>Modify</p>
                  </a>

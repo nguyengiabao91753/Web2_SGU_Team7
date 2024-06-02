@@ -64,13 +64,14 @@ function addProduct()
     $Quantity = $_POST['quantity'];
     //$saleQuan = $_POST['salequan'];
 
-    // // Kiểm tra xem sản phẩm đã tồn tại chưa
-    // $check_sql = "SELECT * FROM products WHERE ProductName = '$productName' AND Series != '$series'";
-    // $result = mysqli_query($conn, $check_sql);
-    // if (mysqli_num_rows($result) > 0) {
-    //     setcookie("err", "Already have Product with this series", time() + (86400 * 30), "/");
-    //     return;
-    // }
+    // Kiểm tra xem sản phẩm đã tồn tại chưa
+    $check_sql = "SELECT * FROM products WHERE ProductName = '$productName' AND Series != '$series'";
+    $result = mysqli_query($conn, $check_sql);
+    if (mysqli_num_rows($result) > 0) {
+        setcookie("err", "Already have Product with this series", time() + (86400 * 30), "/");
+        header("Location: ../admin2/index.php?page=Product/list");
+        return;
+    }
 
 
     // Chuẩn bị câu truy vấn

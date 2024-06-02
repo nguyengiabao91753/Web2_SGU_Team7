@@ -86,7 +86,8 @@ function add_receipt(){
 
             if (isset($_POST['ex_quantity'][$index])) {
                 // Update existing product
-                $query = "UPDATE products SET TotalQuantity = TotalQuantity + $quantity, Quantity = Quantity + $quantity WHERE ProductID = $productId";
+                $price = $price*2;
+                $query = "UPDATE products SET Price= $price, TotalQuantity = TotalQuantity + $quantity, Quantity = Quantity + $quantity WHERE ProductID = $productId";
                 if (!mysqli_query($conn, $query)) {
                     mysqli_rollback($conn);
                     header("Location: ../admin2/index.php?page=Warehouse_demo/list");
